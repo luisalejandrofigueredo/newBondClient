@@ -4,9 +4,13 @@ import { HomeComponent } from "./home/home.component";
 import { PathNotFoundComponent } from "./path-not-found/path-not-found.component";
 const routes: Routes = [ 
   {path:'',component:HomeComponent},
-  {path: 'projects',
+  {path: 'project',
   loadChildren: () =>
   import(`./projects/projects.module`).then((m) => m.ProjectsModule),
+},
+{path: 'users',
+  loadChildren: () =>
+  import(`./users/users.module`).then((m) => m.UsersModule),
 }
 ];
 
