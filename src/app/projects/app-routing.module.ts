@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ViewProjectsComponent } from "./view-projects/view-projects.component";
 import { NewProjectComponent } from "./new-project/new-project.component";
 import { HomeProjectsComponent } from "./home-projects/home-projects.component";
+
 const routes: Routes = [
   {
     path: 'project', component: HomeProjectsComponent,
