@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl,Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -9,8 +9,9 @@ import { FormGroup, FormControl } from '@angular/forms';
 export class LoginComponent implements OnInit {
   hide!:boolean;
   loginForm = new FormGroup({
-    login: new FormControl('',{nonNullable:true}),
-    password: new FormControl('',{nonNullable:true}),
+    login: new FormControl('',{nonNullable:true,validators:[Validators.required]}),
+    password: new FormControl('',{nonNullable:true,validators:[Validators.required,Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-zd$@$!%*?&].{8,20}'
+    )]}),
   });
   constructor() { }
 
@@ -19,7 +20,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(){
-    
+
   }
 
 }
