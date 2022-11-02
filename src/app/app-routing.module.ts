@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from "./home/home.component";
 import { PathNotFoundComponent } from "./path-not-found/path-not-found.component";
+import { LoginGuardGuard } from "./guards/login-guard.guard";
 const routes: Routes = [ 
   {path:'',component:HomeComponent},
   {path: 'project',

@@ -1,4 +1,4 @@
-<div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="gappx">
+<div *ngIf="this.loginService.logged===false" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="gappx">
     <form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
         <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="gappx">
             <mat-form-field>
@@ -8,15 +8,19 @@
             <mat-form-field appearance="fill">
                 <mat-label>Enter your password</mat-label>
                 <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
-                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                <mat-error *ngIf="this.loginForm.controls.password.hasError('pattern')">Invalid password too weak </mat-error>
+                <button mat-icon-button autocomplete="off" matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
                     [attr.aria-pressed]="hide">
                     <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                 </button>
             </mat-form-field>
         </div>
+        <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="gappx">
+            <button (click)="this.cancel()" mat-raised-button>Cancel</button>
+            <button color="primary" type="submit" [disabled]="!loginForm.valid" mat-raised-button>Login</button>
+        </div>
     </form>
-    <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="gappx">
-        <button mat-raised-button>Cancel</button>
-        <button color="primary" mat-raised-button>Login</button>
-    </div>
+</div>
+<div *ngIf="this.loginService.logged===true" >
+    <button color="accent" (click)="logout()" mat-raised-button>Logout</button>
 </div>

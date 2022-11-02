@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ViewProjectsComponent } from "./view-projects/view-projects.component";
 import { NewProjectComponent } from "./new-project/new-project.component";
 import { HomeProjectsComponent } from "./home-projects/home-projects.component";
+import { LoginGuardGuard } from "../guards/login-guard.guard";
 
 const routes: Routes = [
   {
@@ -10,7 +11,8 @@ const routes: Routes = [
     children: [
       { path: 'viewProjects', component: ViewProjectsComponent },
       { path: 'newProject', component: NewProjectComponent }
-    ]
+    ],
+    canActivate:[LoginGuardGuard]
   }];
 
 @NgModule({
