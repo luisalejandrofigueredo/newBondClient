@@ -7,7 +7,7 @@
             <input autocomplete="off" matInput placeholder="Description" formControlName="description">
         </mat-form-field>
         <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="gappx">
-            <button mat-raised-button>cancel</button>
+            <button (click)="cancel()"   mat-raised-button>cancel</button>
             <button color="primary" type="submit" mat-raised-button>Ok</button>
         </div>
     </form>

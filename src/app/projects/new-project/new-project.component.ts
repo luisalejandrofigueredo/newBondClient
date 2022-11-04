@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import {Location} from '@angular/common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { LoginService } from 'src/app/services/login.service';
-
+import { ProjectServiceService } from "../../services/project-service.service";
 @Component({
   selector: 'app-new-project',
   templateUrl: './new-project.component.html',
@@ -9,16 +11,23 @@ import { LoginService } from 'src/app/services/login.service';
 })
 export class NewProjectComponent implements OnInit {
   projectForm = new FormGroup({
-    name: new FormControl('',{nonNullable:true,validators:[Validators.required]}),
-    description: new FormControl('',{nonNullable:true}),
+    name: new FormControl<string>('',{nonNullable:true,validators:[Validators.required]}),
+    description: new FormControl<string>('',{nonNullable:true}),
   });
-  constructor(private loginService:LoginService) { }
+  constructor(private location:Location,private matSnackBar:MatSnackBar, private loginService:LoginService,private projectService:ProjectServiceService,) { }
 
   ngOnInit(): void {
   }
 
-  onSubmit(){
-    
+  async onSubmit(){
+    await this.projectService.addProject(this.loginService.id,{ name:this.projectForm.controls.name.value,description:this.projectForm.controls.description.value}).then((accept)=>{
+      this.matSnackBar.open('Project created','Create',{duration:3000});
+      this.location.back();
+    }).catch((reject)=>{this.matSnackBar.open('Error retry or talk with administrator','Create',{duration:3000})})
   }
 
+  cancel(){
+    this.matSnackBar.open('Canceled by user','Create',{duration:3000})
+    this.location.back();
+  }
 }
