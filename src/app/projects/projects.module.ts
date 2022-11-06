@@ -7,16 +7,21 @@ import { HomeProjectsComponent } from './home-projects/home-projects.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { LayoutModule } from '@angular/cdk/layout';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { EditProjectComponent } from './edit-project/edit-project.component';
+
 @NgModule({
   declarations: [
     NewProjectComponent,
     ViewProjectsComponent,
-    HomeProjectsComponent
+    HomeProjectsComponent,
+    EditProjectComponent
   ],
   imports: [
     CommonModule,
@@ -27,6 +32,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatFormFieldModule,
     MatInputModule,
     MatSnackBarModule,
+    MatTableModule,
+    MatPaginatorModule,
     LayoutModule,
     FlexLayoutModule
 
