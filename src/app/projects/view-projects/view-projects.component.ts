@@ -44,6 +44,7 @@ export class ViewProjectsComponent implements OnInit {
     const dialogRef = this.dialog.open(OkCancelComponent, {
       width: '250px',
       disableClose:true,
+      enterAnimationDuration:'3000 ms',
       data: { header: "Delete", message: "You want delete?" } as DialogData,
     });
     dialogRef.afterClosed().subscribe(result => {
