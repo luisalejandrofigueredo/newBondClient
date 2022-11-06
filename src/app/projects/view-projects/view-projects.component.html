@@ -22,7 +22,7 @@
             <th mat-header-cell *matHeaderCellDef><span style="padding-left: 10px;"></span><span
                 style="font-size: 2em">Delete</span></th>
             <td mat-cell *matCellDef="let row"><span style="padding-left: 10px;"></span><button mat-icon-button
-                (click)="projectDelete(row.id)">
+                (click)="projectDelete(row.id,row.name)">
                 <mat-icon>delete</mat-icon>
               </button></td>
           </ng-container>

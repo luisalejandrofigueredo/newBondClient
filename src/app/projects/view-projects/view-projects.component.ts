@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { ProjectServiceService } from "../../services/project-service.service";
 import { LoginService } from '../../services/login.service';
 import { MatTableDataSource } from '@angular/material/table';
-
 import { Project } from 'src/app/interfaces/project';
 import { MatPaginator } from '@angular/material/paginator';
 import { OkCancelComponent } from "../../ok-cancel/ok-cancel.component";
@@ -40,17 +39,19 @@ export class ViewProjectsComponent implements OnInit {
   projectEdit(id: number) {
     this.router.navigate(['project/editProject', id]);
   }
-  
-  projectDelete(id: number) {
+
+  projectDelete(id: number,name:string) {
     const dialogRef = this.dialog.open(OkCancelComponent, {
       width: '250px',
       disableClose:true,
       enterAnimationDuration:'1000ms',
-      data: { header: "Delete", message: "You want delete?" } as DialogData,
+      data: { header: "Delete", message: `You want delete the project ${name}?` } as DialogData,
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-
+        this.projectService.deleteProject(id).then((accept)=>{
+          this.refresh();
+        });
       }
     });
   }

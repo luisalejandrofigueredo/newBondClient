@@ -31,8 +31,13 @@ export class EditProjectComponent implements OnInit {
     this.projectService.putProject(this.id,{name:this.projectForm.controls.name.value,description:this.projectForm.controls.description.value});
     this.location.back();
   }
+  
   cancel() { 
     this.location.back();
+  }
+
+  disabled():boolean{
+     return this.projectForm.valid && (this.projectForm.controls.name.dirty || this.projectForm.controls.description.dirty) ? false :true
   }
 
 }

@@ -38,7 +38,6 @@ import { EditProjectComponent } from './edit-project/edit-project.component';
     MatDialogModule,
     LayoutModule,
     FlexLayoutModule
-
   ]
 })
 export class ProjectsModule { }

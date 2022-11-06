@@ -8,7 +8,7 @@
         </mat-form-field>
         <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="gappx">
             <button (click)="cancel()" type="button"  mat-raised-button>cancel</button>
-            <button [disabled]="!this.projectForm.valid"  color="primary" type="submit" mat-raised-button>Ok</button>
+            <button [disabled]="disabled()"  color="primary" type="submit" mat-raised-button>Ok</button>
         </div>
     </form>
 </div>

@@ -19,19 +19,38 @@ export class ProjectServiceService {
   /**
    * 
    * @param id 
+   * @returns 
+   */
+  deleteProject(id: number): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      const options = {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer: ${localStorage.getItem("token")}` }),
+        params: new HttpParams().append('id', id)
+      };
+      this.httpClient.delete(`${environment.baseUrl}project/delete`, options).subscribe((deleted) => {
+        resolve(true);
+      }, (error) => {
+        reject(false);
+      });
+    });
+  }
+
+  /**
+   * 
+   * @param id 
    * @param project 
    * @returns 
    */
   putProject(id: number, project: { name: string, description: string }): Promise<boolean> {
     const body = { data: { id: id, name: project.name, description: project.description } }
     return new Promise<boolean>((resolve, reject) => {
-      this.httpClient.put(`${environment.baseUrl}project/put`, body,this.options).subscribe((projectPut) => { 
-       if ((<{message:string}>projectPut).message===undefined){
-         resolve(true);
-       } else {
-        reject(false);
-       }
-      },(error)=>{
+      this.httpClient.put(`${environment.baseUrl}project/put`, body, this.options).subscribe((projectPut) => {
+        if ((<{ message: string }>projectPut).message === undefined) {
+          resolve(true);
+        } else {
+          reject(false);
+        }
+      }, (error) => {
         reject(false);
       });
     });
@@ -88,7 +107,4 @@ export class ProjectServiceService {
       }, (error) => { reject({}) });
     })
   }
-
-
-
 }
