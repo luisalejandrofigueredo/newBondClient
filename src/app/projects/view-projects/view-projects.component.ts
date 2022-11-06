@@ -40,11 +40,12 @@ export class ViewProjectsComponent implements OnInit {
   projectEdit(id: number) {
     this.router.navigate(['project/editProject', id]);
   }
+  
   projectDelete(id: number) {
     const dialogRef = this.dialog.open(OkCancelComponent, {
       width: '250px',
       disableClose:true,
-      enterAnimationDuration:'3000 ms',
+      enterAnimationDuration:'1000ms',
       data: { header: "Delete", message: "You want delete?" } as DialogData,
     });
     dialogRef.afterClosed().subscribe(result => {
