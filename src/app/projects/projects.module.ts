@@ -14,6 +14,7 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatDialogModule } from '@angular/material/dialog';
 import { EditProjectComponent } from './edit-project/edit-project.component';
 
 @NgModule({
@@ -34,6 +35,7 @@ import { EditProjectComponent } from './edit-project/edit-project.component';
     MatSnackBarModule,
     MatTableModule,
     MatPaginatorModule,
+    MatDialogModule,
     LayoutModule,
     FlexLayoutModule
 

@@ -8,7 +8,7 @@ import { DialogData } from "./dialog-data";
   standalone: true,
   imports: [CommonModule,MatButtonModule,MatDialogModule],
   templateUrl: './ok-cancel.component.html',
-  styleUrls: ['./ok-cancel.component.sass']
+  styleUrls: ['./ok-cancel.component.sass'],
 })
 export class OkCancelComponent implements OnInit {
 
