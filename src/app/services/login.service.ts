@@ -35,6 +35,7 @@ export class LoginService {
           localStorage.setItem('id', response.user.id.toString());
           localStorage.setItem('name', response.user.name);
           this.logged=true;
+          this.id=response.user.id;
           resolve(true)
         } else {
           reject(false)
