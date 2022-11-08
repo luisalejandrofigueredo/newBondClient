@@ -9,12 +9,12 @@ export class NodeService {
 
   constructor(private httpClient: HttpClient) { }
 
-  add(node: Node): Promise<boolean> {
+  add(id:number,node: Node): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       const options = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer: ${localStorage.getItem("token")}` })
       };
-      const body = {data:{ name: node.name, description: node.description, net: node.net, visible: node.visible, x: node.x, y: node.y } as Node};
+      const body = {id:id ,data:{ name: node.name, description: node.description, net: node.net, visible: node.visible, x: node.x, y: node.y } as Node};
       this.httpClient.post(`${environment.baseUrl}node/add`, body,options).subscribe((node) => {
         if ((<{ message: string }>node).message === undefined) {
           resolve(true);
@@ -33,8 +33,8 @@ export class NodeService {
       params: new HttpParams().append('id', id)
     };
     return new Promise<Node[]>((resolve, reject) => {
-      this.httpClient.get<Node[]>(`${environment.baseUrl}node/getAll`, options).subscribe((projects) => {
-        resolve(<Node[]>projects);
+      this.httpClient.get<Node[]>(`${environment.baseUrl}node/getAll`, options).subscribe((nodes) => {
+        resolve(<Node[]>nodes);
       }, (error) => { reject([]) });
     })
   }
