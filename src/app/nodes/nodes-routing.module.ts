@@ -4,6 +4,7 @@ import { LoginGuardGuard } from '../guards/login-guard.guard';
 import { HomeNodeComponent } from "./home-node/home-node.component";
 import { NewNodeComponent } from "./new-node/new-node.component";
 import { ViewNodesComponent } from "./view-nodes/view-nodes.component";
+
 const routes: Routes = [{
  path: 'nodes', component: HomeNodeComponent,
 children: [

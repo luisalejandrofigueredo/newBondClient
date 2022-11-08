@@ -1,5 +1,15 @@
 <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="gappx">
-    <mat-form-field>
-        <input matInput placeholder="Name" formControlName="name">
-    </mat-form-field>
+    <form [formGroup]="nodeForm" (ngSubmit)="onSubmit()">
+        <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="gappx">
+            <mat-form-field>
+                <input  autocomplete="off" matInput placeholder="Name" formControlName="name">
+            </mat-form-field>
+            <mat-form-field>
+                <input autocomplete="off" matInput placeholder="Description" formControlName="description">
+            </mat-form-field>
+            <mat-checkbox formControlName="net">Net</mat-checkbox>
+        </div>
+        <button mat-raised-button type="button">Cancel</button>
+        <button mat-raised-button color="primary" type="submit" >OK</button>
+    </form>
 </div>
