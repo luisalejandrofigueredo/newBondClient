@@ -11,7 +11,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { LayoutModule } from '@angular/cdk/layout';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
 @NgModule({
   declarations: [
     NewNodeComponent,
@@ -26,6 +27,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatButtonModule,
     MatInputModule,
     MatCheckboxModule,
+    MatTableModule,
+    MatPaginatorModule,
     LayoutModule,
     FlexLayoutModule,
     ReactiveFormsModule
