@@ -13,11 +13,13 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { EditNodeComponent } from './edit-node/edit-node.component';
 @NgModule({
   declarations: [
     NewNodeComponent,
     HomeNodeComponent,
     ViewNodesComponent,
+    EditNodeComponent,
 
   ],
   imports: [
