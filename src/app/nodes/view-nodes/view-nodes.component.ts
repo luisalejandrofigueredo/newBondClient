@@ -30,7 +30,7 @@ export class ViewNodesComponent implements OnInit {
   }
 
   nodeEdit(id:number){
-
+    this.router.navigate(['nodes/editNode',id])
   }
 
   nodeDelete(id:number,name:string){
