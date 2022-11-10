@@ -8,6 +8,7 @@
                 <input autocomplete="off" matInput placeholder="Description" formControlName="description">
             </mat-form-field>
             <mat-checkbox formControlName="net">Net</mat-checkbox>
+            <mat-checkbox formControlName="visible">Visible</mat-checkbox>
         </div>
         <button mat-raised-button (click)="cancel()" type="button">Cancel</button>
         <button [disabled]="!this.nodeForm.valid" mat-raised-button color="primary" type="submit" >OK</button>

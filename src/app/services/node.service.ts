@@ -63,4 +63,18 @@ export class NodeService {
       ,(error)=>{ reject()})
     })
   }
+
+  putNode(id:number,node:Node):Promise<boolean>{
+    const options = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer: ${localStorage.getItem("token")}` })
+    };
+    return new Promise<boolean>((resolve, reject) => {
+      const body={idProject:id ,data:node};
+      this.httpClient.put(`${environment.baseUrl}node/update`,body,options).subscribe((node)=>{
+        resolve(true);
+      },(error)=>{
+        reject(false);
+      });
+    })
+  }
 }
