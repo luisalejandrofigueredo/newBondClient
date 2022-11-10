@@ -77,4 +77,12 @@ export class NodeService {
       });
     })
   }
+
+  deleteNode(id:number):Promise<boolean>{
+    return new Promise<boolean>((resolve, reject) => {
+      
+    })
+  }
+
+
 }
