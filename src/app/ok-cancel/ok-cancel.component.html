@@ -4,5 +4,11 @@
   </div>
   <mat-dialog-actions>
     <button color="" mat-raised-button type="button" mat-dialog-close="">Cancel</button>
-    <button color="primary" mat-raised-button type="button" mat-dialog-close="Ok">Accept</button>
+    <ng-container *ngIf="data?.alert===true; else elseTemplate">
+      <button color="accent" mat-raised-button type="button" mat-dialog-close="Ok">Accept</button>
+    </ng-container>
+    <ng-template #elseTemplate>
+      <button color="primary" mat-raised-button type="button" mat-dialog-close="Ok">Accept</button>
+    </ng-template>
+    
   </mat-dialog-actions>

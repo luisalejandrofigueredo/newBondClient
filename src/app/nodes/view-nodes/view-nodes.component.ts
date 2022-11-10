@@ -45,7 +45,7 @@ export class ViewNodesComponent implements OnInit {
       width: '250px',
       disableClose:true,
       enterAnimationDuration:'1000ms',
-      data: { header: "Delete", message: `You want delete the node ${name}?` } as DialogData,
+      data: { alert:true,header: "Delete", message: `You want delete the node ${name}?` } as DialogData,
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {

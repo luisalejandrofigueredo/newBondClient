@@ -40,16 +40,16 @@ export class ViewProjectsComponent implements OnInit {
     this.router.navigate(['project/editProject', id]);
   }
 
-  projectDelete(id: number,name:string) {
+  projectDelete(id: number, name: string) {
     const dialogRef = this.dialog.open(OkCancelComponent, {
       width: '250px',
-      disableClose:true,
-      enterAnimationDuration:'1000ms',
-      data: { header: "Delete", message: `You want delete the project ${name}?` } as DialogData,
+      disableClose: true,
+      enterAnimationDuration: '1000ms',
+      data: { alert: true, header: "Delete", message: `You want delete the project ${name}?` } as DialogData,
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.projectService.deleteProject(id).then((accept)=>{
+        this.projectService.deleteProject(id).then((accept) => {
           this.refresh();
         });
       }
