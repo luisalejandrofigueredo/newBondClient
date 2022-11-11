@@ -6,7 +6,10 @@ import { AddConnectionComponent } from './add-connection/add-connection.componen
 import { ViewConnectionsComponent } from './view-connections/view-connections.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -18,7 +21,11 @@ import { MatButtonModule } from '@angular/material/button';
     CommonModule,
     ConnectionsRoutingModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MatSnackBarModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatDialogModule
   ]
 })
 export class ConnectionsModule { }
