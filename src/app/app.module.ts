@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ProjectsModule } from "./projects/projects.module";
 import { UsersModule } from "./users/users.module";
 import { NodesModule } from "./nodes/nodes.module";
+import { ConnectionsModule } from "./connections/connections.module";
 import { NavigationComponent } from './navigation/navigation.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -34,6 +35,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     ProjectsModule,
     UsersModule,
     NodesModule,
+    ConnectionsModule,
     LayoutModule,
     MatToolbarModule,
     MatButtonModule,
