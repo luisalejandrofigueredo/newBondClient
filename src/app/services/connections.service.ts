@@ -9,13 +9,13 @@ export class ConnectionsService {
 
   constructor(private httpClient:HttpClient) { }
 
-  getNodes(id: number): Promise<Relations[]> {
+  getConnections(id: number): Promise<Relations[]> {
     const options = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer: ${localStorage.getItem("token")}` }),
       params: new HttpParams().append('id', id)
     };
     return new Promise<Relations[]>((resolve, reject) => {
-      this.httpClient.get<Relations[]>(`${environment.baseUrl}node/getAll`, options).subscribe((relations) => {
+      this.httpClient.get<Relations[]>(`${environment.baseUrl}relations/getAll`, options).subscribe((relations) => {
         resolve(<Relations[]>relations);
       }, (error) => { reject([]) });
     })

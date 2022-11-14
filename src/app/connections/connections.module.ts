@@ -10,6 +10,11 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+import {MatInputModule} from '@angular/material/input';
+
 
 @NgModule({
   declarations: [
@@ -25,7 +30,11 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatSnackBarModule,
     MatTableModule,
     MatPaginatorModule,
-    MatDialogModule
+    MatDialogModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    FormsModule
   ]
 })
 export class ConnectionsModule { }

@@ -1,1 +1,16 @@
-<p>add-connection works!</p>
+<form class="example-form" [formGroup]="connectionForm">
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Node</mat-label>
+      <input type="text"
+             placeholder="Select node"
+             aria-label=""
+             matInput
+             [formControl]="connectionForm.controls.node"
+             [matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+          {{option}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </form>
