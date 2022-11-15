@@ -64,6 +64,20 @@ export class NodeService {
     })
   }
 
+  getNodeByName(id: number, name: string): Promise<Node> {
+    return new Promise<Node>((resolve, reject) => {
+      const options = {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer: ${localStorage.getItem("token")}` }),
+        params: new HttpParams().append('id', id)
+          .append('name', name)
+      };
+      this.httpClient.get<Node | { message: string }>(`${environment.baseUrl}node/getOneByName`, options).subscribe((node) => {
+          resolve(<Node>node);
+        }
+      ,(error)=>{ reject()})
+    })
+  }
+
   putNode(id:number,node:Node):Promise<boolean>{
     const options = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer: ${localStorage.getItem("token")}` })

@@ -26,8 +26,8 @@ export class ConnectionsService {
       const options = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer: ${localStorage.getItem("token")}` })
       };
-      const body = { id: id, data: { name: relation.name, description: relation.description,to:relation.to,from:relation.from  } as Relations };
-      this.httpClient.post(`${environment.baseUrl}node/add`, body, options).subscribe((node) => {
+      const body = { id: id, data: { name: relation.name, description: relation.description,to:relation.to,from:relation.from,project:relation.project  } as Relations };
+      this.httpClient.post(`${environment.baseUrl}relations/add`, body, options).subscribe((node) => {
         if ((<{ message: string }>node).message === undefined) {
           resolve(true);
         } else {

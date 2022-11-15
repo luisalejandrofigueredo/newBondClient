@@ -5,7 +5,9 @@ import { LoginService } from 'src/app/services/login.service';
 import { NodeService } from 'src/app/services/node.service';
 import { ConnectionsService } from "../../services/connections.service";
 import { Location } from "@angular/common";
-
+import { Node } from "../../interfaces/node";
+import { Project } from 'src/app/interfaces/project';
+import { ProjectServiceService } from 'src/app/services/project-service.service';
 @Component({
   selector: 'app-add-connection',
   templateUrl: './add-connection.component.html',
@@ -14,8 +16,8 @@ import { Location } from "@angular/common";
 
 export class AddConnectionComponent implements OnInit {
   connectionForm = new FormGroup({
-    name:new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
-    description: new FormControl<string>('', { nonNullable: true}),
+    name: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
+    description: new FormControl<string>('', { nonNullable: true }),
     node: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
     toNode: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] })
   });
@@ -24,7 +26,7 @@ export class AddConnectionComponent implements OnInit {
   filteredOptions!: Observable<string[]>;
   filteredOptionsTo!: Observable<string[]>;
 
-  constructor(private location:Location,private connectionService:ConnectionsService,private loginService: LoginService, private nodeService: NodeService) { }
+  constructor(private projectService: ProjectServiceService, private location: Location, private connectionService: ConnectionsService, private loginService: LoginService, private nodeService: NodeService) { }
 
   async ngOnInit(): Promise<void> {
     await this.nodeService.getNodes(this.loginService.id).then((nodes) => {
@@ -44,14 +46,14 @@ export class AddConnectionComponent implements OnInit {
   }
 
   async updateMySelection(option: string) {
-    let newOptions:string[]=[];
+    let newOptions: string[] = [];
     await this.nodeService.getNodes(this.loginService.id).then((nodes) => {
       nodes.forEach(element => {
         if (element.name !== this.connectionForm.controls.node.value) {
           newOptions.push(element.name);
         }
       });
-      this.optionsTo=newOptions;
+      this.optionsTo = newOptions;
     });
     setTimeout(() => {
       this.filteredOptionsTo = this.connectionForm.controls.toNode.valueChanges.pipe(
@@ -71,11 +73,28 @@ export class AddConnectionComponent implements OnInit {
     return this.optionsTo.filter(option => option.toLowerCase().includes(filterValue));
   }
 
-  onSubmit(){
-    this.connectionService.getConnections
+  async onSubmit() {
+    let nodeBuffer!: Node;
+    let toNodeBuffer!: Node;
+    let projectBuffer!: Project;
+    await this.projectService.getProject(this.loginService.id).then((project) => {
+      projectBuffer = project;
+    })
+    await this.nodeService.getNodeByName(this.loginService.id, this.connectionForm.controls.node.value).then((node) =>
+      nodeBuffer = node);
+    await this.nodeService.getNodeByName(this.loginService.id, this.connectionForm.controls.toNode.value).then((toNode) => toNodeBuffer = toNode);
+    this.connectionService.add(this.loginService.id, {
+      name: this.connectionForm.controls.name.value,
+      description: this.connectionForm.controls.description.value,
+      from: nodeBuffer,
+      to: toNodeBuffer,
+      project: projectBuffer
+    }).then((resolve) => {
+      this.location.back();
+    }).catch((reject) => { });
   }
 
-  cancel(){
+  cancel() {
     this.location.back();
   }
 
