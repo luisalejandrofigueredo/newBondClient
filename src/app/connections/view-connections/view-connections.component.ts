@@ -25,7 +25,7 @@ export class ViewConnectionsComponent implements OnInit {
   }
 
   addConnection(){
-    this.router.navigate(['connections//add'])
+    this.router.navigate(['connections//add']);
   }
 
   connectionEdit(id:number){}

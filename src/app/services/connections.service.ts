@@ -20,4 +20,24 @@ export class ConnectionsService {
       }, (error) => { reject([]) });
     })
   }
+
+  add(id: number, relation:Relations): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      const options = {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer: ${localStorage.getItem("token")}` })
+      };
+      const body = { id: id, data: { name: relation.name, description: relation.description,to:relation.to,from:relation.from  } as Relations };
+      this.httpClient.post(`${environment.baseUrl}node/add`, body, options).subscribe((node) => {
+        if ((<{ message: string }>node).message === undefined) {
+          resolve(true);
+        } else {
+          reject(false)
+        }
+      }, (error) => {
+        reject(false);
+      });
+    });
+  }
+
+
 }

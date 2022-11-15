@@ -14,7 +14,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
-
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { LayoutModule } from '@angular/cdk/layout';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,9 @@ import {MatInputModule} from '@angular/material/input';
     MatAutocompleteModule,
     ReactiveFormsModule,
     MatInputModule,
-    FormsModule
+    FormsModule,
+    FlexLayoutModule,
+    LayoutModule
   ]
 })
 export class ConnectionsModule { }

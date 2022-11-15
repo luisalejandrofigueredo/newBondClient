@@ -1,16 +1,35 @@
-<form class="example-form" [formGroup]="connectionForm">
+<form class="example-form" [formGroup]="connectionForm" (ngSubmit)="onSubmit()">
+  <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="gappx">
+    <mat-form-field>
+      <input autocomplete="off" matInput formControlName="name" placeholder="Name">
+    </mat-form-field>
+    <mat-form-field>
+      <input autocomplete="off" matInput formControlName="description" placeholder="Description">
+    </mat-form-field>
     <mat-form-field class="example-full-width" appearance="fill">
       <mat-label>Node</mat-label>
-      <input type="text"
-             placeholder="Select node"
-             aria-label=""
-             matInput
-             [formControl]="connectionForm.controls.node"
-             [matAutocomplete]="auto">
+      <input type="text" placeholder="Select node" aria-label="" matInput [formControl]="connectionForm.controls.node"
+        [matAutocomplete]="auto">
       <mat-autocomplete #auto="matAutocomplete">
-        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+        <mat-option *ngFor="let option of filteredOptions | async" (onSelectionChange)="updateMySelection(option)"
+          [value]="option">
           {{option}}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
-  </form>
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>To node</mat-label>
+      <input type="text" placeholder="Select node" aria-label="" matInput [formControl]="connectionForm.controls.toNode"
+        [matAutocomplete]="autoTo">
+      <mat-autocomplete #autoTo="matAutocomplete">
+        <mat-option *ngFor="let option of filteredOptionsTo | async" [value]="option">
+          {{option}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="end end" fxLayoutGap="gappx">
+    <button mat-raised-button type="button" (click)="cancel()">Cancel</button>
+    <button color="primary" [disabled]="!this.connectionForm.valid" mat-raised-button type="submit">Ok</button>
+  </div>
+</form>
