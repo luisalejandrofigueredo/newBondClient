@@ -5,6 +5,7 @@ import { LoginService } from 'src/app/services/login.service';
 import { NodeService } from 'src/app/services/node.service';
 import { Location } from "@angular/common";
 import { Node } from "../../interfaces/node";
+
 @Component({
   selector: 'app-edit-node',
   templateUrl: './edit-node.component.html',
@@ -16,6 +17,7 @@ export class EditNodeComponent implements OnInit {
   nodeForm = new FormGroup({
     name: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
     description: new FormControl<string>('', { nonNullable: true }),
+    colorCtr: new FormControl<string>('', { nonNullable: true }),
     net: new FormControl<boolean>(false, { nonNullable: true }),
     visible: new FormControl<boolean>(false, { nonNullable: true })
   });
@@ -27,6 +29,7 @@ export class EditNodeComponent implements OnInit {
       this.nodeService.getNode(this.loginService.id, this.id).then((node) => {
         this.nodeForm.controls.name.setValue(node.name);
         this.nodeForm.controls.description.setValue(node.description);
+        this.nodeForm.controls.colorCtr.setValue('#'+node.color);
         this.nodeForm.controls.net.setValue(node.net);
         this.nodeForm.controls.visible.setValue(node.visible);
         this.nodeCache = node;
@@ -35,6 +38,11 @@ export class EditNodeComponent implements OnInit {
   }
 
   onSubmit() {
+    let color = this.nodeForm.controls.colorCtr.value
+    if (this.nodeForm.controls.colorCtr.dirty) {
+      const colorEval = eval(this.nodeForm.controls.colorCtr.value)
+      color = colorEval.hex;
+    }
     const node = {
       id: this.id,
       name: this.nodeForm.controls.name.value,
@@ -42,7 +50,8 @@ export class EditNodeComponent implements OnInit {
       net: this.nodeForm.controls.net.value,
       visible: this.nodeForm.controls.visible.value,
       x: this.nodeCache.x,
-      y: this.nodeCache.y
+      y: this.nodeCache.y,
+      color: color
     } as Node;
     this.nodeService.putNode(this.id, node).then((accept) => {
       this.location.back();

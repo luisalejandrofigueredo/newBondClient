@@ -5,5 +5,6 @@ export interface Node {
     x:number,
     y:number,
     visible:boolean,
+    color:string,
     net:boolean
 }

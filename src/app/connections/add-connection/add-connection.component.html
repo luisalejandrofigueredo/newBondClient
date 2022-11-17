@@ -1,7 +1,7 @@
 <form class="example-form" [formGroup]="connectionForm" (ngSubmit)="onSubmit()">
   <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="gappx">
     <mat-form-field>
-      <input autocomplete="off" matInput formControlName="name" placeholder="Name">
+      <input (change)="change()"    autocomplete="off" matInput formControlName="name" placeholder="Name">
     </mat-form-field>
     <mat-form-field>
       <input autocomplete="off" matInput formControlName="description" placeholder="Description">
@@ -19,7 +19,7 @@
     </mat-form-field>
     <mat-form-field class="example-full-width" appearance="fill">
       <mat-label>To node</mat-label>
-      <input type="text" placeholder="Select node" aria-label="" matInput [formControl]="connectionForm.controls.toNode"
+      <input type="text" placeholder="Select node" aria-label="" matInput formControlName="connectionForm.controls.toNode"
         [matAutocomplete]="autoTo">
       <mat-autocomplete #autoTo="matAutocomplete">
         <mat-option *ngFor="let option of filteredOptionsTo | async" [value]="option">

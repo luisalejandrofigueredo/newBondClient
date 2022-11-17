@@ -14,6 +14,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { EditNodeComponent } from './edit-node/edit-node.component';
+import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } from '@angular-material-components/color-picker';
+import { WarperComponent } from "../warper/warper.component";
+
+
 @NgModule({
   declarations: [
     NewNodeComponent,
@@ -31,9 +35,12 @@ import { EditNodeComponent } from './edit-node/edit-node.component';
     MatCheckboxModule,
     MatTableModule,
     MatPaginatorModule,
+    NgxMatColorPickerModule,
     LayoutModule,
     FlexLayoutModule,
-    ReactiveFormsModule
-  ]
+    ReactiveFormsModule,
+    WarperComponent
+  ],
+  providers: [{ provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS }]
 })
 export class NodesModule { }

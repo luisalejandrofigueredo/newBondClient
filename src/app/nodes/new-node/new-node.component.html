@@ -7,6 +7,14 @@
             <mat-form-field>
                 <input autocomplete="off" matInput placeholder="Description" formControlName="description">
             </mat-form-field>
+            <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="gappx">
+                <mat-form-field>
+                    <input matInput [ngxMatColorPicker]="picker" formControlName="colorCtr" >
+                    <ngx-mat-color-toggle matSuffix [for]="picker"></ngx-mat-color-toggle>
+                    <ngx-mat-color-picker #picker ></ngx-mat-color-picker>
+                </mat-form-field>
+                <div class="color"  [style.backgroundColor]="this.nodeForm.controls.colorCtr.value"></div>
+            </div>
             <mat-checkbox formControlName="net">Net</mat-checkbox>
         </div>
         <button mat-raised-button (click)="cancel()" type="button">Cancel</button>

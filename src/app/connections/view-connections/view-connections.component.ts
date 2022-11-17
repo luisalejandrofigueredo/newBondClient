@@ -6,7 +6,7 @@ import { ConnectionsService } from "../../services/connections.service";
 import { LoginService } from 'src/app/services/login.service';
 import { Router } from '@angular/router';
 import { ViewConnections } from "../../interfaces/view-connections";
-import { isNgTemplate } from '@angular/compiler';
+
 @Component({
   selector: 'app-view-connections',
   templateUrl: './view-connections.component.html',
@@ -23,8 +23,8 @@ export class ViewConnectionsComponent implements OnInit {
   ngOnInit(): void {
     this.connectionService.getConnections(this.loginService.id).then((connections)=>{
       connections.forEach(element => {
-        console.log('element',element);
         this.viewConnections.push({
+          id:element.id!,
           name:element.name,
           description:element.description,
           node:element.from.name,
@@ -40,7 +40,9 @@ export class ViewConnectionsComponent implements OnInit {
     this.router.navigate(['connections//add']);
   }
 
-  connectionEdit(id:number){}
+  connectionEdit(id:number){
+    this.router.navigate(['connections//edit',id])
+  }
 
   connectionDelete(id:number,name:string){}
 

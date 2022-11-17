@@ -7,7 +7,38 @@ import { Relations } from "../interfaces/relations";
 })
 export class ConnectionsService {
 
-  constructor(private httpClient:HttpClient) { }
+  constructor(private httpClient: HttpClient) { }
+
+  put(relation: Relations): Promise<boolean> {
+    const options = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer: ${localStorage.getItem("token")}` })
+    };
+    return new Promise<boolean>((resolve, reject) => {
+      const body = { data: relation };
+      this.httpClient.put<Relations | { message: string }>(`${environment.baseUrl}relations/update`, body, options).subscribe((relationResponse) => {
+        if ((<{ message: string }>relationResponse)?.message) {
+          reject(false);
+        }
+        else {
+          resolve(true);
+        }
+      }, (error) => {
+        reject(false);
+      });
+    })
+  }
+
+  getConnection(id: number): Promise<Relations> {
+    const options = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer: ${localStorage.getItem("token")}` }),
+      params: new HttpParams().append('id', id)
+    };
+    return new Promise<Relations>((resolve, reject) => {
+      this.httpClient.get<Relations>(`${environment.baseUrl}relations/getOne`, options).subscribe((relations) => {
+        resolve(<Relations>relations);
+      }, (error) => { reject([]) });
+    })
+  }
 
   getConnections(id: number): Promise<Relations[]> {
     const options = {
@@ -21,12 +52,12 @@ export class ConnectionsService {
     })
   }
 
-  add(id: number, relation:Relations): Promise<boolean> {
+  add(id: number, relation: Relations): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       const options = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer: ${localStorage.getItem("token")}` })
       };
-      const body = { id: id, data: { name: relation.name, description: relation.description,to:relation.to,from:relation.from,project:relation.project  } as Relations };
+      const body = { id: id, data: { name: relation.name, description: relation.description, to: relation.to, from: relation.from, project: relation.project } as Relations };
       this.httpClient.post(`${environment.baseUrl}relations/add`, body, options).subscribe((node) => {
         if ((<{ message: string }>node).message === undefined) {
           resolve(true);

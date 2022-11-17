@@ -9,10 +9,12 @@ import { LoginService } from "../../services/login.service";
   styleUrls: ['./new-node.component.sass']
 })
 export class NewNodeComponent implements OnInit {
+  color!:string;
   nodeForm = new FormGroup({
     name: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
     description: new FormControl<string>('', { nonNullable: true }),
-    net: new FormControl<boolean>(false, { nonNullable: true })
+    net: new FormControl<boolean>(false, { nonNullable: true }),
+    colorCtr: new FormControl<string>('#a21d3a', { nonNullable: true })
   });
   constructor(private loginService: LoginService, private location: Location, private nodeService: NodeService) { }
 
@@ -24,7 +26,9 @@ export class NewNodeComponent implements OnInit {
   }
 
   onSubmit() {
-    this.nodeService.add(this.loginService.id, { name: this.nodeForm.controls.name.value, description: this.nodeForm.controls.description.value, x: 100, y: 100, net: this.nodeForm.controls.net.value, visible: true }).then((accept) => {
+    let color=eval(this.nodeForm.controls.colorCtr.value);
+    console.log(color.hex);
+    this.nodeService.add(this.loginService.id, { name: this.nodeForm.controls.name.value, description: this.nodeForm.controls.description.value, x: 100, y: 100, net: this.nodeForm.controls.net.value, visible: true ,color:color.hex }).then((accept) => {
       this.location.back();
     })
   }

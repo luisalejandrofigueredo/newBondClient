@@ -16,12 +16,14 @@ import { FormsModule } from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { LayoutModule } from '@angular/cdk/layout';
+import { EditConnectionsComponent } from './edit-connections/edit-connections.component';
 
 @NgModule({
   declarations: [
     HomeComponent,
     AddConnectionComponent,
-    ViewConnectionsComponent
+    ViewConnectionsComponent,
+    EditConnectionsComponent
   ],
   imports: [
     CommonModule,

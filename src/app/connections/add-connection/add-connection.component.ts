@@ -19,7 +19,7 @@ export class AddConnectionComponent implements OnInit {
     name: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
     description: new FormControl<string>('', { nonNullable: true }),
     node: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
-    toNode: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] })
+    toNode: new FormControl<string>('', {nonNullable: true, validators: [Validators.required] })
   });
   options: string[] = [];
   optionsTo: string[] = [];
@@ -29,6 +29,7 @@ export class AddConnectionComponent implements OnInit {
   constructor(private projectService: ProjectServiceService, private location: Location, private connectionService: ConnectionsService, private loginService: LoginService, private nodeService: NodeService) { }
 
   async ngOnInit(): Promise<void> {
+    this.connectionForm.controls.toNode.disable;
     await this.nodeService.getNodes(this.loginService.id).then((nodes) => {
       nodes.forEach(element => {
         this.options.push(element.name);
@@ -43,6 +44,10 @@ export class AddConnectionComponent implements OnInit {
       startWith(''),
       map(value => this._filterTo(value || '')),
     );
+  }
+
+  change(){
+    this.connectionForm.controls.toNode.enable
   }
 
   async updateMySelection(option: string) {
