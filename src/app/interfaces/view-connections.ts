@@ -3,5 +3,7 @@ export interface ViewConnections {
     name:string,
     description:string,
     node:string,
+    nodeColor:string,
     toNode:string,
+    toNodeColor:string
 }

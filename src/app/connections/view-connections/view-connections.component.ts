@@ -28,7 +28,9 @@ export class ViewConnectionsComponent implements OnInit {
           name:element.name,
           description:element.description,
           node:element.from.name,
-          toNode:element.to.name
+          nodeColor:element.from.color,
+          toNode:element.to.name,
+          toNodeColor:element.to.color
         });
       });
       this.DataSource.data=this.viewConnections;
