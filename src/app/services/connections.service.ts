@@ -9,6 +9,20 @@ export class ConnectionsService {
 
   constructor(private httpClient: HttpClient) { }
 
+  deleteRelation(id:number):Promise<boolean>{
+    const options = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer: ${localStorage.getItem("token")}` }),
+      params: new HttpParams().append('id', id)
+    };
+    return new Promise<boolean>((resolve, reject) => {
+      this.httpClient.delete(`${environment.baseUrl}relations/delete`,options).subscribe((deleted)=>{
+        resolve(true);
+      },(error)=>{
+        reject(false);
+      });
+    })
+  }
+
   put(relation: Relations): Promise<boolean> {
     const options = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer: ${localStorage.getItem("token")}` })

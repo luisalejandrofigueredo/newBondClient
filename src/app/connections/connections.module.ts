@@ -17,7 +17,7 @@ import {MatInputModule} from '@angular/material/input';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { LayoutModule } from '@angular/cdk/layout';
 import { EditConnectionsComponent } from './edit-connections/edit-connections.component';
-
+import { WarperComponent } from "../warper/warper.component";
 @NgModule({
   declarations: [
     HomeComponent,
@@ -39,7 +39,8 @@ import { EditConnectionsComponent } from './edit-connections/edit-connections.co
     MatInputModule,
     FormsModule,
     FlexLayoutModule,
-    LayoutModule
+    LayoutModule,
+    WarperComponent
   ]
 })
 export class ConnectionsModule { }

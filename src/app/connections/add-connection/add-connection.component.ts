@@ -23,6 +23,8 @@ export class AddConnectionComponent implements OnInit {
   });
   options: string[] = [];
   optionsTo: string[] = [];
+  nodeColor='FFFFFF';
+  toNodeColor='FFFFFF';
   filteredOptions!: Observable<string[]>;
   filteredOptionsTo!: Observable<string[]>;
 
@@ -56,6 +58,8 @@ export class AddConnectionComponent implements OnInit {
       nodes.forEach(element => {
         if (element.name !== this.connectionForm.controls.node.value) {
           newOptions.push(element.name);
+        } else {
+          this.nodeColor=element.color;
         }
       });
       this.optionsTo = newOptions;
@@ -66,6 +70,12 @@ export class AddConnectionComponent implements OnInit {
         map(value => this._filterTo(value || '')),
       );
     }, 1000);
+  }
+
+  async updateMySelectionToNode(option:string){
+    await this.nodeService.getNodeByName(this.loginService.id,option).then((node)=>{
+      this.toNodeColor=node.color;
+    });
   }
 
   private _filter(value: string): string[] {

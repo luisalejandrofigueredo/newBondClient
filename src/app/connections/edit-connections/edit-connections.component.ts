@@ -25,26 +25,34 @@ export class EditConnectionsComponent implements OnInit {
   optionsTo: string[] = [];
   filteredOptions!: Observable<string[]>;
   filteredOptionsTo!: Observable<string[]>;
-  relationBuffer!:Relations;
-  constructor(private matSnackBar:MatSnackBar,private loginService: LoginService,
+  relationBuffer!: Relations;
+  nodeColor!: string;
+  toNodeColor!: string;
+  constructor(private matSnackBar: MatSnackBar, private loginService: LoginService,
     private nodeService: NodeService,
     private connectionService: ConnectionsService,
     private activatedRoute: ActivatedRoute,
-    private location:Location) { }
+    private location: Location) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(async (params) => {
-      this.connectionService.getConnection(params['id']).then((connection) => {
+      this.connectionService.getConnection(params['id']).then(async (connection) => {
         this.connectionForm.controls.name.setValue(connection.name);
         this.connectionForm.controls.description.setValue(connection.description);
         this.connectionForm.controls.node.setValue(connection.from.name);
         this.connectionForm.controls.toNode.setValue(connection.to.name);
-        this.relationBuffer=connection;
+        this.relationBuffer = connection;
+        await this.nodeService.getNodeByName(this.loginService.id, connection.from.name).then((node) => {
+          this.nodeColor = node.color;
+        });
+        await this.nodeService.getNodeByName(this.loginService.id, connection.to.name).then((node) => {
+          this.toNodeColor = node.color;
+        });
       });
       await this.nodeService.getNodes(this.loginService.id).then((nodes) => {
         nodes.forEach(element => {
           this.options.push(element.name);
-          if (element.name!==this.relationBuffer.from.name){
+          if (element.name !== this.relationBuffer.from.name) {
             this.optionsTo.push(element.name);
           }
         });
@@ -60,8 +68,8 @@ export class EditConnectionsComponent implements OnInit {
     });
   }
 
-  disabled():boolean {
-    return (this.connectionForm.valid && this.connectionForm.dirty)? false:true
+  disabled(): boolean {
+    return (this.connectionForm.valid && this.connectionForm.dirty) ? false : true
   }
 
   private _filter(value: string): string[] {
@@ -74,7 +82,17 @@ export class EditConnectionsComponent implements OnInit {
     return this.optionsTo.filter(option => option.toLowerCase().includes(filterValue));
   }
 
+  async updateMySelectionTo(option: string) {
+    await this.nodeService.getNodeByName(this.loginService.id, option).then((node) => {
+      this.toNodeColor = node.color;
+    });
+  }
+
   async updateMySelection(option: string) {
+    if (option===this.connectionForm.controls.toNode.value)
+    {
+      this.connectionForm.controls.toNode.setValue('');
+    }
     let newOptions: string[] = [];
     await this.nodeService.getNodes(this.loginService.id).then((nodes) => {
       nodes.forEach(element => {
@@ -84,6 +102,9 @@ export class EditConnectionsComponent implements OnInit {
       });
       this.optionsTo = newOptions;
     });
+    await this.nodeService.getNodeByName(this.loginService.id, this.connectionForm.controls.node.value).then((node) => {
+      this.nodeColor = node.color;
+    });
     setTimeout(() => {
       this.filteredOptionsTo = this.connectionForm.controls.toNode.valueChanges.pipe(
         startWith(''),
@@ -92,28 +113,28 @@ export class EditConnectionsComponent implements OnInit {
     }, 1000);
   }
 
-  cancel() { 
+  cancel() {
     this.location.back();
   }
 
-  async onSubmit() { 
-    let nodeBuffer!:Node;
-    let toNodeBuffer!:Node
-    await this.nodeService.getNodeByName(this.loginService.id,this.connectionForm.controls.node.value).then((node)=>{
-      nodeBuffer=node;
+  async onSubmit() {
+    let nodeBuffer!: Node;
+    let toNodeBuffer!: Node
+    await this.nodeService.getNodeByName(this.loginService.id, this.connectionForm.controls.node.value).then((node) => {
+      nodeBuffer = node;
     });
-    await this.nodeService.getNodeByName(this.loginService.id,this.connectionForm.controls.toNode.value).then((node)=>{
-      toNodeBuffer=node;
+    await this.nodeService.getNodeByName(this.loginService.id, this.connectionForm.controls.toNode.value).then((node) => {
+      toNodeBuffer = node;
     });
-    this.relationBuffer.from=nodeBuffer;
-    this.relationBuffer.to=toNodeBuffer;
-    this.relationBuffer.name=this.connectionForm.controls.name.value;
-    this.relationBuffer.description=this.connectionForm.controls.description.value;
-    this.connectionService.put(this.relationBuffer).then((relationPut)=>{
-      this.matSnackBar.open('Registry updated ','Edit',{duration:3000});
+    this.relationBuffer.from = nodeBuffer;
+    this.relationBuffer.to = toNodeBuffer;
+    this.relationBuffer.name = this.connectionForm.controls.name.value;
+    this.relationBuffer.description = this.connectionForm.controls.description.value;
+    this.connectionService.put(this.relationBuffer).then((relationPut) => {
+      this.matSnackBar.open('Registry updated ', 'Edit', { duration: 3000 });
       this.location.back();
-    }).catch((error)=>{
-      this.matSnackBar.open('Duplicate change values','Edit',{duration:3000});
+    }).catch((error) => {
+      this.matSnackBar.open('Duplicate change values', 'Edit', { duration: 3000 });
 
     })
   }

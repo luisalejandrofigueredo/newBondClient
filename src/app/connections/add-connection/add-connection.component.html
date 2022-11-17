@@ -1,32 +1,43 @@
 <form class="example-form" [formGroup]="connectionForm" (ngSubmit)="onSubmit()">
   <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="gappx">
     <mat-form-field>
-      <input (change)="change()"    autocomplete="off" matInput formControlName="name" placeholder="Name">
+      <input (change)="change()" autocomplete="off" matInput formControlName="name" placeholder="Name">
     </mat-form-field>
     <mat-form-field>
       <input autocomplete="off" matInput formControlName="description" placeholder="Description">
     </mat-form-field>
-    <mat-form-field class="example-full-width" appearance="fill">
-      <mat-label>Node</mat-label>
-      <input type="text" placeholder="Select node" aria-label="" matInput [formControl]="connectionForm.controls.node"
-        [matAutocomplete]="auto">
-      <mat-autocomplete #auto="matAutocomplete">
-        <mat-option *ngFor="let option of filteredOptions | async" (onSelectionChange)="updateMySelection(option)"
-          [value]="option">
-          {{option}}
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
-    <mat-form-field class="example-full-width" appearance="fill">
-      <mat-label>To node</mat-label>
-      <input type="text" placeholder="Select node" aria-label="" matInput formControlName="connectionForm.controls.toNode"
-        [matAutocomplete]="autoTo">
-      <mat-autocomplete #autoTo="matAutocomplete">
-        <mat-option *ngFor="let option of filteredOptionsTo | async" [value]="option">
-          {{option}}
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
+    <app-warper Title="Node Connection">
+      <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="gappx">
+        <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="gappx">
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Node</mat-label>
+            <input type="text" placeholder="Select node" aria-label="" matInput
+              [formControl]="connectionForm.controls.node" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let option of filteredOptions | async" (onSelectionChange)="updateMySelection(option)"
+                [value]="option">
+                {{option}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+          <div class="color" [style.backgroundColor]="'#'+nodeColor"></div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="gappx">
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>To node</mat-label>
+            <input type="text" placeholder="Select node" aria-label="" matInput formControlName="toNode"
+              [matAutocomplete]="autoTo">
+            <mat-autocomplete #autoTo="matAutocomplete">
+              <mat-option *ngFor="let option of filteredOptionsTo | async" [value]="option"
+                (onSelectionChange)="updateMySelectionToNode(option)">
+                {{option}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+          <div class="color" [style.backgroundColor]="'#'+toNodeColor"></div>
+        </div>
+      </div>
+    </app-warper>
   </div>
   <div fxLayout="row" fxLayoutAlign="end end" fxLayoutGap="gappx">
     <button mat-raised-button type="button" (click)="cancel()">Cancel</button>
