@@ -26,9 +26,15 @@ export class NewNodeComponent implements OnInit {
   }
 
   onSubmit() {
-    let color=eval(this.nodeForm.controls.colorCtr.value);
-    console.log(color.hex);
-    this.nodeService.add(this.loginService.id, { name: this.nodeForm.controls.name.value, description: this.nodeForm.controls.description.value, x: 100, y: 100, net: this.nodeForm.controls.net.value, visible: true ,color:color.hex }).then((accept) => {
+    let colStr=''
+    if (this.nodeForm.controls.colorCtr.dirty){
+      const color=eval(this.nodeForm.controls.colorCtr.value);
+      colStr=color.hex;
+    } else
+    {
+      colStr=this.nodeForm.controls.colorCtr.value.substring(1);
+    }
+    this.nodeService.add(this.loginService.id, { name: this.nodeForm.controls.name.value, description: this.nodeForm.controls.description.value, x: 100, y: 100, net: this.nodeForm.controls.net.value, visible: true ,color:colStr }).then((accept) => {
       this.location.back();
     })
   }

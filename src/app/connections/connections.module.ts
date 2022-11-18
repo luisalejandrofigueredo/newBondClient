@@ -18,12 +18,14 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { LayoutModule } from '@angular/cdk/layout';
 import { EditConnectionsComponent } from './edit-connections/edit-connections.component';
 import { WarperComponent } from "../warper/warper.component";
+import { ViewEventConComponent } from './view-event-con/view-event-con.component';
 @NgModule({
   declarations: [
     HomeComponent,
     AddConnectionComponent,
     ViewConnectionsComponent,
-    EditConnectionsComponent
+    EditConnectionsComponent,
+    ViewEventConComponent
   ],
   imports: [
     CommonModule,
