@@ -19,13 +19,15 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { EditConnectionsComponent } from './edit-connections/edit-connections.component';
 import { WarperComponent } from "../warper/warper.component";
 import { ViewEventConComponent } from './view-event-con/view-event-con.component';
+import { AddEventConComponent } from './add-event-con/add-event-con.component';
 @NgModule({
   declarations: [
     HomeComponent,
     AddConnectionComponent,
     ViewConnectionsComponent,
     EditConnectionsComponent,
-    ViewEventConComponent
+    ViewEventConComponent,
+    AddEventConComponent
   ],
   imports: [
     CommonModule,

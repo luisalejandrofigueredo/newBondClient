@@ -21,6 +21,7 @@ export class EditConnectionsComponent implements OnInit {
     node: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
     toNode: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] })
   });
+  id=0;
   options: string[] = [];
   optionsTo: string[] = [];
   filteredOptions!: Observable<string[]>;
@@ -36,6 +37,7 @@ export class EditConnectionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(async (params) => {
+      this.id=params['id'];
       this.connectionService.getConnection(params['id']).then(async (connection) => {
         this.connectionForm.controls.name.setValue(connection.name);
         this.connectionForm.controls.description.setValue(connection.description);
