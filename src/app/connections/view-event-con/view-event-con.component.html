@@ -11,6 +11,10 @@
         <th mat-header-cell *matHeaderCellDef><span style="font-size: 2em">Description</span></th>
         <td mat-cell *matCellDef="let row"> {{row.description}} </td>
       </ng-container>
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef><span style="font-size: 2em">Date</span></th>
+        <td mat-cell *matCellDef="let row"> {{row.date | date}} </td>
+      </ng-container>
       <ng-container matColumnDef="edit">
         <th mat-header-cell *matHeaderCellDef><span style="padding-left: 10px;"></span><span
             style="font-size: 2em">Edit</span></th>
@@ -27,8 +31,8 @@
             <mat-icon>delete</mat-icon>
           </button></td>
       </ng-container>
-      <tr mat-header-row *matHeaderRowDef="['Name','Description','edit','delete']"></tr>
-      <tr mat-row *matRowDef="let row; columns: ['Name','Description','edit','delete']"></tr>
+      <tr mat-header-row *matHeaderRowDef="['Name','Description','date','edit','delete']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['Name','Description','date','edit','delete']"></tr>
     </table>
     <mat-paginator [pageSize]="10" [pageSizeOptions]="pageSizeOptions" aria-label="Select page"></mat-paginator>
   </div>

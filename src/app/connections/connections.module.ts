@@ -20,6 +20,9 @@ import { EditConnectionsComponent } from './edit-connections/edit-connections.co
 import { WarperComponent } from "../warper/warper.component";
 import { ViewEventConComponent } from './view-event-con/view-event-con.component';
 import { AddEventConComponent } from './add-event-con/add-event-con.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+
 @NgModule({
   declarations: [
     HomeComponent,
@@ -39,6 +42,8 @@ import { AddEventConComponent } from './add-event-con/add-event-con.component';
     MatPaginatorModule,
     MatDialogModule,
     MatAutocompleteModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     ReactiveFormsModule,
     MatInputModule,
     FormsModule,
