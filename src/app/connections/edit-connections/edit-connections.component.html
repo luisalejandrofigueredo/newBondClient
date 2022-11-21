@@ -39,7 +39,7 @@
       </div>
     </app-warper>
     <app-warper Title="Events">
-      <app-view-event-con [id]="id"></app-view-event-con>
+      <app-view-event-con (modified)="modify($event)" [id]="id"></app-view-event-con>
     </app-warper>
   </div>
   <div fxLayout="row" fxLayoutAlign="end end" fxLayoutGap="gappx">

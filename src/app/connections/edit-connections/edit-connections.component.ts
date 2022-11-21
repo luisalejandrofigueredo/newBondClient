@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { map, Observable, startWith } from 'rxjs';
@@ -22,6 +22,7 @@ export class EditConnectionsComponent implements OnInit {
     toNode: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] })
   });
   id=0;
+  viewDirty=false;
   options: string[] = [];
   optionsTo: string[] = [];
   filteredOptions!: Observable<string[]>;
@@ -71,7 +72,11 @@ export class EditConnectionsComponent implements OnInit {
   }
 
   disabled(): boolean {
-    return (this.connectionForm.valid && this.connectionForm.dirty) ? false : true
+    return ((this.connectionForm.valid && this.connectionForm.dirty) || this.viewDirty===true) ? false : true
+  }
+
+  modify(event:boolean){
+    this.viewDirty=true;
   }
 
   private _filter(value: string): string[] {

@@ -6,6 +6,7 @@ import { AddConnectionComponent } from "./add-connection/add-connection.componen
 import { ViewConnectionsComponent } from "./view-connections/view-connections.component";
 import { EditConnectionsComponent } from "./edit-connections/edit-connections.component";
 import { AddEventConComponent } from "./add-event-con/add-event-con.component";
+import { EditEventConComponent } from "./edit-event-con/edit-event-con.component";
 const routes: Routes = [{
   path: 'connections',
   component: HomeComponent,
@@ -13,7 +14,8 @@ const routes: Routes = [{
     { path: 'add', component: AddConnectionComponent },
     { path: 'viewConnections', component: ViewConnectionsComponent },
     { path: 'edit/:id', component: EditConnectionsComponent },
-    { path:'addEvent/:id', component:AddEventConComponent}
+    { path:'addEvent/:id', component:AddEventConComponent},
+    { path:'editEvent/:id', component:EditEventConComponent}
   ],
   canActivate: [LoginGuardGuard],
   runGuardsAndResolvers: 'always'

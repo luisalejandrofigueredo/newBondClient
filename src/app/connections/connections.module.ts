@@ -22,6 +22,7 @@ import { ViewEventConComponent } from './view-event-con/view-event-con.component
 import { AddEventConComponent } from './add-event-con/add-event-con.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { EditEventConComponent } from './edit-event-con/edit-event-con.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     ViewConnectionsComponent,
     EditConnectionsComponent,
     ViewEventConComponent,
-    AddEventConComponent
+    AddEventConComponent,
+    EditEventConComponent
   ],
   imports: [
     CommonModule,
