@@ -10,6 +10,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class LoginComponent implements OnInit {
   hide!:boolean;
+  name!:string;
   loginForm = new FormGroup({
     login: new FormControl('',{nonNullable:true,validators:[Validators.required]}),
     password: new FormControl('',{nonNullable:true,validators:[Validators.required,Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-zd$@$!%*?&].{8,20}')]}),
@@ -18,6 +19,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.hide=true;
+    this.name=(localStorage.getItem('name')!==null)?localStorage.getItem('name')!:''
   }
 
   cancel(){
@@ -28,6 +30,7 @@ export class LoginComponent implements OnInit {
   async onSubmit(){
     await this.loginService.login(this.loginForm.controls.login.value,this.loginForm.controls.password.value).then((resolve)=>{
       if (this.loginService.logged===true) {
+        this.name=localStorage.getItem('name')!;
         this.router.navigate(['/']);
       }
     }).catch((reject)=>{
