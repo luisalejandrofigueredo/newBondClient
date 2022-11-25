@@ -5,6 +5,7 @@ import { LoginService } from 'src/app/services/login.service';
 import { NodeService } from 'src/app/services/node.service';
 import { Location } from "@angular/common";
 import { Node } from "../../interfaces/node";
+import { ProjectServiceService } from 'src/app/services/project-service.service';
 
 @Component({
   selector: 'app-edit-node',
@@ -21,12 +22,12 @@ export class EditNodeComponent implements OnInit {
     net: new FormControl<boolean>(false, { nonNullable: true }),
     visible: new FormControl<boolean>(false, { nonNullable: true })
   });
-  constructor(private location: Location, private activatedRoute: ActivatedRoute, private router: Router, private loginService: LoginService, private nodeService: NodeService) { }
+  constructor(private projectService:ProjectServiceService,private location: Location, private activatedRoute: ActivatedRoute, private router: Router, private loginService: LoginService, private nodeService: NodeService) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params) => {
       this.id = params['id'];
-      this.nodeService.getNode(this.loginService.id, this.id).then((node) => {
+      this.nodeService.getNode(this.projectService.project, this.id).then((node) => {
         this.nodeForm.controls.name.setValue(node.name);
         this.nodeForm.controls.description.setValue(node.description);
         this.nodeForm.controls.colorCtr.setValue('#'+node.color);

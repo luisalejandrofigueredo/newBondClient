@@ -32,7 +32,7 @@ export class AddConnectionComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.connectionForm.controls.toNode.disable;
-    await this.nodeService.getNodes(this.loginService.id).then((nodes) => {
+    await this.nodeService.getNodes(this.projectService.project).then((nodes) => {
       nodes.forEach(element => {
         this.options.push(element.name);
         this.optionsTo.push(element.name);
@@ -54,7 +54,7 @@ export class AddConnectionComponent implements OnInit {
 
   async updateMySelection(option: string) {
     let newOptions: string[] = [];
-    await this.nodeService.getNodes(this.loginService.id).then((nodes) => {
+    await this.nodeService.getNodes(this.projectService.project).then((nodes) => {
       nodes.forEach(element => {
         if (element.name !== this.connectionForm.controls.node.value) {
           newOptions.push(element.name);
@@ -73,7 +73,7 @@ export class AddConnectionComponent implements OnInit {
   }
 
   async updateMySelectionToNode(option:string){
-    await this.nodeService.getNodeByName(this.loginService.id,option).then((node)=>{
+    await this.nodeService.getNodeByName(this.projectService.project,option).then((node)=>{
       this.toNodeColor=node.color;
     });
   }
@@ -92,13 +92,13 @@ export class AddConnectionComponent implements OnInit {
     let nodeBuffer!: Node;
     let toNodeBuffer!: Node;
     let projectBuffer!: Project;
-    await this.projectService.getProject(this.loginService.id).then((project) => {
+    await this.projectService.getProject(this.projectService.project).then((project) => {
       projectBuffer = project;
     })
-    await this.nodeService.getNodeByName(this.loginService.id, this.connectionForm.controls.node.value).then((node) =>
+    await this.nodeService.getNodeByName(this.projectService.project, this.connectionForm.controls.node.value).then((node) =>
       nodeBuffer = node);
-    await this.nodeService.getNodeByName(this.loginService.id, this.connectionForm.controls.toNode.value).then((toNode) => toNodeBuffer = toNode);
-    this.connectionService.add(this.loginService.id, {
+    await this.nodeService.getNodeByName(this.projectService.project, this.connectionForm.controls.toNode.value).then((toNode) => toNodeBuffer = toNode);
+    this.connectionService.add(this.projectService.project, {
       name: this.connectionForm.controls.name.value,
       description: this.connectionForm.controls.description.value,
       from: nodeBuffer,

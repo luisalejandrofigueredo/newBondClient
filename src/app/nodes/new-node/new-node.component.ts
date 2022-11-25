@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Location } from "@angular/common";
 import { NodeService } from "../../services/node.service";
 import { LoginService } from "../../services/login.service";
+import { ProjectServiceService } from 'src/app/services/project-service.service';
 @Component({
   selector: 'app-new-node',
   templateUrl: './new-node.component.html',
@@ -16,7 +17,7 @@ export class NewNodeComponent implements OnInit {
     net: new FormControl<boolean>(false, { nonNullable: true }),
     colorCtr: new FormControl<string>('#a21d3a', { nonNullable: true })
   });
-  constructor(private loginService: LoginService, private location: Location, private nodeService: NodeService) { }
+  constructor(private projectService:ProjectServiceService,private loginService: LoginService, private location: Location, private nodeService: NodeService) { }
 
   ngOnInit(): void {
   }
@@ -34,7 +35,7 @@ export class NewNodeComponent implements OnInit {
     {
       colStr=this.nodeForm.controls.colorCtr.value.substring(1);
     }
-    this.nodeService.add(this.loginService.id, { name: this.nodeForm.controls.name.value, description: this.nodeForm.controls.description.value, x: 100, y: 100, net: this.nodeForm.controls.net.value, visible: true ,color:colStr }).then((accept) => {
+    this.nodeService.add(this.projectService.project, { name: this.nodeForm.controls.name.value, description: this.nodeForm.controls.description.value, x: 100, y: 100, net: this.nodeForm.controls.net.value, visible: true ,color:colStr }).then((accept) => {
       this.location.back();
     })
   }

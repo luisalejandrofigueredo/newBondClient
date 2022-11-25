@@ -9,6 +9,7 @@ import { Location } from "@angular/common";
 import { Node } from "../../interfaces/node";
 import { Relations } from "../../interfaces/relations";
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ProjectServiceService } from 'src/app/services/project-service.service';
 @Component({
   selector: 'app-edit-connections',
   templateUrl: './edit-connections.component.html',
@@ -30,7 +31,7 @@ export class EditConnectionsComponent implements OnInit {
   relationBuffer!: Relations;
   nodeColor!: string;
   toNodeColor!: string;
-  constructor(private matSnackBar: MatSnackBar, private loginService: LoginService,
+  constructor(private projectService:ProjectServiceService,private matSnackBar: MatSnackBar, private loginService: LoginService,
     private nodeService: NodeService,
     private connectionService: ConnectionsService,
     private activatedRoute: ActivatedRoute,
@@ -45,14 +46,14 @@ export class EditConnectionsComponent implements OnInit {
         this.connectionForm.controls.node.setValue(connection.from.name);
         this.connectionForm.controls.toNode.setValue(connection.to.name);
         this.relationBuffer = connection;
-        await this.nodeService.getNodeByName(this.loginService.id, connection.from.name).then((node) => {
+        await this.nodeService.getNodeByName(this.projectService.project, connection.from.name).then((node) => {
           this.nodeColor = node.color;
         });
-        await this.nodeService.getNodeByName(this.loginService.id, connection.to.name).then((node) => {
+        await this.nodeService.getNodeByName(this.projectService.project, connection.to.name).then((node) => {
           this.toNodeColor = node.color;
         });
       });
-      await this.nodeService.getNodes(this.loginService.id).then((nodes) => {
+      await this.nodeService.getNodes(this.projectService.project).then((nodes) => {
         nodes.forEach(element => {
           this.options.push(element.name);
           if (element.name !== this.relationBuffer.from.name) {
@@ -127,10 +128,10 @@ export class EditConnectionsComponent implements OnInit {
   async onSubmit() {
     let nodeBuffer!: Node;
     let toNodeBuffer!: Node
-    await this.nodeService.getNodeByName(this.loginService.id, this.connectionForm.controls.node.value).then((node) => {
+    await this.nodeService.getNodeByName(this.projectService.project, this.connectionForm.controls.node.value).then((node) => {
       nodeBuffer = node;
     });
-    await this.nodeService.getNodeByName(this.loginService.id, this.connectionForm.controls.toNode.value).then((node) => {
+    await this.nodeService.getNodeByName(this.projectService.project, this.connectionForm.controls.toNode.value).then((node) => {
       toNodeBuffer = node;
     });
     this.relationBuffer.from = nodeBuffer;
@@ -142,7 +143,6 @@ export class EditConnectionsComponent implements OnInit {
       this.location.back();
     }).catch((error) => {
       this.matSnackBar.open('Duplicate change values', 'Edit', { duration: 3000 });
-
     })
   }
 }

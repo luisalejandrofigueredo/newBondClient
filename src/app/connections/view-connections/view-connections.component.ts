@@ -9,6 +9,7 @@ import { ViewConnections } from "../../interfaces/view-connections";
 import { MatDialog } from '@angular/material/dialog';
 import { OkCancelComponent } from 'src/app/ok-cancel/ok-cancel.component';
 import { DialogData } from 'src/app/ok-cancel/dialog-data';
+import { ProjectServiceService } from 'src/app/services/project-service.service';
 
 @Component({
   selector: 'app-view-connections',
@@ -21,10 +22,10 @@ export class ViewConnectionsComponent implements OnInit {
   pageSizeOptions: number[] = [10, 25, 100];
   viewConnections: ViewConnections[] = [];
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
-  constructor(public dialog: MatDialog, private router: Router, private loginService: LoginService, private connectionService: ConnectionsService) { }
+  constructor(public projectService:ProjectServiceService,public dialog: MatDialog, private router: Router, private loginService: LoginService, private connectionService: ConnectionsService) { }
 
   ngOnInit(): void {
-    this.connectionService.getConnections(this.loginService.id).then((connections) => {
+    this.connectionService.getConnections(this.projectService.project).then((connections) => {
       connections.forEach(element => {
         this.viewConnections.push({
           id: element.id!,
@@ -43,7 +44,7 @@ export class ViewConnectionsComponent implements OnInit {
 
   refresh() {
     this.viewConnections=[];
-    this.connectionService.getConnections(this.loginService.id).then((connections) => {
+    this.connectionService.getConnections(this.projectService.project).then((connections) => {
       connections.forEach(element => {
         this.viewConnections.push({
           id: element.id!,

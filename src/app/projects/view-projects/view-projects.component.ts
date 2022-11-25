@@ -56,7 +56,10 @@ export class ViewProjectsComponent implements OnInit {
     });
   }
   projectCopy(id: number) { }
-  selectProject(id: number) { }
+  selectProject(id: number) { 
+    this.projectService.project=id;
+    localStorage.setItem('project',id.toString())
+  }
   projectConnections(id: Number) { }
   projectNodes(id: number) { }
 

@@ -12,7 +12,7 @@ export class ProjectServiceService {
   project: number = 0;
   constructor(private httpClient: HttpClient) {
     if (localStorage.getItem("project") !== null) {
-
+      this.project=parseInt(localStorage.getItem('project')!);
     }
   }
 
