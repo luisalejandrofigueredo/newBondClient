@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import {Location} from '@angular/common';
 import { Relations } from "../../interfaces/relations";
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -22,9 +23,12 @@ export class ViewConnectionsComponent implements OnInit {
   pageSizeOptions: number[] = [10, 25, 100];
   viewConnections: ViewConnections[] = [];
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
-  constructor(public projectService:ProjectServiceService,public dialog: MatDialog, private router: Router, private loginService: LoginService, private connectionService: ConnectionsService) { }
+  constructor(public location:Location ,public projectService:ProjectServiceService,public dialog: MatDialog, private router: Router, private loginService: LoginService, private connectionService: ConnectionsService) { }
 
   ngOnInit(): void {
+    if (this.projectService.project===0){
+      this.location.back();
+    }
     this.connectionService.getConnections(this.projectService.project).then((connections) => {
       connections.forEach(element => {
         this.viewConnections.push({

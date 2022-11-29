@@ -20,7 +20,7 @@ export class NewProjectComponent implements OnInit {
   }
 
   async onSubmit(){
-    await this.projectService.addProject(this.projectService.project,{ name:this.projectForm.controls.name.value,description:this.projectForm.controls.description.value}).then((accept)=>{
+    await this.projectService.addProject(this.loginService.id,{ name:this.projectForm.controls.name.value,description:this.projectForm.controls.description.value}).then((accept)=>{
       this.matSnackBar.open('Project created','Create',{duration:3000});
       this.location.back();
     }).catch((reject)=>{this.matSnackBar.open('Error retry or talk with administrator','Create',{duration:3000})})

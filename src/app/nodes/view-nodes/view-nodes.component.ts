@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Location } from "@angular/common";
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -20,7 +21,7 @@ export class ViewNodesComponent implements OnInit {
   pageSize = 10;
   pageSizeOptions: number[] = [10, 25, 100];
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
-  constructor(public projectService: ProjectServiceService, public dialog: MatDialog, private loginService: LoginService, private nodeService: NodeService, private router: Router) { }
+  constructor(private location:Location,public projectService: ProjectServiceService, public dialog: MatDialog, private loginService: LoginService, private nodeService: NodeService, private router: Router) { }
 
   ngOnInit(): void {
     this.refresh();
@@ -32,6 +33,8 @@ export class ViewNodesComponent implements OnInit {
         this.DataSource.data = nodes;
         this.DataSource.paginator = this.paginator;
       });
+    } else {
+        this.location.back();
     }
   }
 
