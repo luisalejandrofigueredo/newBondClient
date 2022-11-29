@@ -1,3 +1,19 @@
 <div class="rectangle">
     <canvas #myCanvas style="display: block" [width]="width" [height]="height" (contextmenu)="menu($event)"></canvas>
 </div>
+<div #Trigger style="visibility: hidden; position: fixed;" [style.left]="menuTopLeftPosition.x"
+  [style.top]="menuTopLeftPosition.y" [matMenuTriggerFor]="outSideMenu"></div>
+
+<mat-menu #outSideMenu="matMenu">
+  <ng-template matMenuContent>
+    <button mat-menu-item (contextmenu)="$event.preventDefault()" [matMenuTriggerFor]="node">Nodes</button>
+    <button mat-menu-item (contextmenu)="$event.preventDefault()" [matMenuTriggerFor]="connections">Connections</button>
+  </ng-template>
+</mat-menu>
+
+<mat-menu (contextmenu)="$event.preventDefault()" #node="matMenu">
+    <button mat-button (contextmenu)="$event.preventDefault()" (click)="add()">Add</button>
+</mat-menu>
+
+<mat-menu #connections="matMenu">
+</mat-menu>
