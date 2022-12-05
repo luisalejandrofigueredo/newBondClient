@@ -103,7 +103,8 @@ export class AddConnectionComponent implements OnInit {
       description: this.connectionForm.controls.description.value,
       from: nodeBuffer,
       to: toNodeBuffer,
-      project: projectBuffer
+      project: projectBuffer,
+      mirrorLabel:false
     }).then((resolve) => {
       this.location.back();
     }).catch((reject) => { });

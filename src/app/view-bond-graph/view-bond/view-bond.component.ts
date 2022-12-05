@@ -10,27 +10,33 @@ import { ConnectionsService } from "../../services/connections.service";
 import { Router } from '@angular/router';
 import { TrigonometricService } from "../../service/trigonometric.service";
 import { Relations } from "../../interfaces/relations";
+import { MatDialog } from '@angular/material/dialog';
+import { OkCancelComponent } from "../../ok-cancel/ok-cancel.component";
+import { DialogData } from "../../ok-cancel/dialog-data";
+
 @Component({
   selector: 'app-view-bond',
   templateUrl: './view-bond.component.html',
   styleUrls: ['./view-bond.component.sass']
 })
 export class ViewBondComponent implements OnInit {
-  width = 800;
+  width = 1200;
   height = 600;
   menuTopLeftPosition: Point = { x: '0px', y: '0px' };
 
   context!: CanvasRenderingContext2D;
   private ctx!: CanvasRenderingContext2D;
   pathNodes: { path: Path2D, node: Node }[] = [];
-  pathsConnections: { path: Path2D, node: Node }[] = [];
+  pathsConnections: { path: Path2D, connection: Relations }[] = [];
   canvasContext: any;
   cursor!: NumberPoint;
   cacheNode!: Node;
+  cacheRelation!: Relations;
   isMovingNode = false;
+  typeMenu = 1;
   @ViewChild('myCanvas', { static: true }) canvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild(MatMenuTrigger, { static: true }) matMenuTrigger!: MatMenuTrigger;
-  constructor(private connectionService: ConnectionsService, private tr: TrigonometricService, private router: Router, private projectService: ProjectServiceService, private nodeService: NodeService, private loginService: LoginService) { }
+  constructor(private matDialog: MatDialog, private connectionService: ConnectionsService, private tr: TrigonometricService, private router: Router, private projectService: ProjectServiceService, private nodeService: NodeService, private loginService: LoginService) { }
 
   @HostListener("mousewheel", ["$event"])
   zoomWheel(event: WheelEvent) {
@@ -69,11 +75,11 @@ export class ViewBondComponent implements OnInit {
     this.menuTopLeftPosition.y = event.clientY + 'px';
     this.cursor = { x: event.clientX - rect.left, y: event.clientY - rect.top };
     this.cursor = this.getTransformedPoint(this.cursor.x, this.cursor.y);
-    if (event.ctrlKey === false) {
+    if (event.ctrlKey === false && event.button === 0) {
       await this.inNode(event.clientX - rect.left, event.clientY - rect.top).then((accept) => {
         this.cacheNode = <Node>accept;
         this.isMovingNode = true;
-      }).catch((reject) => {
+      }).catch(async (reject) => {
       });
     }
   }
@@ -83,8 +89,8 @@ export class ViewBondComponent implements OnInit {
     if (this.isMovingNode === true) {
       await this.nodeService.putNode(this.projectService.project, this.cacheNode).then((accept) => {
         this.refresh();
+        this.isMovingNode = false;
       }).catch((reject) => { console.log('reject node modification') })
-      this.isMovingNode = false;
     }
   }
   /**
@@ -105,6 +111,19 @@ export class ViewBondComponent implements OnInit {
     })
   }
 
+  async inLine(cursor: NumberPoint): Promise<Relations | boolean> {
+    return new Promise(async (resolve, reject) => {
+      for (let index = 0; index < this.pathsConnections.length; index++) {
+        const element = this.pathsConnections[index];
+        if (this.ctx.isPointInPath(element.path, cursor.x, cursor.y)) {
+          resolve(element.connection);
+        }
+      }
+      reject(false);
+    });
+  }
+
+
   ngOnInit(): void {
     this.canvasContext = this.canvas.nativeElement;
     this.ctx = this.canvasContext.getContext('2d')!;
@@ -113,6 +132,9 @@ export class ViewBondComponent implements OnInit {
     this.refresh();
   }
 
+  menuClosed(event: any) {
+    this.refresh();
+  }
   /**
    * 
    * @param event 
@@ -124,7 +146,25 @@ export class ViewBondComponent implements OnInit {
     this.menuTopLeftPosition.y = event.clientY + 'px';
     this.cursor = { x: event.clientX - rect.left, y: event.clientY - rect.top };
     this.cursor = this.getTransformedPoint(this.cursor.x, this.cursor.y);
-    this.matMenuTrigger.openMenu();
+    await this.inNode(event.clientX - rect.left, event.clientY - rect.top).then((node) => {
+      this.typeMenu = 1;
+      this.drawSelectedNode(<Node>node);
+      this.cacheNode = <Node>node;
+      if (this.cacheNode.net === true) {
+        this.typeMenu = 1.2
+      }
+      this.matMenuTrigger.openMenu();
+    }).catch(async (notInNode) => {
+      await this.inLine({ x: event.clientX - rect.left, y: event.clientY - rect.top }).then(relation => {
+        this.typeMenu = 2.0;
+        this.cacheRelation = <Relations>relation;
+        this.drawSelectedConnection(<Relations>relation);
+        this.matMenuTrigger.openMenu();
+      }).catch((never) => {
+        this.typeMenu = 3.0;
+        this.matMenuTrigger.openMenu();
+      });
+    });
   }
   /**
    * 
@@ -136,14 +176,14 @@ export class ViewBondComponent implements OnInit {
     const transform = this.ctx.getTransform();
     const invertedScaleX = 1 / transform.a;
     const invertedScaleY = 1 / transform.d;
-
     const transformedX = invertedScaleX * x - invertedScaleX * transform.e;
     const transformedY = invertedScaleY * y - invertedScaleY * transform.f;
-
     return { x: transformedX, y: transformedY };
   }
 
   clear() {
+    this.pathNodes = [];
+    this.pathsConnections = [];
     this.ctx.save();
     this.ctx.setTransform(1, 0, 0, 1, 0, 0);
     this.ctx.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
@@ -212,6 +252,15 @@ export class ViewBondComponent implements OnInit {
     }
   }
 
+  drawSelectedNode(node: Node) {
+    this.ctx.beginPath();
+    this.ctx.lineWidth = 1;
+    this.ctx.fillStyle = 'black';
+    this.ctx.strokeStyle = 'red';
+    this.ctx.arc(node.x, node.y, 10, 0, 2 * Math.PI);
+    this.ctx.stroke();
+  }
+
   drawNodeWhite(node: Node): void {
     const path = new Path2D;
     this.ctx.fillStyle = 'white';
@@ -229,7 +278,52 @@ export class ViewBondComponent implements OnInit {
     this.router.navigate(['nodes/newNode']);
   }
 
+  edit() {
+    this.router.navigate(['nodes/editNode', this.cacheNode.id!.toString()]);
+  }
 
+  addConnection() {
+    this.router.navigate(['connections/add']);
+  }
+
+  editConnection() {
+    this.router.navigate(['connections/edit', this.cacheRelation.id]);
+  }
+
+  mirrorLabel() {
+    const dialogRef = this.matDialog.open(OkCancelComponent, {
+      width: '250px',
+      disableClose: true,
+      enterAnimationDuration: '1000ms',
+      data: { alert: true, header: "Mirror label", message: `You want change label orientation for ${this.cacheRelation.name}?` } as DialogData,
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.cacheRelation.mirrorLabel = !this.cacheRelation.mirrorLabel;
+        this.connectionService.put(this.cacheRelation).then((relation)=>{
+          this.refresh();
+        }).catch((error)=>{
+        })
+      }
+    });
+  }
+
+  drawSelectedConnection(relation: Relations) {
+    if (relation.from.visible === true && relation.to.visible === true) {
+      const nodeAngle = this.tr.angle(relation.from.x, relation.from.y, relation.to.x, relation.to.y);
+      const toNodeAngle = this.tr.angle(relation.to.x, relation.to.y, relation.from.x, relation.from.y);
+      const moveNode = this.tr.move(relation.from.x, relation.from.y, nodeAngle, 30);
+      const moveToNode = this.tr.move(relation.to.x, relation.to.y, toNodeAngle, 30);
+      const path = new Path2D;
+      const circleNode = new Path2D;
+      const circleToNode = new Path2D;
+      this.ctx.fillStyle = 'red';
+      this.ctx.strokeStyle = 'red';
+      this.rectangle(relation, path);
+      this.fillCircle(moveNode.x, moveNode.y, 3, 'red', circleNode);
+      this.fillCircle(moveToNode.x, moveToNode.y, 3, 'red', circleToNode);
+    }
+  }
 
   drawConnection(relation: Relations) {
     if (relation.from.visible === true && relation.to.visible === true) {
@@ -245,8 +339,31 @@ export class ViewBondComponent implements OnInit {
       this.fillCircle(moveToNode.x, moveToNode.y, 3, 'black', circleToNode);
       path.addPath(circleNode);
       path.addPath(circleToNode);
-      this.pathsConnections.push({ path: new Path2D(path), node: relation.from });
+      const distance = this.tr.distance(moveNode.x, moveNode.y, moveToNode.x, moveToNode.y);
+      const angle = this.tr.angle(moveNode.x, moveNode.y, moveToNode.x, moveToNode.y);
+      let textPosition={x:0,y:0}
+      if (relation.mirrorLabel === false) {
+        textPosition=this.tr.move(moveNode.x - 10, moveNode.y - 10, angle, distance / 2);
+      }
+      else {
+        textPosition=this.tr.move(moveNode.x + 10, moveNode.y + 10, angle, distance / 2);
+      }
+      
+      if (relation.mirrorLabel === false) {
+        this.rotateText(relation.name, textPosition.x, textPosition.y, angle);
+      } else {
+        this.rotateText(relation.name, textPosition.x, textPosition.y, angle+Math.PI);
+      }
+      this.pathsConnections.push({ path: new Path2D(path), connection: relation });
     }
+  }
+
+  rotateText(text: string, x: number, y: number, angle: number) {
+    this.ctx.save();
+    this.ctx.translate(x, y);
+    this.ctx.rotate(angle);
+    this.ctx.fillText(text, 0, 0);
+    this.ctx.restore();
   }
 
   rectangle(relation: Relations, path: Path2D) {

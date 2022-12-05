@@ -1,19 +1,32 @@
-<div class="rectangle">
-    <canvas #myCanvas style="display: block" [width]="width" [height]="height" (contextmenu)="menu($event)"></canvas>
+<div class="rectangle" style="height:600;width: 800;">
+  <canvas #myCanvas style="display: block" [width]="width" [height]="height" (contextmenu)="menu($event)"></canvas>
 </div>
 <div #Trigger style="visibility: hidden; position: fixed;" [style.left]="menuTopLeftPosition.x"
   [style.top]="menuTopLeftPosition.y" [matMenuTriggerFor]="outSideMenu"></div>
 
-<mat-menu #outSideMenu="matMenu">
+<mat-menu (closed)="menuClosed($event)" #outSideMenu="matMenu">
   <ng-template matMenuContent>
-    <button mat-menu-item (contextmenu)="$event.preventDefault()" [matMenuTriggerFor]="node">Nodes</button>
-    <button mat-menu-item (contextmenu)="$event.preventDefault()" [matMenuTriggerFor]="connections">Connections</button>
+    <button *ngIf="typeMenu!==2 " mat-menu-item (contextmenu)="$event.preventDefault()"
+      [matMenuTriggerFor]="node">Nodes</button>
+    <button *ngIf="typeMenu!==1" mat-menu-item (contextmenu)="$event.preventDefault()"
+      [matMenuTriggerFor]="connections">Connections</button>
   </ng-template>
 </mat-menu>
 
-<mat-menu (contextmenu)="$event.preventDefault()" #node="matMenu">
-    <button mat-button (contextmenu)="$event.preventDefault()" (click)="add()">Add</button>
+<mat-menu (closed)="menuClosed($event)" (contextmenu)="$event.preventDefault()" #node="matMenu">
+  <ng-template matMenuContent>
+    <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="gappx">
+      <button mat-button (contextmenu)="$event.preventDefault()" (click)="add()">Add</button>
+      <button *ngIf="typeMenu!==3"  mat-button (contextmenu)="$event.preventDefault()" (click)="edit()">Edit</button>
+    </div>
+  </ng-template>
 </mat-menu>
 
 <mat-menu #connections="matMenu">
+  <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="gappx">
+    <button mat-button (contextmenu)="$event.preventDefault()" (click)="addConnection()">Add</button>
+    <button mat-button *ngIf="typeMenu!==3" (contextmenu)="$event.preventDefault()" (click)="editConnection()">Edit</button>
+    <button mat-button *ngIf="typeMenu!==3" (contextmenu)="$event.preventDefault()" (click)="mirrorLabel()">Mirror label</button>
+  </div>
 </mat-menu>
+

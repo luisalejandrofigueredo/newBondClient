@@ -33,16 +33,31 @@ export class TrigonometricService {
     const angleInRadians = Math.atan2(deltaY, deltaX);
     return angleInRadians
   }
-
+/**
+ * 
+ * @param radians 
+ * @returns 
+ */
   toGrades(radians: number): number {
     return radians * 180 / Math.PI;
   }
-
+/**
+ * 
+ * @param radians 
+ * @returns 
+ */
   toRadians(radians: number): number {
     return radians / 180 * Math.PI;
   }
-
-  distance(x: number, y: number, xx: number, yy: number): number {
+/**
+ * 
+ * @param x 
+ * @param y 
+ * @param xx 
+ * @param yy 
+ * @returns 
+ */
+ distance(x: number, y: number, xx: number, yy: number): number {
     return Math.pow(Math.pow(x - xx, 2) + Math.pow(y - yy, 2), 1 / 2);
   }
 
