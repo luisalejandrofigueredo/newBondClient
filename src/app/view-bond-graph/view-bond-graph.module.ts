@@ -7,22 +7,30 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatButtonModule} from '@angular/material/button';
 import { LayoutModule } from '@angular/cdk/layout';
 import { FlexLayoutModule } from '@angular/flex-layout';
-
+import { NewConnectionComponent } from './new-connection/new-connection.component';
+import { WarperComponent } from "../warper/warper.component";
+import { ReactiveFormsModule } from '@angular/forms';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
 
 
 @NgModule({
   declarations: [
     HomeComponent,
-    ViewBondComponent
+    ViewBondComponent,
+    NewConnectionComponent
   ],
   imports: [
     CommonModule,
     ViewBondGraphRoutingModule,
     MatMenuModule,
     MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
     FlexLayoutModule,
-    LayoutModule
-    
+    LayoutModule,
+    WarperComponent,
+    ReactiveFormsModule
   ]
 })
 export class ViewBondGraphModule { }
