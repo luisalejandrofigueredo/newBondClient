@@ -28,6 +28,7 @@
     <button mat-button (contextmenu)="$event.preventDefault()" (click)="addConnection()">Add</button>
     <button mat-button *ngIf="typeMenu!==3" (contextmenu)="$event.preventDefault()" (click)="editConnection()">Edit</button>
     <button mat-button *ngIf="typeMenu!==3" (contextmenu)="$event.preventDefault()" (click)="mirrorLabel()">Mirror label</button>
+    <button mat-button *ngIf="typeMenu!==3" (contextmenu)="$event.preventDefault()" (click)="AlignLabel()">Align label</button>
   </div>
 </mat-menu>
 

@@ -9,6 +9,8 @@ export interface Relations {
     mirrorLabel: boolean,
     from: Node,
     to: Node,
+    distance:number,
+    align:number,
     project: Project,
     eventCones?: EventCon[]
 }

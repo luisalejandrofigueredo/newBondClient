@@ -12,13 +12,15 @@ import { WarperComponent } from "../warper/warper.component";
 import { ReactiveFormsModule } from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import { AlignLabelComponent } from './align-label/align-label.component';
 
 
 @NgModule({
   declarations: [
     HomeComponent,
     ViewBondComponent,
-    NewConnectionComponent
+    NewConnectionComponent,
+    AlignLabelComponent
   ],
   imports: [
     CommonModule,

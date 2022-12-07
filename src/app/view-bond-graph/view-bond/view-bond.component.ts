@@ -7,7 +7,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { Point } from "../../interfaces/point";
 import { NumberPoint } from "../../interfaces/number-point";
 import { ConnectionsService } from "../../services/connections.service";
-import { NavigationEnd, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { TrigonometricService } from "../../service/trigonometric.service";
 import { Relations } from "../../interfaces/relations";
 import { MatDialog } from '@angular/material/dialog';
@@ -36,6 +36,7 @@ export class ViewBondComponent implements OnInit {
   isDragging = false;
   dragStartPosition = { x: 0, y: 0 };
   createConnection = false;
+  domMatrix!: DOMMatrix;
   @ViewChild('myCanvas', { static: true }) canvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild(MatMenuTrigger, { static: true }) matMenuTrigger!: MatMenuTrigger;
   constructor(private matDialog: MatDialog, private connectionService: ConnectionsService, private tr: TrigonometricService, private router: Router, private projectService: ProjectServiceService, private nodeService: NodeService, private loginService: LoginService) { }
@@ -53,7 +54,6 @@ export class ViewBondComponent implements OnInit {
   zoomWheel(event: WheelEvent) {
     event.preventDefault();
     const currentTransformedCursor = this.getTransformedPoint(event.offsetX, event.offsetY);
-    this.clear();
     const mouseX = currentTransformedCursor.x;
     const mouseY = currentTransformedCursor.y;
     const zoom = event.deltaY < 0 ? 1.1 : 0.9;
@@ -98,7 +98,7 @@ export class ViewBondComponent implements OnInit {
         } else {
           if (this.cacheNode.name !== (<Node>accept).name) {
             this.createConnection = false;
-            this.router.navigate(['homeBondGraph/newConnection',this.cacheNode.id,(<Node>accept).id]);
+            this.router.navigate(['homeBondGraph/newConnection', this.cacheNode.id, (<Node>accept).id]);
           }
         }
       }).catch(async (reject) => {
@@ -160,8 +160,10 @@ export class ViewBondComponent implements OnInit {
   ngOnInit(): void {
     this.canvasContext = this.canvas.nativeElement;
     this.ctx = this.canvasContext.getContext('2d')!;
-    this.clear();
-    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+    this.refresh();
+    if (this.domMatrix !== null) {
+      this.ctx.setTransform(this.domMatrix);
+    }
     this.refresh();
   }
 
@@ -315,19 +317,28 @@ export class ViewBondComponent implements OnInit {
     this.ctx.lineWidth = 1;
   }
 
+  AlignLabel() {
+    this.domMatrix = this.ctx.getTransform();
+    this.router.navigate(['homeBondGraph/alignLabel', this.cacheRelation.id]);
+  }
+
   add() {
+    this.domMatrix = this.ctx.getTransform();
     this.router.navigate(['nodes/newNode']);
   }
 
   edit() {
+    this.domMatrix = this.ctx.getTransform();
     this.router.navigate(['nodes/editNode', this.cacheNode.id!.toString()]);
   }
 
   addConnection() {
+    this.domMatrix = this.ctx.getTransform();
     this.router.navigate(['connections/add']);
   }
 
   editConnection() {
+    this.domMatrix = this.ctx.getTransform();
     this.router.navigate(['connections/edit', this.cacheRelation.id]);
   }
 
@@ -384,12 +395,11 @@ export class ViewBondComponent implements OnInit {
       const angle = this.tr.angle(moveNode.x, moveNode.y, moveToNode.x, moveToNode.y);
       let textPosition = { x: 0, y: 0 }
       if (relation.mirrorLabel === false) {
-        textPosition = this.tr.move(moveNode.x - 10, moveNode.y - 10, angle, distance / 2);
+        textPosition = this.getNewParallelPoint(moveNode.x,moveNode.y,moveToNode.x,moveToNode.y,distance/2+relation.align,relation.distance);
       }
       else {
-        textPosition = this.tr.move(moveNode.x + 10, moveNode.y + 10, angle, distance / 2);
+        textPosition = this.getNewParallelPoint(moveNode.x,moveNode.y,moveToNode.x,moveToNode.y,distance/2+relation.align,-relation.distance);
       }
-
       if (relation.mirrorLabel === false) {
         this.rotateText(relation.name, textPosition.x, textPosition.y, angle);
       } else {
@@ -406,6 +416,15 @@ export class ViewBondComponent implements OnInit {
     this.ctx.fillText(text, 0, 0);
     this.ctx.restore();
   }
+
+  getNewParallelPoint(x: number, y: number, xx: number, yy: number,distanceToCentre:number,distanceParallel:number):NumberPoint {
+    const angle=this.tr.angle(x,y,xx,yy);
+    const middlePoint= this.tr.move(x,y,angle,distanceToCentre);
+    return this.tr.move(middlePoint.x,middlePoint.y,angle+Math.PI/3,distanceParallel);
+  }
+
+
+
 
   rectangle(relation: Relations, path: Path2D) {
     const nodeAngle = this.tr.angle(relation.from.x, relation.from.y, relation.to.x, relation.to.y);

@@ -49,7 +49,9 @@ export class NewConnectionComponent implements OnInit {
       description: this.connectionForm.controls.description.value,
       from: this.node, to: this.toNode,
       project:projectBuffer,
-      mirrorLabel: false
+      mirrorLabel: false,
+      distance:10,
+      align:0
     };
     await this.connectionService.add(this.projectService.project, relation).then((newRelation) => {
       this.location.back();
