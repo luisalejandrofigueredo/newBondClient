@@ -13,6 +13,7 @@ import { Relations } from "../../interfaces/relations";
 import { MatDialog } from '@angular/material/dialog';
 import { OkCancelComponent } from "../../ok-cancel/ok-cancel.component";
 import { DialogData } from "../../ok-cancel/dialog-data";
+import { ZoomService } from "../../services/zoom.service";
 
 @Component({
   selector: 'app-view-bond',
@@ -29,23 +30,23 @@ export class ViewBondComponent implements OnInit {
   pathsConnections: { path: Path2D, connection: Relations }[] = [];
   canvasContext: any;
   cursor!: NumberPoint;
-  cacheNode!: Node;
+  cacheNode: Node = { name: '', color: '', description: '', net: false, visible: true, x: 0, y: 0 };
   cacheRelation!: Relations;
   isMovingNode = false;
   typeMenu = 1;
   isDragging = false;
   dragStartPosition = { x: 0, y: 0 };
   createConnection = false;
+  createChildren = false;
   domMatrix!: DOMMatrix;
   @ViewChild('myCanvas', { static: true }) canvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild(MatMenuTrigger, { static: true }) matMenuTrigger!: MatMenuTrigger;
-  constructor(private matDialog: MatDialog, private connectionService: ConnectionsService, private tr: TrigonometricService, private router: Router, private projectService: ProjectServiceService, private nodeService: NodeService, private loginService: LoginService) { }
-
-
+  constructor(private zoomService: ZoomService, private matDialog: MatDialog, private connectionService: ConnectionsService, private tr: TrigonometricService, private router: Router, private projectService: ProjectServiceService, private nodeService: NodeService, private loginService: LoginService) { }
   @HostListener('window:keydown.escape', ['$event'])
   escape() {
-    if (this.createConnection === true) {
+    if (this.createConnection === true || this.createChildren === true) {
       this.createConnection = false;
+      this.createChildren = false;
       this.refresh();
     }
   }
@@ -57,10 +58,15 @@ export class ViewBondComponent implements OnInit {
     const mouseX = currentTransformedCursor.x;
     const mouseY = currentTransformedCursor.y;
     const zoom = event.deltaY < 0 ? 1.1 : 0.9;
+    this.scaleCanvas(mouseX, mouseY, zoom);
+    this.refresh();
+  }
+
+  scaleCanvas(mouseX: number, mouseY: number, zoom: number) {
     this.ctx.translate(mouseX, mouseY);
     this.ctx.scale(zoom, zoom);
     this.ctx.translate(-mouseX, -mouseY);
-    this.refresh();
+    this.zoomService.newZoom(mouseX, mouseY, zoom);
   }
 
   @HostListener("mousemove", ["$event"])
@@ -92,13 +98,16 @@ export class ViewBondComponent implements OnInit {
     this.cursor = this.getTransformedPoint(this.cursor.x, this.cursor.y);
     if (event.ctrlKey === false && event.button === 0) {
       await this.inNode(event.clientX - rect.left, event.clientY - rect.top).then((accept) => {
-        if (this.createConnection == false) {
+        if (this.createConnection == false && this.createChildren === false) {
           this.cacheNode = <Node>accept;
           this.isMovingNode = true;
         } else {
-          if (this.cacheNode.name !== (<Node>accept).name) {
+          if (this.cacheNode.name !== (<Node>accept).name && this.createConnection === true) {
             this.createConnection = false;
             this.router.navigate(['homeBondGraph/newConnection', this.cacheNode.id, (<Node>accept).id]);
+          }
+          if (this.cacheNode.name !== (<Node>accept).name && this.createChildren === true) {
+            this.createChildren = false;
           }
         }
       }).catch(async (reject) => {
@@ -160,15 +169,16 @@ export class ViewBondComponent implements OnInit {
   ngOnInit(): void {
     this.canvasContext = this.canvas.nativeElement;
     this.ctx = this.canvasContext.getContext('2d')!;
-    this.refresh();
-    if (this.domMatrix !== null) {
-      this.ctx.setTransform(this.domMatrix);
+    if (this.zoomService.zoom === true) {
+      this.ctx.setTransform(this.zoomService.setZoom());
+    } else {
+      this.zoomService.init(this.ctx.getTransform())
     }
     this.refresh();
   }
 
   menuClosed(event: any) {
-    if (this.createConnection === false) {
+    if (this.createConnection === false && this.createChildren === false) {
       this.refresh();
     }
   }
@@ -246,7 +256,12 @@ export class ViewBondComponent implements OnInit {
   drawNodes() {
     this.nodeService.getNodes(this.projectService.project).then(nodes => {
       nodes.forEach(node => {
-        this.drawNode(node);
+        if (node.name === this.cacheNode.name && (this.createChildren === true || this.createConnection === true)) {
+          this.drawSelectedNode(node);
+        }
+        else {
+          this.drawNode(node);
+        }
       });
     });
   }
@@ -318,27 +333,27 @@ export class ViewBondComponent implements OnInit {
   }
 
   AlignLabel() {
-    this.domMatrix = this.ctx.getTransform();
     this.router.navigate(['homeBondGraph/alignLabel', this.cacheRelation.id]);
   }
 
+  nodeChildren() {
+    this.createChildren = true;
+    this.drawSelectedNode(this.cacheNode);
+  }
+
   add() {
-    this.domMatrix = this.ctx.getTransform();
     this.router.navigate(['nodes/newNode']);
   }
 
   edit() {
-    this.domMatrix = this.ctx.getTransform();
     this.router.navigate(['nodes/editNode', this.cacheNode.id!.toString()]);
   }
 
   addConnection() {
-    this.domMatrix = this.ctx.getTransform();
     this.router.navigate(['connections/add']);
   }
 
   editConnection() {
-    this.domMatrix = this.ctx.getTransform();
     this.router.navigate(['connections/edit', this.cacheRelation.id]);
   }
 
@@ -395,10 +410,10 @@ export class ViewBondComponent implements OnInit {
       const angle = this.tr.angle(moveNode.x, moveNode.y, moveToNode.x, moveToNode.y);
       let textPosition = { x: 0, y: 0 }
       if (relation.mirrorLabel === false) {
-        textPosition = this.getNewParallelPoint(moveNode.x,moveNode.y,moveToNode.x,moveToNode.y,distance/2+relation.align,relation.distance);
+        textPosition = this.getNewParallelPoint(moveNode.x, moveNode.y, moveToNode.x, moveToNode.y, distance / 2 + relation.align, relation.distance);
       }
       else {
-        textPosition = this.getNewParallelPoint(moveNode.x,moveNode.y,moveToNode.x,moveToNode.y,distance/2+relation.align,-relation.distance);
+        textPosition = this.getNewParallelPoint(moveNode.x, moveNode.y, moveToNode.x, moveToNode.y, distance / 2 + relation.align, -relation.distance);
       }
       if (relation.mirrorLabel === false) {
         this.rotateText(relation.name, textPosition.x, textPosition.y, angle);
@@ -417,14 +432,11 @@ export class ViewBondComponent implements OnInit {
     this.ctx.restore();
   }
 
-  getNewParallelPoint(x: number, y: number, xx: number, yy: number,distanceToCentre:number,distanceParallel:number):NumberPoint {
-    const angle=this.tr.angle(x,y,xx,yy);
-    const middlePoint= this.tr.move(x,y,angle,distanceToCentre);
-    return this.tr.move(middlePoint.x,middlePoint.y,angle+Math.PI/3,distanceParallel);
+  getNewParallelPoint(x: number, y: number, xx: number, yy: number, distanceToCentre: number, distanceParallel: number): NumberPoint {
+    const angle = this.tr.angle(x, y, xx, yy);
+    const middlePoint = this.tr.move(x, y, angle, distanceToCentre);
+    return this.tr.move(middlePoint.x, middlePoint.y, angle + Math.PI / 3, distanceParallel);
   }
-
-
-
 
   rectangle(relation: Relations, path: Path2D) {
     const nodeAngle = this.tr.angle(relation.from.x, relation.from.y, relation.to.x, relation.to.y);

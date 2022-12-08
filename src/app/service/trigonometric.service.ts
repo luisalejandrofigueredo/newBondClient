@@ -60,6 +60,18 @@ export class TrigonometricService {
  distance(x: number, y: number, xx: number, yy: number): number {
     return Math.pow(Math.pow(x - xx, 2) + Math.pow(y - yy, 2), 1 / 2);
   }
+  
+/**
+ * 
+ * @param x 
+ * @param y 
+ * @param xx 
+ * @param yy 
+ * @returns 
+ */
+  earring(x: number, y: number, xx: number, yy: number): number {
+    return (yy - y / xx - x);
+  }
 
 
 }

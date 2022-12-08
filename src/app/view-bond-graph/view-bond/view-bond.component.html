@@ -19,6 +19,7 @@
       <button mat-button (contextmenu)="$event.preventDefault()" (click)="add()">Add</button>
       <button *ngIf="typeMenu!==3"  mat-button (contextmenu)="$event.preventDefault()" (click)="edit()">Edit</button>
       <button *ngIf="typeMenu!==3"  mat-button (contextmenu)="$event.preventDefault()" (click)="selectCreateConnection()">Create connection</button>
+      <button *ngIf="typeMenu===1.2"  mat-button (contextmenu)="$event.preventDefault()" (click)="nodeChildren()">Create node children</button>
     </div>
   </ng-template>
 </mat-menu>

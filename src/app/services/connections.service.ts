@@ -83,10 +83,4 @@ export class ConnectionsService {
       });
     });
   }
-
-  earring(x: number, y: number, xx: number, yy: number): number {
-    return (yy - y / xx - x);
-  }
-
-
 }

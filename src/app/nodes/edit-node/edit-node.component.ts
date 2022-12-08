@@ -43,6 +43,9 @@ export class EditNodeComponent implements OnInit {
     if (this.nodeForm.controls.colorCtr.dirty) {
       const colorEval = eval(this.nodeForm.controls.colorCtr.value)
       color = colorEval.hex;
+    } else
+    {
+      color=this.nodeForm.controls.colorCtr.value.substring(1);
     }
     const node = {
       id: this.id,
