@@ -11,12 +11,14 @@ export class NodeService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getChildren_s():Promise<NetNode[]> {
+  getChildren_s(id:number,nid:number):Promise<NetNode[]> {
     return new Promise<NetNode[]>((resolve, reject) => {
       const options = {
-        headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer: ${localStorage.getItem("token")}` })
+        headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer: ${localStorage.getItem("token")}` }),
+        params: new HttpParams().append('id', id)
+          .append('nid', nid)
       };
-      this.httpClient.get<NetNode[]>(`${environment.baseUrl}node/netNodes`,options).subscribe((netNodes)=>{
+      this.httpClient.get<NetNode[]>(`${environment.baseUrl}node/getChildren_s`,options).subscribe((netNodes)=>{
        resolve(netNodes);
       },(error)=>{
         reject([]);

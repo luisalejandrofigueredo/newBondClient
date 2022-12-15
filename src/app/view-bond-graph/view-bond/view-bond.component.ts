@@ -141,9 +141,13 @@ export class ViewBondComponent implements OnInit {
     }
   }
 
-  hideNet(){
-    this.nodeService.getChildren_s()
-    
+  async hideNet(){
+    await this.nodeService.getChildren_s(this.projectService.project,this.cacheNode.id!).then((netNode)=>{
+     netNode.forEach(element => {
+      
+      
+     });
+    });
   }
 
   /**
@@ -204,7 +208,10 @@ export class ViewBondComponent implements OnInit {
     }
     this.refresh();
   }
-
+/**
+ * 
+ * @param event 
+ */
   menuClosed(event: any) {
     if (this.createConnection === false && this.createChildren === false) {
       this.refresh();
