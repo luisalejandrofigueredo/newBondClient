@@ -1,7 +1,9 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Node } from "../interfaces/node";
+import { NetNode } from "../interfaces/net-node";
 import { environment } from "../../environments/environment";
+import { ReplaySubject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -9,6 +11,19 @@ export class NodeService {
 
   constructor(private httpClient: HttpClient) { }
 
+  getChildren_s():Promise<NetNode[]> {
+    return new Promise<NetNode[]>((resolve, reject) => {
+      const options = {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer: ${localStorage.getItem("token")}` })
+      };
+      this.httpClient.get<NetNode[]>(`${environment.baseUrl}node/netNodes`,options).subscribe((netNodes)=>{
+       resolve(netNodes);
+      },(error)=>{
+        reject([]);
+      });    
+    });
+  }
+  
   add(id: number, node: Node): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       const options = {
