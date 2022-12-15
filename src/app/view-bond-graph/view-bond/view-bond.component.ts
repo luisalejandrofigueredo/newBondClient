@@ -115,7 +115,7 @@ export class ViewBondComponent implements OnInit {
           }
           if (this.cacheNode.name !== (<Node>accept).name && this.createChildren === true) {
             this.createChildren = false;
-            await this.netNodeService.add(this.cacheNode.id!).then((accept)=>{
+            await this.netNodeService.add((<Node>accept).id!).then((accept)=>{
             }).catch((reject)=>{
             });
           }
@@ -144,8 +144,9 @@ export class ViewBondComponent implements OnInit {
   async hideNet(){
     await this.nodeService.getChildren_s(this.projectService.project,this.cacheNode.id!).then((netNode)=>{
      netNode.forEach(element => {
-      
-      
+      this.netNodeService.getNode(element.id!).then(node=>{
+        console.log('node',node);
+      });
      });
     });
   }
