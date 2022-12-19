@@ -99,6 +99,7 @@ export class ViewBondComponent implements OnInit, AfterContentInit,AfterViewInit
     }
     if (this.isDragging === true) {
       this.ctx.translate(currentTransformedCursor.x - this.dragStartPosition.x, currentTransformedCursor.y - this.dragStartPosition.y);
+      this.zoomService.setZoom(this.ctx.getTransform())
       this.refresh();
     }
   }
