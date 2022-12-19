@@ -204,8 +204,6 @@ export class ViewBondComponent implements OnInit, AfterContentInit,AfterViewInit
 
 
   ngAfterContentInit(): void {
-    //Called after ngOnInit when the component's or directive's content has been initialized.
-    //Add 'implements AfterContentInit' to the class.
     this.ctx.setTransform(this.zoomService.getZoom());
     this.refresh();
   }
@@ -287,7 +285,7 @@ export class ViewBondComponent implements OnInit, AfterContentInit,AfterViewInit
   clear() {
     this.pathNodes = [];
     this.pathsConnections = [];
-    this.ctx.transform(1, 0, 0, 1, 0, 0);
+    this.ctx.resetTransform();
     this.ctx.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
   }
 
