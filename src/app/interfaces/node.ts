@@ -8,5 +8,5 @@ export interface Node {
     visible:boolean,
     color:string,
     net:boolean,
-    netNode?:NetNode
+    netNode?:NetNode[]
 }

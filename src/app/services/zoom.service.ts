@@ -23,14 +23,9 @@ export class ZoomService {
     this.zoomMemory.push({mouseX:mouseX,mouseY:mouseY,zoom:zoom});
   }
 
-  setZoom():DOMMatrix {
-    this.domMatrix=this.nullMatrix;
-    this.zoomMemory.forEach(zoom => {
-      this.domMatrix.translate(zoom.mouseX, zoom.mouseY);
-      this.domMatrix.scale(zoom.zoom, zoom.zoom);
-      this.domMatrix.translate(-zoom.mouseX, -zoom.mouseY);
-    });
-    return this.domMatrix
+  setZoom(matrix:DOMMatrix) {
+    this.zoom=true;
+    this.domMatrix=matrix;
   }
   
   getZoom(): DOMMatrix {
