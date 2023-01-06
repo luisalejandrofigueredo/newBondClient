@@ -9,7 +9,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
@@ -36,8 +35,7 @@ import { EditProjectComponent } from './edit-project/edit-project.component';
     MatTableModule,
     MatPaginatorModule,
     MatDialogModule,
-    LayoutModule,
-    FlexLayoutModule
+    LayoutModule
   ]
 })
 export class ProjectsModule { }

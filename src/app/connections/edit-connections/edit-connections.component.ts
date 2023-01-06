@@ -8,7 +8,7 @@ import { ConnectionsService } from "../../services/connections.service";
 import { Location } from "@angular/common";
 import { Node } from "../../interfaces/node";
 import { Relations } from "../../interfaces/relations";
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { ProjectServiceService } from 'src/app/services/project-service.service';
 @Component({
   selector: 'app-edit-connections',

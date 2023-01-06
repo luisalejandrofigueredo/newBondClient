@@ -8,7 +8,6 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { LayoutModule } from '@angular/cdk/layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
@@ -37,7 +36,6 @@ import { WarperComponent } from "../warper/warper.component";
     MatPaginatorModule,
     NgxMatColorPickerModule,
     LayoutModule,
-    FlexLayoutModule,
     ReactiveFormsModule,
     WarperComponent
   ],

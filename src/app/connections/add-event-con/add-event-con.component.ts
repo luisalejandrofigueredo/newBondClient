@@ -3,7 +3,7 @@ import { Location } from "@angular/common";
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { EventsConService } from "../../services/events-con.service";
 import { ActivatedRoute } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 
 @Component({
   selector: 'app-add-event-con',

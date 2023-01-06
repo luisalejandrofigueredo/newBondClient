@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {Location} from '@angular/common';
 import { Relations } from "../../interfaces/relations";
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
+import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { ConnectionsService } from "../../services/connections.service";
 import { LoginService } from 'src/app/services/login.service';
 import { Router } from '@angular/router';
 import { ViewConnections } from "../../interfaces/view-connections";
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { OkCancelComponent } from 'src/app/ok-cancel/ok-cancel.component';
 import { DialogData } from 'src/app/ok-cancel/dialog-data';
 import { ProjectServiceService } from 'src/app/services/project-service.service';

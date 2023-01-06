@@ -6,7 +6,6 @@ import { ViewBondComponent } from './view-bond/view-bond.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { LayoutModule } from '@angular/cdk/layout';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { NewConnectionComponent } from './new-connection/new-connection.component';
 import { WarperComponent } from "../warper/warper.component";
 import { ReactiveFormsModule } from '@angular/forms';
@@ -29,7 +28,6 @@ import { AlignLabelComponent } from './align-label/align-label.component';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    FlexLayoutModule,
     LayoutModule,
     WarperComponent,
     ReactiveFormsModule

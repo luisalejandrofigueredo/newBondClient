@@ -13,14 +13,13 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
-import {MatInputModule} from '@angular/material/input';
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatInputModule } from '@angular/material/input';
 import { LayoutModule } from '@angular/cdk/layout';
 import { EditConnectionsComponent } from './edit-connections/edit-connections.component';
 import { WarperComponent } from "../warper/warper.component";
 import { ViewEventConComponent } from './view-event-con/view-event-con.component';
 import { AddEventConComponent } from './add-event-con/add-event-con.component';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { EditEventConComponent } from './edit-event-con/edit-event-con.component';
 
@@ -49,7 +48,6 @@ import { EditEventConComponent } from './edit-event-con/edit-event-con.component
     ReactiveFormsModule,
     MatInputModule,
     FormsModule,
-    FlexLayoutModule,
     LayoutModule,
     WarperComponent
   ]
