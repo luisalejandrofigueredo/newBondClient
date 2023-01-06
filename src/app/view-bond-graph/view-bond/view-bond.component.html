@@ -13,7 +13,7 @@
   </ng-template>
 </mat-menu>
 
-<mat-menu (closed)="menuClosed($event)" (contextmenu)="$event.preventDefault()" #node="matMenu">
+<mat-menu (contextmenu)="$event.preventDefault()" #node="matMenu">
   <ng-template matMenuContent>
     <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="gappx">
       <button mat-button (contextmenu)="$event.preventDefault()" (click)="add()">Add</button>

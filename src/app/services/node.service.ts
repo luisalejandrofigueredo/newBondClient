@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Node } from "../interfaces/node";
 import { NetNode } from "../interfaces/net-node";
 import { environment } from "../../environments/environment";
-import { ReplaySubject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -19,6 +18,7 @@ export class NodeService {
           .append('nid', nid)
       };
       this.httpClient.get<NetNode[]>(`${environment.baseUrl}node/getChildren_s`,options).subscribe((netNodes)=>{
+       console.log('net nodes',netNodes);
        resolve(netNodes);
       },(error)=>{
         reject([]);

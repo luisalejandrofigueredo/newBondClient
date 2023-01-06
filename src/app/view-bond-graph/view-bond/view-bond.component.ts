@@ -21,7 +21,7 @@ import { NetNodeService } from "../../services/net-node.service";
   templateUrl: './view-bond.component.html',
   styleUrls: ['./view-bond.component.sass']
 })
-export class ViewBondComponent implements OnInit, AfterContentInit,AfterViewInit {
+export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewInit {
   width = 1200;
   height = 600;
   menuTopLeftPosition: Point = { x: '0px', y: '0px' };
@@ -44,7 +44,7 @@ export class ViewBondComponent implements OnInit, AfterContentInit,AfterViewInit
   @ViewChild(MatMenuTrigger, { static: true }) matMenuTrigger!: MatMenuTrigger;
   constructor(private netNodeService: NetNodeService, private zoomService: ZoomService, private matDialog: MatDialog, private connectionService: ConnectionsService, private tr: TrigonometricService, private router: Router, private projectService: ProjectServiceService, private nodeService: NodeService, private loginService: LoginService) { }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     this.ctx.setTransform(this.zoomService.getZoom());
     this.refresh();
   }
@@ -113,7 +113,7 @@ export class ViewBondComponent implements OnInit, AfterContentInit,AfterViewInit
     this.cursor = this.getTransformedPoint(this.cursor.x, this.cursor.y);
     if (event.ctrlKey === false && event.button === 0) {
       await this.inNode(event.clientX - rect.left, event.clientY - rect.top).then(async (accept) => {
-        if (this.createConnection == false && this.createChildren === false) {
+        if (this.createConnection === false && this.createChildren === false) {
           this.cacheNode = <Node>accept;
           this.isMovingNode = true;
         } else {
@@ -123,7 +123,7 @@ export class ViewBondComponent implements OnInit, AfterContentInit,AfterViewInit
           }
           if (this.cacheNode.name !== (<Node>accept).name && this.createChildren === true) {
             this.createChildren = false;
-            await this.netNodeService.add((<Node>accept).id!).then((accept) => {
+            await this.netNodeService.add((<Node>this.cacheNode).id!, (<Node>accept).id!).then((accept) => {
               this.refresh();
             }).catch((reject) => {
             });
@@ -152,9 +152,13 @@ export class ViewBondComponent implements OnInit, AfterContentInit,AfterViewInit
 
   async hideNet() {
     await this.nodeService.getChildren_s(this.projectService.project, this.cacheNode.id!).then((netNode) => {
+      console.log('Net node',netNode)
+      let node:Node;
       netNode.forEach(element => {
-        this.netNodeService.getNode(element.id!).then(node => {
-        });
+        node=element.node!;
+        console.log('node',node);
+        element.node!.visible = false;
+        this.nodeService.putNode(this.projectService.project, element.node!)
       });
     });
   }
@@ -245,13 +249,20 @@ export class ViewBondComponent implements OnInit, AfterContentInit,AfterViewInit
       this.menuTopLeftPosition.y = event.clientY + 'px';
       this.cursor = { x: event.clientX - rect.left, y: event.clientY - rect.top };
       this.cursor = this.getTransformedPoint(this.cursor.x, this.cursor.y);
-      await this.inNode(event.clientX - rect.left, event.clientY - rect.top).then((node) => {
+      await this.inNode(event.clientX - rect.left, event.clientY - rect.top).then(async (node) => {
         this.typeMenu = 1;
         this.drawSelectedNode(<Node>node);
         this.cacheNode = <Node>node;
         if (this.cacheNode.net === true) {
-          this.typeMenu = 1.2
+          this.typeMenu = 1.2;
+          await this.nodeService.getChildren_s(this.projectService.project, this.cacheNode.id!).then((netNode) => {
+            netNode.forEach(element => {
+                console.log('children`s',element);
+                this.drawSelectedNode(element.node!);
+              });
+            }).catch((_error)=>{});
         }
+        console.log('type menu',this.typeMenu);
         this.matMenuTrigger.openMenu();
       }).catch(async (notInNode) => {
         await this.inLine({ x: event.clientX - rect.left, y: event.clientY - rect.top }).then(relation => {
@@ -295,6 +306,7 @@ export class ViewBondComponent implements OnInit, AfterContentInit,AfterViewInit
     this.drawNodes();
     this.drawConnections();
   }
+
   /**
    * 
    */
@@ -354,19 +366,21 @@ export class ViewBondComponent implements OnInit, AfterContentInit,AfterViewInit
    * @param node 
    */
   drawNode(node: Node) {
-    const path = new Path2D();
-    this.ctx.fillText(node.name, node.x + 10, node.y - 10);
-    this.fillCircle(node.x, node.y, 10, this.hexColor(node.color), path);
-    this.ctx.lineWidth = 1;
-    this.pathNodes.push({ path: new Path2D(path), node: node });
-    if (node.net === true) {
-      this.ctx.fillStyle = 'black';
-      this.ctx.strokeStyle = 'black';
+    if (node.visible === true) {
+      const path = new Path2D();
+      this.ctx.fillText(node.name, node.x + 10, node.y - 10);
+      this.fillCircle(node.x, node.y, 10, this.hexColor(node.color), path);
       this.ctx.lineWidth = 1;
-      this.ctx.beginPath();
-      this.ctx.arc(node.x, node.y, 2, 0, 2 * Math.PI);
-      this.ctx.closePath();
-      this.ctx.fill()
+      this.pathNodes.push({ path: new Path2D(path), node: node });
+      if (node.net === true) {
+        this.ctx.fillStyle = 'black';
+        this.ctx.strokeStyle = 'black';
+        this.ctx.lineWidth = 1;
+        this.ctx.beginPath();
+        this.ctx.arc(node.x, node.y, 2, 0, 2 * Math.PI);
+        this.ctx.closePath();
+        this.ctx.fill()
+      }
     }
   }
 
@@ -379,10 +393,10 @@ export class ViewBondComponent implements OnInit, AfterContentInit,AfterViewInit
     this.ctx.arc(node.x, node.y, 10, 0, 2 * Math.PI);
     this.ctx.lineWidth = 5;
     this.ctx.fillStyle = '';
-    let gradient = this.ctx.createLinearGradient(0, 0, 170, 0);
-    gradient.addColorStop(0, "magenta");
-    gradient.addColorStop(0.5, "blue");
-    gradient.addColorStop(1.0, "red");
+    let gradient = this.ctx.createLinearGradient(node.x - 10, node.y - 10, node.x + 10, node.y + 10);
+    gradient.addColorStop(0, "blue");
+    gradient.addColorStop(0.5, "white");
+    gradient.addColorStop(1, "red");
     this.ctx.strokeStyle = gradient;
     this.ctx.stroke();
   }

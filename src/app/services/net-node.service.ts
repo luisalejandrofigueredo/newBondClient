@@ -10,12 +10,12 @@ import { Node } from "../interfaces/node";
 })
 export class NetNodeService {
   constructor(private httpClient: HttpClient, private nodeService: NodeService, private projectService: ProjectServiceService) { }
-  add(id: number): Promise<boolean> {
+  add(id: number,toId:number): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       const options = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer: ${localStorage.getItem("token")}` })
       }
-      const body = { data: { id } };
+      const body = { data: { id, toId } };
       this.httpClient.post(`${environment.baseUrl}netNode/add`, body, options).subscribe((response) => {
         resolve(true);
       }, (error) => { reject(true) });
