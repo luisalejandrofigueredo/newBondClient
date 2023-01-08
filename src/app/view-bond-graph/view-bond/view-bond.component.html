@@ -15,7 +15,7 @@
 
 <mat-menu (contextmenu)="$event.preventDefault()" #node="matMenu">
   <ng-template matMenuContent>
-    <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="gappx">
+    <div class="column">
       <button mat-button (contextmenu)="$event.preventDefault()" (click)="add()">Add</button>
       <button *ngIf="typeMenu!==3"  mat-button (contextmenu)="$event.preventDefault()" (click)="edit()">Edit</button>
       <button *ngIf="typeMenu!==3"  mat-button (contextmenu)="$event.preventDefault()" (click)="selectCreateConnection()">Create connection</button>
@@ -26,7 +26,7 @@
 </mat-menu>
 
 <mat-menu  #connections="matMenu">
-  <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="gappx">
+  <div class="column">
     <button mat-button (contextmenu)="$event.preventDefault()" (click)="addConnection()">Add</button>
     <button mat-button *ngIf="typeMenu===2" (contextmenu)="$event.preventDefault()" (click)="editConnection()">Edit</button>
     <button mat-button *ngIf="typeMenu===2" (contextmenu)="$event.preventDefault()" (click)="mirrorLabel()">Mirror label</button>

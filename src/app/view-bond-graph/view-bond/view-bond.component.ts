@@ -3,14 +3,14 @@ import { Node } from "../../interfaces/node";
 import { NodeService } from 'src/app/services/node.service';
 import { LoginService } from 'src/app/services/login.service';
 import { ProjectServiceService } from 'src/app/services/project-service.service';
-import { MatLegacyMenuTrigger as MatMenuTrigger } from '@angular/material/legacy-menu';
+import { MatMenuTrigger } from '@angular/material/menu';
 import { Point } from "../../interfaces/point";
 import { NumberPoint } from "../../interfaces/number-point";
 import { ConnectionsService } from "../../services/connections.service";
 import { Router } from '@angular/router';
 import { TrigonometricService } from "../../service/trigonometric.service";
 import { Relations } from "../../interfaces/relations";
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { OkCancelComponent } from "../../ok-cancel/ok-cancel.component";
 import { DialogData } from "../../ok-cancel/dialog-data";
 import { ZoomService } from "../../services/zoom.service";
@@ -152,11 +152,11 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
 
   async hideNet() {
     await this.nodeService.getChildren_s(this.projectService.project, this.cacheNode.id!).then((netNode) => {
-      console.log('Net node',netNode)
-      let node:Node;
+      console.log('Net node', netNode)
+      let node: Node;
       netNode.forEach(element => {
-        node=element.node!;
-        console.log('node',node);
+        node = element.node!;
+        console.log('node', node);
         element.node!.visible = false;
         this.nodeService.putNode(this.projectService.project, element.node!)
       });
@@ -257,12 +257,12 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
           this.typeMenu = 1.2;
           await this.nodeService.getChildren_s(this.projectService.project, this.cacheNode.id!).then((netNode) => {
             netNode.forEach(element => {
-                console.log('children`s',element);
-                this.drawSelectedNode(element.node!);
-              });
-            }).catch((_error)=>{});
+              console.log('children`s', element);
+              this.drawSelectedNode(element.node!);
+            });
+          }).catch((_error) => { });
         }
-        console.log('type menu',this.typeMenu);
+        console.log('type menu', this.typeMenu);
         this.matMenuTrigger.openMenu();
       }).catch(async (notInNode) => {
         await this.inLine({ x: event.clientX - rect.left, y: event.clientY - rect.top }).then(relation => {

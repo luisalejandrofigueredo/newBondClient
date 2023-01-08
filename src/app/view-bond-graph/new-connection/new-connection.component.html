@@ -6,14 +6,14 @@
         <input autocomplete="off" matInput formControlName="description" placeholder="Description">
       </mat-form-field>
     <app-warper Title="Connection">
-        <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="gappx">
+        <div class="row">
             <p style="padding-top: 12px;padding-right: 10px;">{{node.name}}</p>
             <div class="color" [style.backgroundColor]="'#'+node.color"></div>
             <p style="padding-top: 12px;padding-right: 10px;padding-left: 10px;">{{toNode.name}}</p>
             <div class="color" [style.backgroundColor]="'#'+toNode.color"></div>
         </div>
     </app-warper>
-    <div fxLayout="row" fxLayoutAlign="end end" fxLayoutGap="gappx">
+    <div class="row">
         <button mat-raised-button type="button" (click)="cancel()">Cancel</button>
         <button color="primary" type="submit" [disabled]="!connectionForm.valid" mat-raised-button >Ok</button>
     </div>

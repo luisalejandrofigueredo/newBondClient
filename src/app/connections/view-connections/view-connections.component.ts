@@ -7,7 +7,7 @@ import { ConnectionsService } from "../../services/connections.service";
 import { LoginService } from 'src/app/services/login.service';
 import { Router } from '@angular/router';
 import { ViewConnections } from "../../interfaces/view-connections";
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { OkCancelComponent } from 'src/app/ok-cancel/ok-cancel.component';
 import { DialogData } from 'src/app/ok-cancel/dialog-data';
 import { ProjectServiceService } from 'src/app/services/project-service.service';

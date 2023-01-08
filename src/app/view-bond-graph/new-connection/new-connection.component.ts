@@ -7,7 +7,7 @@ import { Location } from "@angular/common";
 import { ConnectionsService } from 'src/app/services/connections.service';
 import { Relations } from 'src/app/interfaces/relations';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Project } from 'src/app/interfaces/project';
 
 @Component({

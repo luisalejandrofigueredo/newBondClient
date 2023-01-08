@@ -1,5 +1,5 @@
 <form class="example-form" [formGroup]="connectionForm" (ngSubmit)="onSubmit()">
-  <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="gappx">
+  <div class="column">
     <mat-form-field>
       <input autocomplete="off" matInput formControlName="name" placeholder="Name">
     </mat-form-field>
@@ -7,8 +7,8 @@
       <input autocomplete="off" matInput formControlName="description" placeholder="Description">
     </mat-form-field>
     <app-warper Title="Node Connection">
-      <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="gappx">
-        <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="gappx">
+      <div class="row">
+        <div class="row">
           <mat-form-field class="example-full-width" appearance="fill">
             <mat-label>Node</mat-label>
             <input type="text" placeholder="Select node" aria-label="" matInput
@@ -22,7 +22,7 @@
           </mat-form-field>
           <div class="color" [style.backgroundColor]="'#'+nodeColor"></div>
         </div>
-        <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="gappx">
+        <div class="row">
           <mat-form-field class="example-full-width" appearance="fill">
             <mat-label>To node</mat-label>
             <input type="text" placeholder="Select node" aria-label="" matInput
@@ -42,7 +42,7 @@
       <app-view-event-con (modified)="modify($event)" [id]="id"></app-view-event-con>
     </app-warper>
   </div>
-  <div fxLayout="row" fxLayoutAlign="end end" fxLayoutGap="gappx">
+  <div class="row">
     <button mat-raised-button type="button" (click)="cancel()">Cancel</button>
     <button color="primary" [disabled]="disabled()" mat-raised-button type="submit">Ok</button>
   </div>

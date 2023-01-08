@@ -1,6 +1,6 @@
 <button (click)="addProject()"   mat-icon-button><mat-icon>add</mat-icon></button>
-<div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="gappx">
-    <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="gappx">
+<div class="column">
+    <div class="column">
         <table mat-table #table [dataSource]="DataSource">
           <ng-container matColumnDef="Name">
             <th mat-header-cell *matHeaderCellDef><span style="font-size: 2em">Name</span></th>

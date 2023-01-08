@@ -1,12 +1,12 @@
 <form [formGroup]="alignLabelForm" (ngSubmit)="onSubmit()">
-    <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="gappx">
+    <div class="column">
         <mat-form-field>
             <input matInput placeholder="Distance" formControlName="distance" type="number">
         </mat-form-field>
         <mat-form-field>
             <input matInput placeholder="Align" formControlName="align" type="number">
         </mat-form-field>
-        <div fxLayout="row" fxLayoutAlign="end end" fxLayoutGap="gappx">
+        <div class="row">
             <button mat-raised-button (click)="cancel()" type="button">Cancel</button>
             <button [disabled]="!this.alignLabelForm" mat-raised-button color="primary" type="submit" >OK</button>
         </div>

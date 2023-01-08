@@ -2,12 +2,12 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProjectServiceService } from "../../services/project-service.service";
 import { LoginService } from '../../services/login.service';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
+import {  MatTableDataSource } from '@angular/material/table';
 import { Project } from 'src/app/interfaces/project';
-import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
+import { MatPaginator } from '@angular/material/paginator';
 import { OkCancelComponent } from "../../ok-cancel/ok-cancel.component";
 import { DialogData } from "../../ok-cancel/dialog-data";
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-view-projects',
   templateUrl: './view-projects.component.html',

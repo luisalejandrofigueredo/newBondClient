@@ -1,7 +1,7 @@
 <button (click)="addConnection()" mat-icon-button>
   <mat-icon>add</mat-icon>
 </button>
-<div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="gappx">
+<div class="column">
   <table mat-table #table [dataSource]="DataSource">
     <ng-container matColumnDef="Name">
       <th mat-header-cell *matHeaderCellDef><span style="font-size: 2em">Name</span></th>
@@ -14,7 +14,7 @@
     <ng-container matColumnDef="node">
       <th mat-header-cell *matHeaderCellDef><span style="font-size: 2em">Node</span></th>
       <td mat-cell *matCellDef="let row"> 
-        <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="gappx">
+        <div class="row">
           <div class="color"  [style.backgroundColor]="'#'+row.nodeColor"></div>
           {{row.node}} 
         </div>
@@ -23,7 +23,7 @@
     <ng-container matColumnDef="toNode">
       <th mat-header-cell *matHeaderCellDef><span style="font-size: 2em">To node</span></th>
       <td mat-cell *matCellDef="let row"> 
-        <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="gappx">
+        <div class="row">
           <div class="color"  [style.backgroundColor]="'#'+row.toNodeColor"></div>
           {{row.toNode}}
         </div> 

@@ -1,6 +1,6 @@
-<div *ngIf="this.loginService.logged===false" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="gappx">
+<div *ngIf="this.loginService.logged===false" class="column">
     <form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
-        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="gappx">
+        <div class="column">
             <mat-form-field>
                 <mat-label>Login</mat-label>
                 <input matInput placeholder="Login" formControlName="login">
@@ -15,7 +15,7 @@
                 </button>
             </mat-form-field>
         </div>
-        <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="gappx">
+        <div class="row">
             <button (click)="this.cancel()" mat-raised-button>Cancel</button>
             <button color="primary" type="submit" [disabled]="!loginForm.valid" mat-raised-button>Login</button>
         </div>
