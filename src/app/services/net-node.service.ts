@@ -22,16 +22,16 @@ export class NetNodeService {
     });
   }
 
-  getNode(id: number): Promise<Node> {
-    return new Promise<Node>((resolve, reject) => {
+  getNetNode(id: number): Promise<NetNode> {
+    return new Promise<NetNode>((resolve, reject) => {
       const options = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer: ${localStorage.getItem("token")}` }),
         params: new HttpParams().append('id', id)
       }
-      this.httpClient.get<Node>(`${environment.baseUrl}netNode/getNode`, options).subscribe((node) => {
+      this.httpClient.get<NetNode>(`${environment.baseUrl}netNode/getNetNode`, options).subscribe((node) => {
         resolve(node)
       }, (_error) => {
-        reject({})
+        reject({});
       });
     });
   }

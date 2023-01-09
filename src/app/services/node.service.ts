@@ -10,15 +10,13 @@ export class NodeService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getChildren_s(id:number,nid:number):Promise<NetNode[]> {
+  getChildren_s(id:number):Promise<NetNode[]> {
     return new Promise<NetNode[]>((resolve, reject) => {
       const options = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer: ${localStorage.getItem("token")}` }),
         params: new HttpParams().append('id', id)
-          .append('nid', nid)
       };
       this.httpClient.get<NetNode[]>(`${environment.baseUrl}node/getChildren_s`,options).subscribe((netNodes)=>{
-       console.log('net nodes',netNodes);
        resolve(netNodes);
       },(error)=>{
         reject([]);

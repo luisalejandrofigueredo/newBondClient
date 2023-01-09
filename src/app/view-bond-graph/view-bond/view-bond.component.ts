@@ -151,14 +151,25 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
   }
 
   async hideNet() {
-    await this.nodeService.getChildren_s(this.projectService.project, this.cacheNode.id!).then((netNode) => {
-      console.log('Net node', netNode)
-      let node: Node;
-      netNode.forEach(element => {
-        node = element.node!;
-        console.log('node', node);
-        element.node!.visible = false;
-        this.nodeService.putNode(this.projectService.project, element.node!)
+    await this.nodeService.getChildren_s(this.cacheNode.id!).then((netNode) => {
+      netNode.forEach(async element => {
+        await this.netNodeService.getNetNode(element.id!).then(async (viewNode)=>{
+          viewNode.nodeChildren.visible=false;
+          await this.nodeService.putNode(this.projectService.project,viewNode.nodeChildren);
+          this.refresh();
+        });
+      });
+    });
+  }
+
+  async viewNet() {
+    await this.nodeService.getChildren_s(this.cacheNode.id!).then(async (netNode) => {
+      netNode.forEach(async (element) => {
+        await this.netNodeService.getNetNode(element.id!).then(async (viewNode) => {
+          viewNode.nodeChildren.visible = true;
+          await this.nodeService.putNode(this.projectService.project, viewNode.nodeChildren);
+        });
+        this.refresh();
       });
     });
   }
@@ -255,14 +266,14 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
         this.cacheNode = <Node>node;
         if (this.cacheNode.net === true) {
           this.typeMenu = 1.2;
-          await this.nodeService.getChildren_s(this.projectService.project, this.cacheNode.id!).then((netNode) => {
-            netNode.forEach(element => {
-              console.log('children`s', element);
-              this.drawSelectedNode(element.node!);
+         await this.nodeService.getChildren_s(this.cacheNode.id!).then((netNode) => {
+            netNode.forEach(async element => {
+              this.netNodeService.getNetNode(element.id!).then((viewNode)=>{
+                this.drawSelectedNodeChildren(viewNode.nodeChildren);
+              });
             });
           }).catch((_error) => { });
         }
-        console.log('type menu', this.typeMenu);
         this.matMenuTrigger.openMenu();
       }).catch(async (notInNode) => {
         await this.inLine({ x: event.clientX - rect.left, y: event.clientY - rect.top }).then(relation => {
@@ -389,14 +400,31 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
    * @param node 
    */
   drawSelectedNode(node: Node) {
+    let gradient = this.ctx.createLinearGradient(node.x - 10, node.y - 10, node.x + 10, node.y + 10);
+    gradient.addColorStop(0, "blue");
+    gradient.addColorStop(.25, "white");
+    gradient.addColorStop(.50, "blue");
+    gradient.addColorStop(.75, "white");
+    gradient.addColorStop(1, "blue");
     this.ctx.beginPath();
     this.ctx.arc(node.x, node.y, 10, 0, 2 * Math.PI);
     this.ctx.lineWidth = 5;
     this.ctx.fillStyle = '';
+    this.ctx.strokeStyle = gradient;
+    this.ctx.stroke();
+  }
+
+  drawSelectedNodeChildren(node: Node) {
+    let path=new Path2D();
+    this.fillCircle(node.x,node.y,10,this.hexColor(node.color),path);
     let gradient = this.ctx.createLinearGradient(node.x - 10, node.y - 10, node.x + 10, node.y + 10);
-    gradient.addColorStop(0, "blue");
+    gradient.addColorStop(0, "black");
     gradient.addColorStop(0.5, "white");
-    gradient.addColorStop(1, "red");
+    gradient.addColorStop(1, "black");
+    this.ctx.beginPath();
+    this.ctx.arc(node.x, node.y, 10, 0, 2 * Math.PI);
+    this.ctx.lineWidth = 5;
+    this.ctx.fillStyle = gradient;
     this.ctx.strokeStyle = gradient;
     this.ctx.stroke();
   }
