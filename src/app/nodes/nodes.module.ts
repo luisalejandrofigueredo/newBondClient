@@ -15,6 +15,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { EditNodeComponent } from './edit-node/edit-node.component';
 import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } from '@angular-material-components/color-picker';
 import { WarperComponent } from "../warper/warper.component";
+import { ModulesNodeComponent } from './modules-node/modules-node.component';
+import { PersonalFileComponent } from './personal-file/personal-file.component';
 
 
 @NgModule({
@@ -23,6 +25,8 @@ import { WarperComponent } from "../warper/warper.component";
     HomeNodeComponent,
     ViewNodesComponent,
     EditNodeComponent,
+    ModulesNodeComponent,
+    PersonalFileComponent,
 
   ],
   imports: [
