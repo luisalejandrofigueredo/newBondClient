@@ -2,24 +2,26 @@
     <form [formGroup]="nodeForm" (ngSubmit)="onSubmit()">
         <div class="column">
             <mat-form-field>
-                <input  autocomplete="off" matInput placeholder="Name" formControlName="name">
+                <input autocomplete="off" matInput placeholder="Name" formControlName="name">
             </mat-form-field>
             <mat-form-field>
                 <input autocomplete="off" matInput placeholder="Description" formControlName="description">
             </mat-form-field>
             <div class="row">
                 <mat-form-field>
-                    <input matInput [ngxMatColorPicker]="picker" formControlName="colorCtr" >
+                    <input matInput [ngxMatColorPicker]="picker" formControlName="colorCtr">
                     <ngx-mat-color-toggle matSuffix [for]="picker"></ngx-mat-color-toggle>
-                    <ngx-mat-color-picker #picker ></ngx-mat-color-picker>
+                    <ngx-mat-color-picker #picker></ngx-mat-color-picker>
                 </mat-form-field>
-                <div class="color"  [style.backgroundColor]="this.nodeForm.controls.colorCtr.value"></div>
-                <app-modules-node></app-modules-node>
+                <div class="color" [style.backgroundColor]="this.nodeForm.controls.colorCtr.value"></div>
+                <app-modules-node [node-id]="nodeCache.id!"></app-modules-node>
             </div>
             <mat-checkbox formControlName="net">Net</mat-checkbox>
             <mat-checkbox formControlName="visible">Visible</mat-checkbox>
         </div>
-        <button mat-raised-button (click)="cancel()" type="button">Cancel</button>
-        <button [disabled]="!this.nodeForm.valid" mat-raised-button color="primary" type="submit" >OK</button>
+        <div class="row-end">
+            <button mat-raised-button (click)="cancel()" type="button">Cancel</button>
+            <button [disabled]="!this.nodeForm.valid" mat-raised-button color="primary" type="submit">OK</button>
+        </div>
     </form>
 </div>

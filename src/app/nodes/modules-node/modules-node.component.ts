@@ -1,4 +1,4 @@
-import { Component,OnInit } from '@angular/core';
+import { Component,Input,OnInit } from '@angular/core';
 import { Location, } from "@angular/common";
 import { ActivatedRoute, Router } from '@angular/router';
 @Component({
@@ -7,8 +7,8 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./modules-node.component.sass']
 })
 export class ModulesNodeComponent implements OnInit {
+  @Input('node-id') id=0;
   constructor(private activatedRoute:ActivatedRoute,private location: Location, private router: Router) { }
-  id=0;
   ngOnInit(): void {
   }
   editPersonalFile() {
