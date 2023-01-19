@@ -79,6 +79,20 @@ export class NodeService {
     })
   }
 
+  getNodeWithPerson(id: number, nid: number): Promise<Node> {
+    return new Promise<Node>((resolve, reject) => {
+      const options = {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer: ${localStorage.getItem("token")}` }),
+        params: new HttpParams().append('id', id)
+          .append('nid', nid)
+      };
+      this.httpClient.get<Node | { message: string }>(`${environment.baseUrl}node/getOneWithPerson`, options).subscribe((node) => {
+          resolve(<Node>node);
+        }
+      ,(error)=>{ reject()})
+    })
+  }
+
   getNodeByName(id: number, name: string): Promise<Node> {
     return new Promise<Node>((resolve, reject) => {
       const options = {

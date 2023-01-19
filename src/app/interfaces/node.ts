@@ -1,4 +1,5 @@
-import { NetNode } from "../interfaces/net-node";
+import { NetNode } from "./net-node";
+import { Person } from "./person";
 export interface Node {
     id?:number,
     name:string,
@@ -8,5 +9,6 @@ export interface Node {
     visible:boolean,
     color:string,
     net:boolean,
-    netNode?:NetNode[]
+    netNode?:NetNode[],
+    person?:null|Person
 }

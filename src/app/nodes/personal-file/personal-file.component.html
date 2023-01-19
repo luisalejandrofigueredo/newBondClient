@@ -1,1 +1,28 @@
-<p>personal-file works!</p>
+<form [formGroup]="personalForm" (ngSubmit)="onSubmit()">
+    <div class="column">
+        <mat-form-field class="field">
+            <input autocomplete="off" matInput placeholder="Name" formControlName="name">
+        </mat-form-field>
+        <mat-form-field class="field">
+            <input autocomplete="off" matInput placeholder="Surname" formControlName="surname">
+        </mat-form-field>
+        <mat-form-field class="short-field">
+            <mat-label>Gender</mat-label>
+            <mat-select placeholder="Gender" formControlName="gender">
+                <mat-option *ngFor="let item of gender" [value]="item">
+                    {{item}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="field">
+            <input autocomplete="off" matInput placeholder="Document" formControlName="document">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <textarea [cdkTextareaAutosize]="true" autocomplete="off" matInput placeholder="Description" formControlName="description"></textarea>
+        </mat-form-field>
+    </div>
+    <div class="row-end">
+        <button mat-raised-button type="button" (click)="cancel()">Cancel</button>
+        <button mat-raised-button type="submit" color="primary" [disabled]="!personalForm.valid">Ok</button>
+    </div>
+</form>
