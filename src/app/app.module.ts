@@ -20,12 +20,14 @@ import { MatListModule } from '@angular/material/list';
 import { HomeComponent } from './home/home.component';
 import { PathNotFoundComponent } from './path-not-found/path-not-found.component';
 import { LayoutModule } from '@angular/cdk/layout';
+/*import { ImagePipe } from './image.pipe';*/
 @NgModule({
   declarations: [
     AppComponent,
     NavigationComponent,
     HomeComponent,
-    PathNotFoundComponent
+    PathNotFoundComponent,
+    /*ImagePipe*/
   ],
   imports: [
     BrowserModule,

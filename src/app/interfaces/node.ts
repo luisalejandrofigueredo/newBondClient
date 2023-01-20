@@ -10,5 +10,5 @@ export interface Node {
     color:string,
     net:boolean,
     netNode?:NetNode[],
-    person?:null|Person
+    person?:null|Person,
 }

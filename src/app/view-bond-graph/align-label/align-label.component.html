@@ -1,14 +1,16 @@
 <form [formGroup]="alignLabelForm" (ngSubmit)="onSubmit()">
     <div class="column">
-        <mat-form-field>
-            <input matInput placeholder="Distance" formControlName="distance" type="number">
-        </mat-form-field>
-        <mat-form-field>
-            <input matInput placeholder="Align" formControlName="align" type="number">
-        </mat-form-field>
+        <p>Distance</p>
+        <mat-slider min="-100" max="100">
+            <input matSliderThumb formControlName="distance">
+        </mat-slider>
+        <p>Align</p>
+        <mat-slider min="-100" max="100">
+            <input matSliderThumb formControlName="align">
+        </mat-slider>
         <div class="row">
             <button mat-raised-button (click)="cancel()" type="button">Cancel</button>
-            <button [disabled]="!this.alignLabelForm" mat-raised-button color="primary" type="submit" >OK</button>
+            <button [disabled]="!this.alignLabelForm" mat-raised-button color="primary" type="submit">OK</button>
         </div>
     </div>
 </form>

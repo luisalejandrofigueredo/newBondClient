@@ -12,6 +12,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AlignLabelComponent } from './align-label/align-label.component';
+import { MatSliderModule } from '@angular/material/slider';
 
 
 @NgModule({
@@ -28,9 +29,10 @@ import { AlignLabelComponent } from './align-label/align-label.component';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSliderModule,
     LayoutModule,
     WarperComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ]
 })
 export class ViewBondGraphModule { }

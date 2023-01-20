@@ -18,7 +18,7 @@ import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } fro
 import { WarperComponent } from "../warper/warper.component";
 import { ModulesNodeComponent } from './modules-node/modules-node.component';
 import { PersonalFileComponent } from './personal-file/personal-file.component';
-
+import {ImagePipe} from '../image.pipe';
 
 @NgModule({
   declarations: [
@@ -28,7 +28,7 @@ import { PersonalFileComponent } from './personal-file/personal-file.component';
     EditNodeComponent,
     ModulesNodeComponent,
     PersonalFileComponent,
-
+    ImagePipe
   ],
   imports: [
     CommonModule,

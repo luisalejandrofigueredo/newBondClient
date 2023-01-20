@@ -1,28 +1,53 @@
 <form [formGroup]="personalForm" (ngSubmit)="onSubmit()">
-    <div class="column">
-        <mat-form-field class="field">
-            <input autocomplete="off" matInput placeholder="Name" formControlName="name">
-        </mat-form-field>
-        <mat-form-field class="field">
-            <input autocomplete="off" matInput placeholder="Surname" formControlName="surname">
-        </mat-form-field>
-        <mat-form-field class="short-field">
-            <mat-label>Gender</mat-label>
-            <mat-select placeholder="Gender" formControlName="gender">
-                <mat-option *ngFor="let item of gender" [value]="item">
-                    {{item}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-        <mat-form-field class="field">
-            <input autocomplete="off" matInput placeholder="Document" formControlName="document">
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-            <textarea [cdkTextareaAutosize]="true" autocomplete="off" matInput placeholder="Description" formControlName="description"></textarea>
-        </mat-form-field>
+    <div class="row">
+        <div class="column">
+            <div class="row">
+                <mat-form-field class="field">
+                    <input tabindex="1" autocomplete="off" matInput placeholder="Name" formControlName="name">
+                </mat-form-field>
+                <mat-form-field class="field">
+                    <input type="tel" tabindex="6" autocomplete="off" matInput placeholder="Mobile"
+                        formControlName="mobile">
+                </mat-form-field>
+            </div>
+            <div class="row">
+                <mat-form-field class="field">
+                    <input tabindex="2" autocomplete="off" matInput placeholder="Surname" formControlName="surname">
+                </mat-form-field>
+                <mat-form-field class="field">
+                    <input type="url" tabindex="7" autocomplete="off" matInput placeholder="Web" formControlName="web">
+                </mat-form-field>
+            </div>
+            <div class="row">
+                <mat-form-field class="short-field">
+                    <mat-label>Gender</mat-label>
+                    <mat-select tabIndex="3" placeholder="Gender" formControlName="gender">
+                        <mat-option *ngFor="let item of gender" [value]="item">
+                            {{item}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="field" style="padding-left: 20px;">
+                    <input type="email" tabindex="8" autocomplete="off" matInput placeholder="Email"
+                        formControlName="email">
+                </mat-form-field>
+            </div>
+            <mat-form-field class="field">
+                <input tabindex="4" autocomplete="off" matInput placeholder="Document" formControlName="document">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <textarea tabindex="5" [cdkTextareaAutosize]="true" autocomplete="off" matInput
+                    placeholder="Description" formControlName="description"></textarea>
+            </mat-form-field>
+        </div>
+        <div class="column">
+            <img width="200" height="250" [src]="src|image|async">
+            <input type="file" (change)="fileUpload($event)" formControlName="file">
+        </div>
     </div>
     <div class="row-end">
-        <button mat-raised-button type="button" (click)="cancel()">Cancel</button>
-        <button mat-raised-button type="submit" color="primary" [disabled]="!personalForm.valid">Ok</button>
+        <button mat-raised-button tabindex="9" type="button" (click)="cancel()">Cancel</button>
+        <button mat-raised-button tabindex="10" type="submit" color="primary"
+            [disabled]="!personalForm.valid">Ok</button>
     </div>
 </form>

@@ -4,5 +4,9 @@ export interface Person {
     name:string,
     surname:string,
     gender:string,
-    description:string
+    description:string,
+    mobile:string,
+    email:string,
+    web:string,
+    image:string
 }
