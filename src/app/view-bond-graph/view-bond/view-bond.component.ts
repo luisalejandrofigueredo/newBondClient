@@ -31,7 +31,7 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
   pathsConnections: { path: Path2D, connection: Relations }[] = [];
   canvasContext: any;
   cursor!: NumberPoint;
-  cacheNode: Node = { name: '', color: '', description: '', net: false, visible: true, x: 0, y: 0 };
+  cacheNode: Node = { name: '', color: '', description: '', net: false, visible: true, x: 0, y: 0,shape:0 };
   cacheRelation!: Relations;
   isMovingNode = false;
   typeMenu = 1;

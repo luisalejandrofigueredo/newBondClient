@@ -9,6 +9,7 @@ export interface Node {
     visible:boolean,
     color:string,
     net:boolean,
+    shape:number,
     netNode?:NetNode[],
     person?:null|Person,
 }

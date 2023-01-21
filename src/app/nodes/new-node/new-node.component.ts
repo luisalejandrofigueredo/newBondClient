@@ -15,6 +15,7 @@ export class NewNodeComponent implements OnInit {
     name: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
     description: new FormControl<string>('', { nonNullable: true }),
     net: new FormControl<boolean>(false, { nonNullable: true }),
+    shape: new FormControl<number>(0,{ nonNullable: true }),
     colorCtr: new FormControl<string>('#a21d3a', { nonNullable: true })
   });
   constructor(private projectService:ProjectServiceService,private loginService: LoginService, private location: Location, private nodeService: NodeService) { }
@@ -35,7 +36,7 @@ export class NewNodeComponent implements OnInit {
     {
       colStr=this.nodeForm.controls.colorCtr.value.substring(1);
     }
-    this.nodeService.add(this.projectService.project, { name: this.nodeForm.controls.name.value, description: this.nodeForm.controls.description.value, x: 100, y: 100, net: this.nodeForm.controls.net.value, visible: true ,color:colStr }).then((accept) => {
+    this.nodeService.add(this.projectService.project, { name: this.nodeForm.controls.name.value, description: this.nodeForm.controls.description.value, x: 100, y: 100, net: this.nodeForm.controls.net.value, visible: true ,color:colStr,shape:this.nodeForm.controls.shape.value }).then((accept) => {
       this.location.back();
     })
   }

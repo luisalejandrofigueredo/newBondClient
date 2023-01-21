@@ -43,7 +43,7 @@ export class PersonalFileComponent implements OnInit {
     this.activatedRoute.params.subscribe((params) => {
       this.nodeId = params['id'];
       this.nodeService.getNodeWithPerson(this.projectService.project, this.nodeId).then((node) => {
-        this.node = { color: node.color, description: node.description, name: node.name, net: node.net, visible: node.visible, x: node.x, y: node.y, person: node.person };
+        this.node = { shape:node.shape,color: node.color, description: node.description, name: node.name, net: node.net, visible: node.visible, x: node.x, y: node.y, person: node.person };
         this.nodePerson = node.person! as Person;
         if (node.person !== null) {
           this.personalForm.controls.name.setValue(node.person?.name!);
@@ -54,7 +54,14 @@ export class PersonalFileComponent implements OnInit {
           this.personalForm.controls.mobile.setValue(node.person?.mobile!);
           this.personalForm.controls.web.setValue(node.person?.web!);
           this.personalForm.controls.email.setValue(node.person?.email!);
-          this.src=node.person?.image!
+          if (node.person?.image!!=='')
+          {
+            this.src=node.person?.image!
+          }
+          else
+          {
+            this.src="assets/noimage.jpg"
+          }
         }
       })
 

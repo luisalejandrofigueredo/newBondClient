@@ -20,8 +20,8 @@ export class NewConnectionComponent implements OnInit {
     name: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
     description: new FormControl<string>('', { nonNullable: true }),
   });
-  node: Node = { x: 0, y: 0, color: 'ffffff', description: '', name: '', net: false, visible: true };
-  toNode: Node = { x: 0, y: 0, color: 'ffffff', description: '', name: '', net: false, visible: true };
+  node: Node = { shape:0,x: 0, y: 0, color: 'ffffff', description: '', name: '', net: false, visible: true };
+  toNode: Node = { shape:0,x: 0, y: 0, color: 'ffffff', description: '', name: '', net: false, visible: true };
   constructor(private matSnackBar: MatSnackBar, private connectionService: ConnectionsService, private location: Location, private projectService: ProjectServiceService, private nodeService: NodeService, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
