@@ -15,6 +15,7 @@ import { OkCancelComponent } from "../../ok-cancel/ok-cancel.component";
 import { DialogData } from "../../ok-cancel/dialog-data";
 import { ZoomService } from "../../services/zoom.service";
 import { NetNodeService } from "../../services/net-node.service";
+import { bindCallback } from 'rxjs';
 
 @Component({
   selector: 'app-view-bond',
@@ -31,7 +32,7 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
   pathsConnections: { path: Path2D, connection: Relations }[] = [];
   canvasContext: any;
   cursor!: NumberPoint;
-  cacheNode: Node = { name: '', color: '', description: '', net: false, visible: true, x: 0, y: 0,shape:0 };
+  cacheNode: Node = { name: '', color: '', description: '', net: false, visible: true, x: 0, y: 0, shape: 0 };
   cacheRelation!: Relations;
   isMovingNode = false;
   typeMenu = 1;
@@ -96,11 +97,12 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
       this.cacheNode.x = this.cursor.x;
       this.cacheNode.y = this.cursor.y;
       this.drawNode(this.cacheNode);
-    }
-    if (this.isDragging === true) {
-      this.ctx.translate(currentTransformedCursor.x - this.dragStartPosition.x, currentTransformedCursor.y - this.dragStartPosition.y);
-      this.zoomService.setZoom(this.ctx.getTransform())
-      this.refresh();
+    } else {
+      if (this.isDragging === true) {
+        this.ctx.translate(currentTransformedCursor.x - this.dragStartPosition.x, currentTransformedCursor.y - this.dragStartPosition.y);
+        this.zoomService.setZoom(this.ctx.getTransform());
+        this.refresh();
+      } 
     }
   }
 
@@ -153,9 +155,9 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
   async hideNet() {
     await this.nodeService.getChildren_s(this.cacheNode.id!).then((netNode) => {
       netNode.forEach(async element => {
-        await this.netNodeService.getNetNode(element.id!).then(async (viewNode)=>{
-          viewNode.nodeChildren.visible=false;
-          await this.nodeService.putNode(this.projectService.project,viewNode.nodeChildren);
+        await this.netNodeService.getNetNode(element.id!).then(async (viewNode) => {
+          viewNode.nodeChildren.visible = false;
+          await this.nodeService.putNode(this.projectService.project, viewNode.nodeChildren);
           this.refresh();
         });
       });
@@ -266,9 +268,9 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
         this.cacheNode = <Node>node;
         if (this.cacheNode.net === true) {
           this.typeMenu = 1.2;
-         await this.nodeService.getChildren_s(this.cacheNode.id!).then((netNode) => {
+          await this.nodeService.getChildren_s(this.cacheNode.id!).then((netNode) => {
             netNode.forEach(async element => {
-              this.netNodeService.getNetNode(element.id!).then((viewNode)=>{
+              this.netNodeService.getNetNode(element.id!).then((viewNode) => {
                 this.drawSelectedNodeChildren(viewNode.nodeChildren);
               });
             });
@@ -324,7 +326,7 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
   drawConnections() {
     this.connectionService.getConnections(this.projectService.project).then((relations) => {
       relations.forEach(relation => {
-        this.drawConnection(relation);
+        this.drawConnection(relation,relation.color);
       });
     });
   }
@@ -378,19 +380,25 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
    */
   drawNode(node: Node) {
     if (node.visible === true) {
-      const path = new Path2D();
-      this.ctx.fillText(node.name, node.x + 10, node.y - 10);
-      this.fillCircle(node.x, node.y, 10, this.hexColor(node.color), path);
-      this.ctx.lineWidth = 1;
-      this.pathNodes.push({ path: new Path2D(path), node: node });
-      if (node.net === true) {
-        this.ctx.fillStyle = 'black';
-        this.ctx.strokeStyle = 'black';
-        this.ctx.lineWidth = 1;
-        this.ctx.beginPath();
-        this.ctx.arc(node.x, node.y, 2, 0, 2 * Math.PI);
-        this.ctx.closePath();
-        this.ctx.fill()
+      switch (node.shape) {
+        case 0:
+          const path = new Path2D();
+          this.ctx.fillText(node.name, node.x + 10, node.y - 10);
+          this.fillCircle(node.x, node.y, 10, this.hexColor(node.color), path);
+          this.ctx.lineWidth = 1;
+          this.pathNodes.push({ path: new Path2D(path), node: node });
+          if (node.net === true) {
+            this.ctx.fillStyle = 'black';
+            this.ctx.strokeStyle = 'black';
+            this.ctx.lineWidth = 1;
+            this.ctx.beginPath();
+            this.ctx.arc(node.x, node.y, 2, 0, 2 * Math.PI);
+            this.ctx.closePath();
+            this.ctx.fill()
+          }
+          break;
+        default:
+          break;
       }
     }
   }
@@ -415,8 +423,8 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
   }
 
   drawSelectedNodeChildren(node: Node) {
-    let path=new Path2D();
-    this.fillCircle(node.x,node.y,10,this.hexColor(node.color),path);
+    let path = new Path2D();
+    this.fillCircle(node.x, node.y, 10, this.hexColor(node.color), path);
     let gradient = this.ctx.createLinearGradient(node.x - 10, node.y - 10, node.x + 10, node.y + 10);
     gradient.addColorStop(0, "black");
     gradient.addColorStop(0.5, "white");
@@ -505,7 +513,7 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
       const circleToNode = new Path2D;
       this.ctx.fillStyle = 'red';
       this.ctx.strokeStyle = 'red';
-      this.rectangle(relation, path);
+      this.rectangle(relation, path,relation.color);
       this.fillCircle(moveNode.x, moveNode.y, 3, 'red', circleNode);
       this.fillCircle(moveToNode.x, moveToNode.y, 3, 'red', circleToNode);
     }
@@ -515,7 +523,7 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
    * 
    * @param relation 
    */
-  drawConnection(relation: Relations) {
+  drawConnection(relation: Relations,color:string) {
     if (relation.from.visible === true && relation.to.visible === true) {
       const nodeAngle = this.tr.angle(relation.from.x, relation.from.y, relation.to.x, relation.to.y);
       const toNodeAngle = this.tr.angle(relation.to.x, relation.to.y, relation.from.x, relation.from.y);
@@ -524,9 +532,9 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
       const path = new Path2D;
       const circleNode = new Path2D;
       const circleToNode = new Path2D;
-      this.rectangle(relation, path);
-      this.fillCircle(moveNode.x, moveNode.y, 3, 'black', circleNode);
-      this.fillCircle(moveToNode.x, moveToNode.y, 3, 'black', circleToNode);
+      this.rectangle(relation, path,relation.color);
+      this.fillCircle(moveNode.x, moveNode.y, 3, '#'+relation.color, circleNode);
+      this.fillCircle(moveToNode.x, moveToNode.y, 3, '#'+relation.color, circleToNode);
       path.addPath(circleNode);
       path.addPath(circleToNode);
       const distance = this.tr.distance(moveNode.x, moveNode.y, moveToNode.x, moveToNode.y);
@@ -583,7 +591,9 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
    * @param relation 
    * @param path 
    */
-  rectangle(relation: Relations, path: Path2D) {
+  rectangle(relation: Relations, path: Path2D,color:string) {
+    this.ctx.fillStyle = '#'+color;
+    this.ctx.strokeStyle = '#'+color;
     const nodeAngle = this.tr.angle(relation.from.x, relation.from.y, relation.to.x, relation.to.y);
     const toNodeAngle = this.tr.angle(relation.to.x, relation.to.y, relation.from.x, relation.from.y);
     const moveNode = this.tr.move(relation.from.x, relation.from.y, nodeAngle, 30);
@@ -602,5 +612,7 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
     path.closePath();
     this.ctx.fill(path);
     this.ctx.stroke();
+    this.ctx.fillStyle = 'black';
+    this.ctx.strokeStyle = 'black';
   }
 }

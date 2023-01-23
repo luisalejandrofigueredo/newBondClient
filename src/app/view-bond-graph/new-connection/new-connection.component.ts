@@ -51,7 +51,8 @@ export class NewConnectionComponent implements OnInit {
       project:projectBuffer,
       mirrorLabel: false,
       distance:10,
-      align:0
+      align:0,
+      color:'ffffff'
     };
     await this.connectionService.add(this.projectService.project, relation).then((newRelation) => {
       this.location.back();

@@ -11,6 +11,7 @@ export interface Relations {
     to: Node,
     distance:number,
     align:number,
+    color:string,
     project: Project,
     eventCones?: EventCon[]
 }

@@ -106,7 +106,8 @@ export class AddConnectionComponent implements OnInit {
       project: projectBuffer,
       mirrorLabel:false,
       distance:10,
-      align:0
+      align:0,
+      color:'000000'
     }).then((resolve) => {
       this.location.back();
     }).catch((reject) => { });
