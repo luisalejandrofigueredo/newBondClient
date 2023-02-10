@@ -19,7 +19,8 @@ export class InterceptorInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (localStorage.getItem('token') !== null) {
-      const reqHeader = request.clone({ headers: request.headers.set('Authorization', `Bearer: ${localStorage.getItem("token")}`) });
+      let reqHeader = request.clone({ headers: request.headers.set('Authorization', `Bearer: ${localStorage.getItem("token")}`) });
+      reqHeader.headers.append('Content-Security-Policy:'," default-src ‘bondserver*’")
       return next.handle(reqHeader).pipe(catchError((error) => this.errorHandler(error)));;
     } else {
       return next.handle(request).pipe(catchError((error) => this.errorHandler(error)));;

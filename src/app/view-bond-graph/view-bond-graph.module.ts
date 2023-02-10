@@ -13,6 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AlignLabelComponent } from './align-label/align-label.component';
 import { MatSliderModule } from '@angular/material/slider';
+import { NodeLabelComponent } from './node-label/node-label.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { MatSliderModule } from '@angular/material/slider';
     HomeComponent,
     ViewBondComponent,
     NewConnectionComponent,
-    AlignLabelComponent
+    AlignLabelComponent,
+    NodeLabelComponent
   ],
   imports: [
     CommonModule,
