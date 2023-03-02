@@ -43,7 +43,7 @@ export class PersonalFileComponent implements OnInit {
     this.activatedRoute.params.subscribe((params) => {
       this.nodeId = params['id'];
       this.nodeService.getNodeWithPerson(this.projectService.project, this.nodeId).then((node) => {
-        this.node = { shape:node.shape,color: node.color, description: node.description, name: node.name, net: node.net, visible: node.visible, x: node.x, y: node.y, person: node.person };
+        this.node = { shape:node.shape,color: node.color, description: node.description, name: node.name, net: node.net, visible: node.visible, x: node.x, y: node.y, person: node.person,angleLabel:node.angleLabel,distanceLabel:node.distanceLabel };
         this.nodePerson = node.person! as Person;
         if (node.person !== null) {
           this.personalForm.controls.name.setValue(node.person?.name!);

@@ -36,7 +36,7 @@ export class NewNodeComponent implements OnInit {
     {
       colStr=this.nodeForm.controls.colorCtr.value.substring(1);
     }
-    this.nodeService.add(this.projectService.project, { name: this.nodeForm.controls.name.value, description: this.nodeForm.controls.description.value, x: 100, y: 100, net: this.nodeForm.controls.net.value, visible: true ,color:colStr,shape:this.nodeForm.controls.shape.value }).then((accept) => {
+    this.nodeService.add(this.projectService.project, { name: this.nodeForm.controls.name.value, description: this.nodeForm.controls.description.value, x: 100, y: 100, net: this.nodeForm.controls.net.value, visible: true ,color:colStr,shape:this.nodeForm.controls.shape.value,angleLabel:90,distanceLabel:10 }).then((accept) => {
       this.location.back();
     })
   }

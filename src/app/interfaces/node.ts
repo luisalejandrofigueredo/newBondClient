@@ -10,6 +10,8 @@ export interface Node {
     color:string,
     net:boolean,
     shape:number,
+    angleLabel:number,
+    distanceLabel:number,
     netNode?:NetNode[],
     person?:null|Person,
 }

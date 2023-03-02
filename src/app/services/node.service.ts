@@ -29,7 +29,7 @@ export class NodeService {
       const options = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer: ${localStorage.getItem("token")}` })
       };
-      const body = { id: id, data: { name: node.name, description: node.description, net: node.net, visible: node.visible, x: node.x, y: node.y,color: node.color } as Node };
+      const body = { id: id, data: { name: node.name, description: node.description, net: node.net, visible: node.visible, x: node.x, y: node.y,color: node.color,angleLabel:node.angleLabel,distanceLabel:node.distanceLabel } as Node };
       this.httpClient.post(`${environment.baseUrl}node/add`, body, options).subscribe((node) => {
         if ((<{ message: string }>node).message === undefined) {
           resolve(true);

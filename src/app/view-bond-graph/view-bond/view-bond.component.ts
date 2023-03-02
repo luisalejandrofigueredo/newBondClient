@@ -32,7 +32,7 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
   pathsConnections: { path: Path2D, connection: Relations }[] = [];
   canvasContext: any;
   cursor!: NumberPoint;
-  cacheNode: Node = { name: '', color: '', description: '', net: false, visible: true, x: 0, y: 0, shape: 0 };
+  cacheNode: Node = { name: '', color: '', description: '', net: false, visible: true, x: 0, y: 0, shape: 0,angleLabel:90,distanceLabel:10 };
   cacheRelation!: Relations;
   isMovingNode = false;
   typeMenu = 1;
@@ -150,6 +150,10 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
     if (this.isDragging === true) {
       this.isDragging = false;
     }
+  }
+  
+  addLabel(){
+
   }
 
   async hideNet() {
@@ -383,7 +387,8 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
       switch (node.shape) {
         case 0:
           const path = new Path2D();
-          this.ctx.fillText(node.name, node.x + 10, node.y - 10);
+          const move=this.tr.move(node.x,node.y,node.angleLabel,node.distanceLabel);
+          this.ctx.fillText(node.name, move.x, move.y);
           this.fillCircle(node.x, node.y, 10, this.hexColor(node.color), path);
           this.ctx.lineWidth = 1;
           this.pathNodes.push({ path: new Path2D(path), node: node });
@@ -513,7 +518,7 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
       const circleToNode = new Path2D;
       this.ctx.fillStyle = 'red';
       this.ctx.strokeStyle = 'red';
-      this.rectangle(relation, path,relation.color);
+      this.rectangle(relation, path,'red');
       this.fillCircle(moveNode.x, moveNode.y, 3, 'red', circleNode);
       this.fillCircle(moveToNode.x, moveToNode.y, 3, 'red', circleToNode);
     }
