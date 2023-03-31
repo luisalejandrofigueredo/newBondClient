@@ -4,6 +4,7 @@ import { HomeComponent } from "./home/home.component";
 import { ViewBondComponent } from "./view-bond/view-bond.component";
 import { NewConnectionComponent  } from "./new-connection/new-connection.component";
 import { AlignLabelComponent } from "./align-label/align-label.component";
+import { NodeLabelComponent } from "./node-label/node-label.component";
 import { ImagePipe } from './image.pipe';
 const routes: Routes = [{
   path:'homeBondGraph',
@@ -12,6 +13,7 @@ const routes: Routes = [{
     { path:'view',component:ViewBondComponent},
     { path:'newConnection/:id/:idNodeCon',component:NewConnectionComponent},
     { path:'alignLabel/:id',component:AlignLabelComponent},
+    { path: 'nodeLabel/:id',component:NodeLabelComponent}
   ]}];
 
 @NgModule({

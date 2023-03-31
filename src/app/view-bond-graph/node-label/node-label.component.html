@@ -1,1 +1,20 @@
-<p>node-label works!</p>
+<form [formGroup]="labelForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+        <p>Angle</p>
+        <mat-slider min="0" max="360">
+            <input matSliderThumb formControlName="angleLabel">
+        </mat-slider>
+        <p>{{this.labelForm.controls.angleLabel.value}}</p>
+    </div>
+    <div class="row">
+        <p>Distance</p>
+        <mat-slider min="0" max="250">
+            <input matSliderThumb formControlName="distanceLabel">
+        </mat-slider>
+        <p>{{this.labelForm.controls.distanceLabel.value}}</p>
+    </div>
+    <div class="row">
+        <button mat-raised-button type="button" (click)="cancel()">Cancel</button>
+        <button color="primary" type="submit" [disabled]="!labelForm.valid" mat-raised-button>Ok</button>
+    </div>
+</form>

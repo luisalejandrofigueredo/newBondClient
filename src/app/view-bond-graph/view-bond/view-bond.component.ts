@@ -8,7 +8,7 @@ import { Point } from "../../interfaces/point";
 import { NumberPoint } from "../../interfaces/number-point";
 import { ConnectionsService } from "../../services/connections.service";
 import { Router } from '@angular/router';
-import { TrigonometricService } from "../../service/trigonometric.service";
+import { TrigonometricService } from "../../services/trigonometric.service";
 import { Relations } from "../../interfaces/relations";
 import { MatDialog } from '@angular/material/dialog';
 import { OkCancelComponent } from "../../ok-cancel/ok-cancel.component";
@@ -32,7 +32,7 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
   pathsConnections: { path: Path2D, connection: Relations }[] = [];
   canvasContext: any;
   cursor!: NumberPoint;
-  cacheNode: Node = { name: '', color: '', description: '', net: false, visible: true, x: 0, y: 0, shape: 0,angleLabel:90,distanceLabel:10 };
+  cacheNode: Node = { name: '', color: '', description: '', net: false, visible: true, x: 0, y: 0, shape: 0, angleLabel: 90, distanceLabel: 10 };
   cacheRelation!: Relations;
   isMovingNode = false;
   typeMenu = 1;
@@ -102,7 +102,7 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
         this.ctx.translate(currentTransformedCursor.x - this.dragStartPosition.x, currentTransformedCursor.y - this.dragStartPosition.y);
         this.zoomService.setZoom(this.ctx.getTransform());
         this.refresh();
-      } 
+      }
     }
   }
 
@@ -151,8 +151,8 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
       this.isDragging = false;
     }
   }
-  
-  addLabel(){
+
+  addLabel() {
 
   }
 
@@ -330,7 +330,7 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
   drawConnections() {
     this.connectionService.getConnections(this.projectService.project).then((relations) => {
       relations.forEach(relation => {
-        this.drawConnection(relation,relation.color);
+        this.drawConnection(relation, relation.color);
       });
     });
   }
@@ -387,7 +387,7 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
       switch (node.shape) {
         case 0:
           const path = new Path2D();
-          const move=this.tr.move(node.x,node.y,node.angleLabel,node.distanceLabel);
+          const move = this.tr.move(node.x, node.y, this.tr.toRadians(node.angleLabel), node.distanceLabel);
           this.ctx.fillText(node.name, move.x, move.y);
           this.fillCircle(node.x, node.y, 10, this.hexColor(node.color), path);
           this.ctx.lineWidth = 1;
@@ -477,6 +477,10 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
     this.router.navigate(['nodes/editNode', this.cacheNode.id!.toString()]);
   }
 
+  alignLabelNode() {
+  this.router.navigate(['homeBondGraph/nodeLabel', this.cacheNode.id!.toString()]);
+  }
+
   addConnection() {
     this.router.navigate(['connections/add']);
   }
@@ -518,7 +522,7 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
       const circleToNode = new Path2D;
       this.ctx.fillStyle = 'red';
       this.ctx.strokeStyle = 'red';
-      this.rectangle(relation, path,'red');
+      this.rectangle(relation, path, 'red');
       this.fillCircle(moveNode.x, moveNode.y, 3, 'red', circleNode);
       this.fillCircle(moveToNode.x, moveToNode.y, 3, 'red', circleToNode);
     }
@@ -528,7 +532,7 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
    * 
    * @param relation 
    */
-  drawConnection(relation: Relations,color:string) {
+  drawConnection(relation: Relations, color: string) {
     if (relation.from.visible === true && relation.to.visible === true) {
       const nodeAngle = this.tr.angle(relation.from.x, relation.from.y, relation.to.x, relation.to.y);
       const toNodeAngle = this.tr.angle(relation.to.x, relation.to.y, relation.from.x, relation.from.y);
@@ -537,9 +541,9 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
       const path = new Path2D;
       const circleNode = new Path2D;
       const circleToNode = new Path2D;
-      this.rectangle(relation, path,relation.color);
-      this.fillCircle(moveNode.x, moveNode.y, 3, '#'+relation.color, circleNode);
-      this.fillCircle(moveToNode.x, moveToNode.y, 3, '#'+relation.color, circleToNode);
+      this.rectangle(relation, path, relation.color);
+      this.fillCircle(moveNode.x, moveNode.y, 3, '#' + relation.color, circleNode);
+      this.fillCircle(moveToNode.x, moveToNode.y, 3, '#' + relation.color, circleToNode);
       path.addPath(circleNode);
       path.addPath(circleToNode);
       const distance = this.tr.distance(moveNode.x, moveNode.y, moveToNode.x, moveToNode.y);
@@ -596,9 +600,9 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
    * @param relation 
    * @param path 
    */
-  rectangle(relation: Relations, path: Path2D,color:string) {
-    this.ctx.fillStyle = '#'+color;
-    this.ctx.strokeStyle = '#'+color;
+  rectangle(relation: Relations, path: Path2D, color: string) {
+    this.ctx.fillStyle = '#' + color;
+    this.ctx.strokeStyle = '#' + color;
     const nodeAngle = this.tr.angle(relation.from.x, relation.from.y, relation.to.x, relation.to.y);
     const toNodeAngle = this.tr.angle(relation.to.x, relation.to.y, relation.from.x, relation.from.y);
     const moveNode = this.tr.move(relation.from.x, relation.from.y, nodeAngle, 30);
