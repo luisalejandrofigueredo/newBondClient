@@ -43,6 +43,7 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
   domMatrix!: DOMMatrix;
   @ViewChild('myCanvas', { static: true }) canvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild(MatMenuTrigger, { static: true }) matMenuTrigger!: MatMenuTrigger;
+  alignLabel: boolean=false;
   constructor(private netNodeService: NetNodeService, private zoomService: ZoomService, private matDialog: MatDialog, private connectionService: ConnectionsService, private tr: TrigonometricService, private router: Router, private projectService: ProjectServiceService, private nodeService: NodeService, private loginService: LoginService) { }
 
   ngAfterViewInit() {
@@ -461,7 +462,8 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
 
   AlignLabel() {
     this.zoomService.setZoom(this.ctx.getTransform());
-    this.router.navigate(['homeBondGraph/alignLabel', this.cacheRelation.id]);
+    this.alignLabel=true;
+    this.width=1000;
   }
 
   nodeChildren() {
@@ -624,4 +626,17 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
     this.ctx.fillStyle = 'black';
     this.ctx.strokeStyle = 'black';
   }
+
+  updateCanvas(update:boolean){
+    this.refresh();
+  }
+
+  formClosed(update:boolean){
+    this.width=1200;
+    if (update===true){
+      this.refresh();
+    } 
+    this.alignLabel=false;
+  }
+
 }

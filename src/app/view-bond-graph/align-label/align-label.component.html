@@ -2,11 +2,11 @@
     <div class="column">
         <p>Distance</p>
         <mat-slider min="-100" max="100">
-            <input matSliderThumb formControlName="distance">
+            <input matSliderThumb formControlName="distance" (valueChange)="changeValue($event)">
         </mat-slider>
         <p>Align</p>
         <mat-slider min="-100" max="100">
-            <input matSliderThumb formControlName="align">
+            <input matSliderThumb formControlName="align" (valueChange)="changeValue($event)">
         </mat-slider>
         <div class="row">
             <button mat-raised-button (click)="cancel()" type="button">Cancel</button>
