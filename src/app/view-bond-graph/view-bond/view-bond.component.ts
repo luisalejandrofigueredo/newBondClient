@@ -43,7 +43,8 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
   domMatrix!: DOMMatrix;
   @ViewChild('myCanvas', { static: true }) canvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild(MatMenuTrigger, { static: true }) matMenuTrigger!: MatMenuTrigger;
-  alignLabel: boolean=false;
+  alignNodeLabel:boolean=false;
+  alignLabel: boolean = false;
   constructor(private netNodeService: NetNodeService, private zoomService: ZoomService, private matDialog: MatDialog, private connectionService: ConnectionsService, private tr: TrigonometricService, private router: Router, private projectService: ProjectServiceService, private nodeService: NodeService, private loginService: LoginService) { }
 
   ngAfterViewInit() {
@@ -462,8 +463,7 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
 
   AlignLabel() {
     this.zoomService.setZoom(this.ctx.getTransform());
-    this.alignLabel=true;
-    this.width=1000;
+    this.alignLabel = true;
   }
 
   nodeChildren() {
@@ -480,7 +480,9 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
   }
 
   alignLabelNode() {
-  this.router.navigate(['homeBondGraph/nodeLabel', this.cacheNode.id!.toString()]);
+    this.ctx.setTransform(this.zoomService.getZoom());
+    this.refresh();
+    this.alignNodeLabel=true;
   }
 
   addConnection() {
@@ -627,16 +629,15 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
     this.ctx.strokeStyle = 'black';
   }
 
-  updateCanvas(update:boolean){
+  updateCanvas(update: boolean) {
     this.refresh();
   }
 
-  formClosed(update:boolean){
-    this.width=1200;
-    if (update===true){
-      this.refresh();
-    } 
-    this.alignLabel=false;
+  formClosed(update: boolean) {
+    this.ctx.setTransform(this.zoomService.getZoom());
+    this.refresh();
+    this.alignLabel = false;
+    this.alignNodeLabel=false;
   }
 
 }

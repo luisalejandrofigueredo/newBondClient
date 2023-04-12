@@ -21,7 +21,7 @@
         </div>
     </form>
 </div>
-<div *ngIf="this.loginService.logged===true" >
+<div class="column" *ngIf="this.loginService.logged===true" >
     <p class="name">Logged: {{name}}</p>
     <button color="accent" (click)="logout()" mat-raised-button>Logout</button>
 </div>

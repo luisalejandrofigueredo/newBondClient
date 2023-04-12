@@ -2,14 +2,14 @@
     <div class="row">
         <p>Angle</p>
         <mat-slider min="0" max="360">
-            <input matSliderThumb formControlName="angleLabel">
+            <input matSliderThumb (valueChange)="update()" formControlName="angleLabel">
         </mat-slider>
         <p>{{this.labelForm.controls.angleLabel.value}}</p>
     </div>
     <div class="row">
         <p>Distance</p>
         <mat-slider min="0" max="250">
-            <input matSliderThumb formControlName="distanceLabel">
+            <input matSliderThumb (valueChange)="update()" formControlName="distanceLabel">
         </mat-slider>
         <p>{{this.labelForm.controls.distanceLabel.value}}</p>
     </div>
