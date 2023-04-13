@@ -1,0 +1,22 @@
+<h2>new label</h2>
+<form [formGroup]="labelForm" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+        <input matInput placeholder="Text" formControlName="text">
+    </mat-form-field>
+    <div class="row">
+        <p>Angle</p>
+        <mat-slider min="0" max="360">
+            <input matSliderThumb (valueChange)="update()" formControlName="angle">
+        </mat-slider>
+    </div>
+    <div class="row">
+        <p>Fontsize</p>
+        <mat-slider min="16" max="60">
+            <input matSliderThumb (valueChange)="update()" formControlName="fontSize">
+        </mat-slider>
+    </div>
+    <div class="row">
+        <button mat-raised-button type="button" (click)="cancel()"><mat-icon>close</mat-icon></button>
+        <button color="primary" type="submit" [disabled]="!labelForm.valid" mat-raised-button><mat-icon>done</mat-icon></button>
+    </div>
+</form>

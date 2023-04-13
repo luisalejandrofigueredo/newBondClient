@@ -40,6 +40,7 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
   dragStartPosition = { x: 0, y: 0 };
   createConnection = false;
   createChildren = false;
+  createLabel=false;
   domMatrix!: DOMMatrix;
   @ViewChild('myCanvas', { static: true }) canvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild(MatMenuTrigger, { static: true }) matMenuTrigger!: MatMenuTrigger;
@@ -155,7 +156,7 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
   }
 
   addLabel() {
-
+    this.createLabel=true
   }
 
   async hideNet() {

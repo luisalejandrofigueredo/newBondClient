@@ -1,9 +1,14 @@
 <div class="row">
-  <div class="rectangle" >
+  <div class="rectangle">
     <canvas #myCanvas style="display: block" [width]="width" [height]="height" (contextmenu)="menu($event)"></canvas>
   </div>
-  <app-align-label *ngIf="alignLabel===true" [id]="this.cacheRelation.id!" (formClosed)="formClosed($event)" (updateCanvas)="updateCanvas($event)"></app-align-label>
-  <app-node-label *ngIf="alignNodeLabel===true" [id]="this.cacheNode.id!" (formClosed)="formClosed($event)" (updateCanvas)="updateCanvas($event)">   </app-node-label>
+  <div class="column">
+    <app-align-label *ngIf="alignLabel===true" [id]="this.cacheRelation.id!" (formClosed)="formClosed($event)"
+      (updateCanvas)="updateCanvas($event)"></app-align-label>
+    <app-node-label *ngIf="alignNodeLabel===true" [id]="this.cacheNode.id!" (formClosed)="formClosed($event)"
+      (updateCanvas)="updateCanvas($event)"> </app-node-label>
+    <app-new-label *ngIf="createLabel===true" [cursor]="cursor"></app-new-label>
+  </div>
 </div>
 <div #Trigger style="visibility: hidden; position: fixed;" [style.left]="menuTopLeftPosition.x"
   [style.top]="menuTopLeftPosition.y" [matMenuTriggerFor]="outSideMenu"></div>
@@ -14,7 +19,7 @@
       [matMenuTriggerFor]="node">Node</button>
     <button *ngIf="typeMenu!==1" mat-menu-item (contextmenu)="$event.preventDefault()"
       [matMenuTriggerFor]="connections">Connections</button>
-    <button *ngIf="typeMenu!==1" mat-menu-item (contextmenu)="$event.preventDefault()"
+    <button *ngIf="typeMenu!==1 && typeMenu!==2" mat-menu-item (contextmenu)="$event.preventDefault()"
       [matMenuTriggerFor]="labels">Label</button>
   </ng-template>
 </mat-menu>
