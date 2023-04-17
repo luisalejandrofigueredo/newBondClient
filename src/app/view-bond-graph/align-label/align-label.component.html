@@ -9,8 +9,8 @@
             <input matSliderThumb formControlName="align" (valueChange)="changeValue($event)">
         </mat-slider>
         <div class="row">
-            <button mat-raised-button (click)="cancel()" type="button">Cancel</button>
-            <button [disabled]="!this.alignLabelForm" mat-raised-button color="primary" type="submit">OK</button>
+            <button mat-raised-button (click)="cancel()" type="button"><mat-icon>close</mat-icon></button>
+            <button [disabled]="!this.alignLabelForm" mat-raised-button color="primary" type="submit"><mat-icon>done</mat-icon></button>
         </div>
     </div>
 </form>

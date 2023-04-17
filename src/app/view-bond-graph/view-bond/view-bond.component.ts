@@ -267,7 +267,7 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
    */
   async menu(event: MouseEvent) {
     event.preventDefault();
-    if (this.createConnection === false) {
+    if (this.createConnection === false && this.alignLabel===false && this.alignNodeLabel===false && this.createLabel===false) {
       const rect = this.canvas.nativeElement.getBoundingClientRect();
       this.menuTopLeftPosition.x = event.clientX + 'px';
       this.menuTopLeftPosition.y = event.clientY + 'px';
