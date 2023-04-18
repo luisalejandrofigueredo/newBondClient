@@ -28,8 +28,8 @@ export class LabelsService {
         headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer: ${localStorage.getItem("token")}` })
       };
       const body = { id: id, data: { id:label.id,angle:label.angle,color:label.color,fontSize:label.fontSize,text:label.text,project:label.project,visible:label.visible,x:label.x,y:label.y } as Labels };
-      this.httpClient.post(`${environment.baseUrl}label/add`, body, options).subscribe((node) => {
-        if ((<{ message: string }>node).message === undefined) {
+      this.httpClient.post(`${environment.baseUrl}label/add`, body, options).subscribe((label) => {
+        if ((<{ message: string }>label).message === undefined) {
           resolve(true);
         } else {
           reject(false)
@@ -46,8 +46,8 @@ export class LabelsService {
       params: new HttpParams().append('id', id)
     };
     return new Promise<Labels>((resolve, reject) => {
-      this.httpClient.get<Labels>(`${environment.baseUrl}labels/getOne`, options).subscribe((labels) => {
-        resolve(<Labels>labels);
+      this.httpClient.get<Labels>(`${environment.baseUrl}labels/getOne`, options).subscribe((label) => {
+        resolve(<Labels>label);
       }, (error) => { reject([]) });
     })
   }

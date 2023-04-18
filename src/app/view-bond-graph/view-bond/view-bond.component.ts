@@ -670,10 +670,12 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
   }
 
   formClosed(update: boolean) {
+    console.log('form closed');
     this.ctx.setTransform(this.zoomService.getZoom());
     this.refresh();
     this.alignLabel = false;
     this.alignNodeLabel = false;
+    this.createLabel = false;
   }
 
 }

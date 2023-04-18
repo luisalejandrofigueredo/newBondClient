@@ -8,5 +8,5 @@ export interface Labels {
     x:number;
     y:number;
     visible:boolean;
-    project:Project;
+    project?:Project;
 }

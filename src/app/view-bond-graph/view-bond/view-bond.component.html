@@ -7,7 +7,7 @@
       (updateCanvas)="updateCanvas($event)"></app-align-label>
     <app-node-label *ngIf="alignNodeLabel===true" [id]="this.cacheNode.id!" (formClosed)="formClosed($event)"
       (updateCanvas)="updateCanvas($event)"> </app-node-label>
-    <app-new-label *ngIf="createLabel===true" [cursor]="cursor"></app-new-label>
+    <app-new-label (formClosed)="formClosed($event)" *ngIf="createLabel===true" [cursor]="cursor"></app-new-label>
   </div>
 </div>
 <div #Trigger style="visibility: hidden; position: fixed;" [style.left]="menuTopLeftPosition.x"
