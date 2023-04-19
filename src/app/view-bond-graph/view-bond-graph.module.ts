@@ -16,6 +16,7 @@ import { AlignLabelComponent } from './align-label/align-label.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { NodeLabelComponent } from './node-label/node-label.component';
 import { NewLabelComponent } from './new-label/new-label.component';
+import { EditLabelComponent } from './edit-label/edit-label.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { NewLabelComponent } from './new-label/new-label.component';
     NewConnectionComponent,
     AlignLabelComponent,
     NodeLabelComponent,
-    NewLabelComponent
+    NewLabelComponent,
+    EditLabelComponent
   ],
   imports: [
     CommonModule,

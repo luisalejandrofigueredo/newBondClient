@@ -8,7 +8,24 @@ import { environment } from "../../environments/environment";
 export class LabelsService {
 
   constructor(private httpClient: HttpClient) { }
-
+  put(label: Labels): Promise<boolean> {
+    const options = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer: ${localStorage.getItem("token")}` })
+    };
+    return new Promise<boolean>((resolve, reject) => {
+      const body = { data: label };
+      this.httpClient.put<Labels | { message: string }>(`${environment.baseUrl}label/update`, body, options).subscribe((labelResponse) => {
+        if ((<{ message: string }>labelResponse)?.message) {
+          reject(false);
+        }
+        else {
+          resolve(true);
+        }
+      }, (error) => {
+        reject(false);
+      });
+    })
+  }
 
   getLabels(id: number): Promise<Labels[]> {
     const options = {
@@ -16,7 +33,7 @@ export class LabelsService {
       params: new HttpParams().append('id', id)
     };
     return new Promise<Labels[]>((resolve, reject) => {
-      this.httpClient.get<Labels[]>(`${environment.baseUrl}labels/getAll`, options).subscribe((labels) => {
+      this.httpClient.get<Labels[]>(`${environment.baseUrl}label/getAll`, options).subscribe((labels) => {
         resolve(<Labels[]>labels);
       }, (error) => { reject([]) });
     })
@@ -46,7 +63,7 @@ export class LabelsService {
       params: new HttpParams().append('id', id)
     };
     return new Promise<Labels>((resolve, reject) => {
-      this.httpClient.get<Labels>(`${environment.baseUrl}labels/getOne`, options).subscribe((label) => {
+      this.httpClient.get<Labels>(`${environment.baseUrl}label/getOne`, options).subscribe((label) => {
         resolve(<Labels>label);
       }, (error) => { reject([]) });
     })
