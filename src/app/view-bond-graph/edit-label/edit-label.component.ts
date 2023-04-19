@@ -14,6 +14,7 @@ export class EditLabelComponent implements OnInit {
   @Input() label!: Labels;
   @Output() updateCanvas = new EventEmitter<boolean>();
   @Output() formClosed = new EventEmitter<boolean>();
+  cacheLabel!: Labels;
   labelForm = new FormGroup({
     text: new FormControl<string>('', { nonNullable: true }),
     angle: new FormControl<number>(0, { nonNullable: true }),
@@ -23,6 +24,11 @@ export class EditLabelComponent implements OnInit {
   private projectService = inject(ProjectServiceService)
 
   ngOnInit(): void {
+    this.cacheLabel = {
+      id: this.label.id, angle: this.label.angle,
+      color: this.label.color, fontSize: this.label.fontSize,
+      text: this.label.text, visible: this.label.visible, x: this.label.x, y: this.label.y
+    } as Labels;
     this.labelForm.controls.angle.setValue(this.label.angle);
     this.labelForm.controls.text.setValue(this.label.text);
     this.labelForm.controls.fontSize.setValue(this.label.fontSize);
@@ -42,7 +48,7 @@ export class EditLabelComponent implements OnInit {
       this.formClosed.emit(true);
     })
   }
-  update(){
+  update() {
     this.labelService.put({
       angle: this.labelForm.controls.angle.value,
       text: this.labelForm.controls.text.value,
@@ -57,5 +63,19 @@ export class EditLabelComponent implements OnInit {
     })
   }
 
-  cancel(){}
+  cancel() {
+    this.labelService.put({
+      angle: this.cacheLabel.angle,
+      text: this.cacheLabel.text,
+      fontSize: this.cacheLabel.fontSize,
+      x: this.cacheLabel.x,
+      y: this.cacheLabel.y,
+      color: this.cacheLabel.color,
+      id: this.cacheLabel.id,
+      visible: this.cacheLabel.visible,
+    } as Labels).then((resolve) => {
+      this.formClosed.emit(true);
+    })
+
+  }
 }
