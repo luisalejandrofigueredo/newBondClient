@@ -449,6 +449,7 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
         case 0:
           const path = new Path2D();
           const move = this.tr.move(node.x, node.y, this.tr.toRadians(node.angleLabel), node.distanceLabel);
+          this.ctx.font="16px Arial"
           this.ctx.fillText(node.name, move.x, move.y);
           this.fillCircle(node.x, node.y, 10, this.hexColor(node.color), path);
           this.ctx.lineWidth = 1;
