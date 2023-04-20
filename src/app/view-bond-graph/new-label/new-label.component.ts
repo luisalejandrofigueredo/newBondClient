@@ -16,7 +16,7 @@ export class NewLabelComponent implements OnInit {
   labelForm = new FormGroup({
     text: new FormControl<string>('', { nonNullable: true }),
     angle: new FormControl<number>(0, { nonNullable: true }),
-    fontSize: new FormControl<number>(0, { nonNullable: true }),
+    fontSize: new FormControl<number>(16, { nonNullable: true }),
   });
   private labelService= inject(LabelsService);
   private projectService =inject(ProjectServiceService)

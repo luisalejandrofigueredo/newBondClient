@@ -15,9 +15,19 @@ import { OkCancelComponent } from "../../ok-cancel/ok-cancel.component";
 import { DialogData } from "../../ok-cancel/dialog-data";
 import { ZoomService } from "../../services/zoom.service";
 import { NetNodeService } from "../../services/net-node.service";
-import {LabelsService  } from "../../services/labels.service";
+import { LabelsService } from "../../services/labels.service";
 import { Labels } from 'src/app/interfaces/labels';
-
+import { ThumbXDirective } from 'ngx-scrollbar/lib/scrollbar/thumb/thumb.directive';
+interface Rectangle {
+  x: number,
+  y: number,
+  xx: number,
+  yy: number,
+  xxx: number,
+  yyy: number,
+  xxxx: number,
+  yyyy: number
+}
 @Component({
   selector: 'app-view-bond',
   templateUrl: './view-bond.component.html',
@@ -31,12 +41,12 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
   private ctx!: CanvasRenderingContext2D;
   pathNodes: { path: Path2D, node: Node }[] = [];
   pathsConnections: { path: Path2D, connection: Relations }[] = [];
-  pathLabel: {label:Labels}[]=[];
+  pathLabel: { label: Labels }[] = [];
   canvasContext: any;
   cursor!: NumberPoint;
-  cursorAdd!:NumberPoint;
+  cursorAdd!: NumberPoint;
   cacheNode: Node = { name: '', color: '', description: '', net: false, visible: true, x: 0, y: 0, shape: 0, angleLabel: 90, distanceLabel: 10 };
-  cacheLabel!:Labels;
+  cacheLabel!: Labels;
   cacheRelation!: Relations;
   isMovingNode = false;
   typeMenu = 1;
@@ -44,14 +54,14 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
   dragStartPosition = { x: 0, y: 0 };
   createConnection = false;
   createChildren = false;
-  createLabel=false;
-  updateLabel=false;
+  createLabel = false;
+  updateLabel = false;
   domMatrix!: DOMMatrix;
   @ViewChild('myCanvas', { static: true }) canvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild(MatMenuTrigger, { static: true }) matMenuTrigger!: MatMenuTrigger;
   alignNodeLabel: boolean = false;
   alignLabel: boolean = false;
-  constructor(private netNodeService: NetNodeService, private zoomService: ZoomService, private matDialog: MatDialog, private connectionService: ConnectionsService, private tr: TrigonometricService, private router: Router, private projectService: ProjectServiceService, private nodeService: NodeService, private loginService: LoginService,private labelsService:LabelsService) { }
+  constructor(private netNodeService: NetNodeService, private zoomService: ZoomService, private matDialog: MatDialog, private connectionService: ConnectionsService, private tr: TrigonometricService, private router: Router, private projectService: ProjectServiceService, private nodeService: NodeService, private loginService: LoginService, private labelsService: LabelsService) { }
 
   ngAfterViewInit() {
     this.ctx.setTransform(this.zoomService.getZoom());
@@ -160,12 +170,12 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
     }
   }
 
-  addLabel(event:MouseEvent) {
+  addLabel(event: MouseEvent) {
     const rect = this.canvas.nativeElement.getBoundingClientRect();
     this.menuTopLeftPosition.x = event.clientX + 'px';
     this.menuTopLeftPosition.y = event.clientY + 'px';
-    this.cursorAdd = this.getTransformedPoint(this.cursor.x,this.cursor.y);
-    this.createLabel=true;
+    this.cursorAdd = this.getTransformedPoint(this.cursor.x, this.cursor.y);
+    this.createLabel = true;
   }
 
   async hideNet() {
@@ -200,16 +210,23 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
     this.drawSelectedNode(this.cacheNode);
   }
 
-  inText(x:number,y:number):Promise<Labels| boolean>{
+  inText(x: number, y: number): Promise<Labels | boolean> {
     return new Promise((resolve, reject) => {
-      this.pathLabel.forEach(element=>{
-        const point=this.getTransformedPoint(x,y)
-        if (this.tr.distance(element.label.x,element.label.y,point.x,point.y)<=10) {
+      const point=this.tr.currentPoint({x:x,y:y},this.ctx);
+      x=point.x;
+      y=point.y;
+      for (let index = 0; index < this.pathLabel.length; index++) {
+        const element = this.pathLabel[index];
+        const rectangle = this.tr.rectangle(element.label.x, element.label.y,
+          element.label.fontSize, (element.label.fontSize * element.label.text.length/2), element.label.angle);
+          /*this.rectangleAngle(element.label.x, element.label.y,
+            element.label.fontSize, (element.label.fontSize * element.label.text.length/2), element.label.angle)*/
+        if (this.tr.isPointInsideRectangle({ x: x, y: y }, { x: rectangle.x, y: rectangle.y }, { x: rectangle.xx, y: rectangle.yy }, { x: rectangle.xxx, y: rectangle.yyy }, { x: rectangle.xxxx, y: rectangle.yyyy }) === true) {
           resolve(element.label)
         }
-      })
+      }
       reject(false);
-    })
+    });
   }
 
   /**
@@ -239,11 +256,11 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
     return new Promise(async (resolve, reject) => {
       for (let index = 0; index < this.pathsConnections.length; index++) {
         const element = this.pathsConnections[index];
-        if (this.ctx.isPointInPath(element.path, cursor.x, cursor.y) && first===true) {
+        if (this.ctx.isPointInPath(element.path, cursor.x, cursor.y) && first === true) {
           resolve(element.connection);
         } else {
-          if (this.ctx.isPointInPath(element.path, cursor.x, cursor.y) && first===false ) {
-              first=true;
+          if (this.ctx.isPointInPath(element.path, cursor.x, cursor.y) && first === false) {
+            first = true;
           }
         }
       }
@@ -288,7 +305,7 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
    */
   async menu(event: MouseEvent) {
     event.preventDefault();
-    if (this.createConnection === false && this.alignLabel===false && this.alignNodeLabel===false && this.createLabel===false) {
+    if (this.createConnection === false && this.alignLabel === false && this.alignNodeLabel === false && this.createLabel === false) {
       const rect = this.canvas.nativeElement.getBoundingClientRect();
       this.menuTopLeftPosition.x = event.clientX + 'px';
       this.menuTopLeftPosition.y = event.clientY + 'px';
@@ -326,12 +343,11 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
             this.cacheRelation = <Relations>relation;
             this.drawSelectedConnection(<Relations>relation);
             this.matMenuTrigger.openMenu();
-          }).catch(async(never) => {
-            await this.inText( event.clientX - rect.left,event.clientY - rect.top).then((label)=>{
-              this.cacheLabel=<Labels>label;
-              this.updateLabel=true;
-
-            }).catch((error)=>{
+          }).catch(async (never) => {
+            await this.inText(event.clientX - rect.left, event.clientY - rect.top).then((label) => {
+              this.cacheLabel = <Labels>label;
+              this.updateLabel = true;
+            }).catch((error) => {
               this.typeMenu = 3.0;
               this.matMenuTrigger.openMenu();
             });
@@ -359,7 +375,7 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
   clear() {
     this.pathNodes = [];
     this.pathsConnections = [];
-    this.pathLabel=[];
+    this.pathLabel = [];
     this.ctx.resetTransform();
     this.ctx.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
   }
@@ -372,17 +388,18 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
     this.drawLabels();
   }
 
-  drawLabels(){
-    this.labelsService.getLabels(this.projectService.project).then((labels)=>{
-      labels.forEach(label=>{
+  drawLabels() {
+    this.labelsService.getLabels(this.projectService.project).then((labels) => {
+      console.log('Labels', labels);
+      labels.forEach(label => {
         this.drawLabel(label);
       });
     });
   }
 
-  drawLabel(label:Labels){
-    this.rotateText(label.text,label.x,label.y,this.tr.toRadians(label.angle),label.color,label.fontSize);
-    this.pathLabel.push({label});
+  drawLabel(label: Labels) {
+    this.rotateText(label.text, label.x, label.y, this.tr.toRadians(label.angle), label.color, label.fontSize);
+    this.pathLabel.push({ label });
   }
 
   /**
@@ -449,7 +466,7 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
         case 0:
           const path = new Path2D();
           const move = this.tr.move(node.x, node.y, this.tr.toRadians(node.angleLabel), node.distanceLabel);
-          this.ctx.font="16px Arial"
+          this.ctx.font = "16px Arial"
           this.ctx.fillText(node.name, move.x, move.y);
           this.fillCircle(node.x, node.y, 10, this.hexColor(node.color), path);
           this.ctx.lineWidth = 1;
@@ -576,7 +593,7 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
    * @param relation 
    */
   drawSelectedConnection(relation: Relations) {
-    const dist=2;
+    const dist = 2;
     if (relation.from.visible === true && relation.to.visible === true) {
       const nodeAngle = this.tr.angle(relation.from.x, relation.from.y, relation.to.x, relation.to.y);
       const toNodeAngle = this.tr.angle(relation.to.x, relation.to.y, relation.from.x, relation.from.y);
@@ -600,9 +617,9 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
         textPosition = this.getNewParallelPoint(moveNode.x, moveNode.y, moveToNode.x, moveToNode.y, distance / 2 + relation.align, -relation.distance);
       }
       if (relation.mirrorLabel === false) {
-        this.rotateText(relation.name, textPosition.x, textPosition.y, angle,'red',16);
+        this.rotateText(relation.name, textPosition.x, textPosition.y, angle, 'red', 16);
       } else {
-        this.rotateText(relation.name, textPosition.x, textPosition.y, angle + Math.PI,'red',16);
+        this.rotateText(relation.name, textPosition.x, textPosition.y, angle + Math.PI, 'red', 16);
       }
     }
   }
@@ -612,7 +629,7 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
    * @param relation 
    */
   drawConnection(relation: Relations, color: string) {
-    const dist=2;
+    const dist = 2;
     if (relation.from.visible === true && relation.to.visible === true) {
       const nodeAngle = this.tr.angle(relation.from.x, relation.from.y, relation.to.x, relation.to.y);
       const toNodeAngle = this.tr.angle(relation.to.x, relation.to.y, relation.from.x, relation.from.y);
@@ -636,9 +653,9 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
         textPosition = this.getNewParallelPoint(moveNode.x, moveNode.y, moveToNode.x, moveToNode.y, distance / 2 + relation.align, -relation.distance);
       }
       if (relation.mirrorLabel === false) {
-        this.rotateText(relation.name, textPosition.x, textPosition.y, angle,'black',16);
+        this.rotateText(relation.name, textPosition.x, textPosition.y, angle, 'black', 16);
       } else {
-        this.rotateText(relation.name, textPosition.x, textPosition.y, angle + Math.PI,'black',16);
+        this.rotateText(relation.name, textPosition.x, textPosition.y, angle + Math.PI, 'black', 16);
       }
       this.pathsConnections.push({ path: new Path2D(path), connection: relation });
     }
@@ -651,12 +668,12 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
    * @param y 
    * @param angle 
    */
-  rotateText(text: string, x: number, y: number, angle: number,color:string,fontSize:number) {
+  rotateText(text: string, x: number, y: number, angle: number, color: string, fontSize: number) {
     this.ctx.save();
     this.ctx.translate(x, y);
     this.ctx.rotate(angle);
     this.ctx.fillStyle = color;
-    this.ctx.font=Math.abs(fontSize).toString()+"px Arial"
+    this.ctx.font = Math.abs(fontSize).toString() + "px Arial"
     this.ctx.fillText(text, 0, 0);
     this.ctx.restore();
   }
@@ -692,8 +709,8 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
     const distance = this.tr.distance(moveNode.x, moveNode.y, moveToNode.x, moveToNode.y);
     const dist = 2;
     this.ctx.beginPath();
-    moveNode=this.tr.move(moveNode.x,moveNode.y,nodeAngle+this.tr.toRadians(90),dist);
-    moveToNode=this.tr.move(moveToNode.x,moveToNode.y,toNodeAngle+this.tr.toRadians(-90),dist);
+    moveNode = this.tr.move(moveNode.x, moveNode.y, nodeAngle + this.tr.toRadians(90), dist);
+    moveToNode = this.tr.move(moveToNode.x, moveToNode.y, toNodeAngle + this.tr.toRadians(-90), dist);
     path.moveTo(moveNode.x, moveNode.y);
     path.lineTo(moveToNode.x, moveToNode.y);
     const angle = toNodeAngle + this.tr.toRadians(90);
@@ -709,6 +726,18 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
     this.ctx.strokeStyle = 'black';
   }
 
+  rectangleAngle(x: number, y: number, height: number, width: number, angle: number) {
+    const rectangle = this.tr.rectangle(x, y, height, width, angle);
+    this.ctx.beginPath();
+    this.ctx.moveTo(x, y);
+    this.ctx.lineTo(rectangle.xx, rectangle.yy);
+    this.ctx.lineTo(rectangle.xxx, rectangle.yyy);
+    this.ctx.lineTo(rectangle.xxxx, rectangle.yyyy);
+    this.ctx.lineTo(x, y);
+    this.ctx.stroke();
+    this.ctx.closePath();
+  }
+
   updateCanvas(update: boolean) {
     this.refresh();
   }
@@ -719,7 +748,7 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
     this.alignLabel = false;
     this.alignNodeLabel = false;
     this.createLabel = false;
-    this.updateLabel=false;
+    this.updateLabel = false;
   }
 
 }
