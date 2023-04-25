@@ -18,16 +18,7 @@ import { NetNodeService } from "../../services/net-node.service";
 import { LabelsService } from "../../services/labels.service";
 import { Labels } from 'src/app/interfaces/labels';
 import { GdService } from "../../services/gd.service";
-interface Rectangle {
-  x: number,
-  y: number,
-  xx: number,
-  yy: number,
-  xxx: number,
-  yyy: number,
-  xxxx: number,
-  yyyy: number
-}
+import {NgGdService} from "ng-gd"
 @Component({
   selector: 'app-view-bond',
   templateUrl: './view-bond.component.html',

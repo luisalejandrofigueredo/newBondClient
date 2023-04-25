@@ -6,6 +6,7 @@ export class LabelObject extends ShapeObject {
     angle: number = 0;
     fontSize = 16;
     text: string = "select label text";
+    sizeText=0;
     constructor(x: number, y: number, text: string, fontSize?: number, angle?: number) {
         super()
         this.x = x;
@@ -20,10 +21,11 @@ export class LabelObject extends ShapeObject {
         }
     }
     override inPoint(x: number, y: number): boolean {
-        const rectangle=this.rectangle(x,y,this.fontSize,this.fontSize*this.text.length,this.angle)
+        const rectangle=this.rectangle(x,y,this.fontSize,this.sizeText,this.angle)
         return isPointInsideRectangle({x:x,y:y},rectangle.fist,rectangle.second,rectangle.third,rectangle.forth)
     }
     override drawShape(ctx: CanvasRenderingContext2D): void {
+        this.sizeText=ctx.measureText(this.text).width;
         ctx.save();
         ctx.translate(this.x, this.y);
         ctx.rotate(this.angle);
