@@ -22,6 +22,11 @@ const routes: Routes = [
     path: 'connections',
     loadChildren: () =>
       import(`./connections/connections.module`).then((m) => m.ConnectionsModule),
+  },
+  {
+    path: 'testGDI',
+    loadChildren: () =>
+      import(`./testgdi/testgdi.module`).then((m) => m.TestgdiModule),
   }
 ];
 

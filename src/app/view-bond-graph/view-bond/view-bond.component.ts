@@ -17,7 +17,7 @@ import { ZoomService } from "../../services/zoom.service";
 import { NetNodeService } from "../../services/net-node.service";
 import { LabelsService } from "../../services/labels.service";
 import { Labels } from 'src/app/interfaces/labels';
-import { ThumbXDirective } from 'ngx-scrollbar/lib/scrollbar/thumb/thumb.directive';
+import { GdService } from "../../services/gd.service";
 interface Rectangle {
   x: number,
   y: number,
@@ -61,7 +61,7 @@ export class ViewBondComponent implements OnInit, AfterContentInit, AfterViewIni
   @ViewChild(MatMenuTrigger, { static: true }) matMenuTrigger!: MatMenuTrigger;
   alignNodeLabel: boolean = false;
   alignLabel: boolean = false;
-  constructor(private netNodeService: NetNodeService, private zoomService: ZoomService, private matDialog: MatDialog, private connectionService: ConnectionsService, private tr: TrigonometricService, private router: Router, private projectService: ProjectServiceService, private nodeService: NodeService, private loginService: LoginService, private labelsService: LabelsService) { }
+  constructor(private gd:GdService,private netNodeService: NetNodeService, private zoomService: ZoomService, private matDialog: MatDialog, private connectionService: ConnectionsService, private tr: TrigonometricService, private router: Router, private projectService: ProjectServiceService, private nodeService: NodeService, private loginService: LoginService, private labelsService: LabelsService) { }
 
   ngAfterViewInit() {
     this.ctx.setTransform(this.zoomService.getZoom());

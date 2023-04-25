@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NumberPoint } from '../interfaces/number-point'
-import { Point } from '../interfaces/point';
+import {NodeObject} from '../class/node-object'
+import { ShapeObject } from "../class/shape-object";
 interface Rectangle {
   x: number,
   y: number,
@@ -17,7 +18,9 @@ interface Rectangle {
 })
 export class TrigonometricService {
 
-  constructor() { }
+  constructor() {
+    
+   }
 
 
   /**
@@ -129,4 +132,35 @@ export class TrigonometricService {
     const inverseMatrix = transformMatrix.invertSelf();
     return inverseMatrix.transformPoint(point);
   }
+
+  drawShape(ctx:CanvasRenderingContext2D, xOff:number, yOff:number) {
+    ctx.beginPath();
+    ctx.moveTo(2 + xOff, 32 + yOff);
+    ctx.bezierCurveTo(131 + xOff, 37 + yOff, 119 + xOff, -5 + yOff, 231 + xOff, 3 + yOff);
+    ctx.stroke();
+  }
+
+  /**
+   * 
+   * @param mouseX 
+   * @param mouseY 
+   * @param zoom 
+   */
+  scaleCanvas(ctx: CanvasRenderingContext2D,X: number, Y: number, zoom: number) {
+    ctx.translate(X, Y);
+    ctx.scale(zoom, zoom);
+    ctx.translate(-X, -Y);
+  }
+  
+  rotateText(ctx:CanvasRenderingContext2D,text: string, x: number, y: number, angle: number, color: string, fontSize: number) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.fillStyle = color;
+    ctx.font = Math.abs(fontSize).toString() + "px Arial"
+    ctx.fillText(text, 0, 0);
+    ctx.restore();
+  }
+  
 }
+
