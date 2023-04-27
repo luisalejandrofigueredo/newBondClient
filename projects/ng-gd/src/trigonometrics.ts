@@ -1,4 +1,3 @@
-import { RadioControlValueAccessor } from "@angular/forms";
 import { Point } from "./interfaces/point";
 import { Rectangle } from "./interfaces/rectangle";
 
@@ -13,7 +12,19 @@ export function rectangle(x: number, y: number, height: number, width: number, a
   const widthOne = move(point.x, point.y, toRadians(angleInGrades), width);
   const heightOne = move(widthOne.x, widthOne.y, toRadians(angleInGrades - 90), height);
   const widthTwo = move(heightOne.x, heightOne.y, toRadians(angleInGrades - 180), width);
-  return { first: point, second: widthOne, third: heightOne, forth: widthTwo }
+  return { first: point, second: widthOne, third: heightOne, forth: widthTwo } 
+}
+
+export function drawRectangle(ctx: CanvasRenderingContext2D,rect:Rectangle) {
+    ctx.beginPath();
+    ctx.fillStyle="white";
+    ctx.moveTo(rect.first.x,rect.first.y);
+    ctx.lineTo(rect.second.x,rect.second.y);
+    ctx.lineTo(rect.third.x,rect.third.y);
+    ctx.lineTo(rect.forth.x,rect.forth.y);
+    ctx.lineTo(rect.first.x,rect.first.y);
+    ctx.stroke();
+    ctx.fill();
 }
 
 export function move(x: number, y: number, angle: number, distance: number): Point {
@@ -78,6 +89,11 @@ export function rotateText(ctx: CanvasRenderingContext2D, text: string, x: numbe
 }
 
 export function isPointInsideRectangle(point: Point, rectVertex1: Point, rectVertex2: Point, rectVertex3: Point, rectVertex4: Point): boolean {
+  console.log('Point:',point);
+  console.log('rectVertex1:',rectVertex1);
+  console.log('rectVertex2:',rectVertex2);
+  console.log('rectVertex3:',rectVertex3);
+  console.log('rectVertex4:',rectVertex4);
   const vec1 = { x: rectVertex2.x - rectVertex1.x, y: rectVertex2.y - rectVertex1.y };
   const vec2 = { x: rectVertex3.x - rectVertex2.x, y: rectVertex3.y - rectVertex2.y };
   const vec3 = { x: rectVertex4.x - rectVertex3.x, y: rectVertex4.y - rectVertex3.y };
@@ -96,7 +112,7 @@ export function isPointInsideRectangle(point: Point, rectVertex1: Point, rectVer
   return isLeft1 === isLeft2 && isLeft2 === isLeft3 && isLeft3 === isLeft4;
 }
 
-export function isPointInsideTrapezoid(A:Point, B:Point, C:Point, D:Point, point:Point): boolean {
+export function isPointInsideTrapezoid(A: Point, B: Point, C: Point, D: Point, point: Point): boolean {
   const mAB = (B.y - A.y) / (B.x - A.x);
   const mCD = (D.y - C.y) / (D.x - C.x);
 
@@ -113,4 +129,49 @@ export function isPointInsideTrapezoid(A:Point, B:Point, C:Point, D:Point, point
   } else {
     return false;
   }
+}
+
+
+
+/**
+ * 
+ * @param x 
+ * @param y 
+ * @returns 
+ */
+export function getTransformedPoint(ctx: CanvasRenderingContext2D, x: number, y: number): Point {
+  const transform = ctx.getTransform();
+  const invertedScaleX = 1 / transform.a;
+  const invertedScaleY = 1 / transform.d;
+  const transformedX = invertedScaleX * x - invertedScaleX * transform.e;
+  const transformedY = invertedScaleY * y - invertedScaleY * transform.f;
+  return { x: transformedX, y: transformedY };
+}
+
+export function translateLineToNewPosition(pointA: Point, pointB: Point, newCenter: Point): { newPointA: Point, newPointB: Point } {
+  // 1. Calcular el vector que define la recta
+  const lineVector = {
+    x: pointB.x - pointA.x,
+    y: pointB.y - pointA.y,
+  };
+
+  // 2. Calcular el vector que define la distancia y dirección de traslación
+  const translationVector = {
+    x: newCenter.x - ((pointA.x + pointB.x) / 2),
+    y: newCenter.y - ((pointA.y + pointB.y) / 2),
+  };
+
+  // 3. Calcular las nuevas posiciones de los puntos
+  const newPointA = {
+    x: pointA.x + translationVector.x,
+    y: pointA.y + translationVector.y,
+  };
+
+  const newPointB = {
+    x: pointB.x + translationVector.x,
+    y: pointB.y + translationVector.y,
+  };
+
+  // 4. Retornar los nuevos puntos A y B
+  return { newPointA, newPointB };
 }

@@ -1,13 +1,18 @@
 import { CommonProperties } from "../interfaces/common-properties";
+import { getTransformedPoint } from "../trigonometrics";
 export abstract class ShapeObject implements CommonProperties {
   private static maxId: number = 0;
   private static maxZOrder: number = 0;
+  private static bgColor = "#000000";
+  private static fgColor = "#ffffff";
+  public static width = 0;
+  public static height = 0;
   id: number = 0;
   x = 0;
   y = 0;
   name = '';
   zOrder = 0;
-  color = '#000000';
+  color = '#ff0000';
   visible = true;
   type = '';
   constructor() {
@@ -15,12 +20,11 @@ export abstract class ShapeObject implements CommonProperties {
     this.id = ShapeObject.maxId;
   }
   abstract drawShape(ctx: CanvasRenderingContext2D): void;
+  abstract inverseShape(ctx: CanvasRenderingContext2D): void;
   abstract inPoint(x: number, y: number): boolean;
-  move(x: number, y: number) {
-    this.x = x;
-    this.y = y;
-  }
-
+  abstract move(x:number,y:number):void ;
+  abstract moveMouse(ctx: CanvasRenderingContext2D, event: MouseEvent):void;
+  
   moveAngle(angle: number, dist: number) {
     this.x = this.x + Math.cos(angle) * dist;
     this.y = this.y + Math.sin(angle) * dist;
@@ -52,7 +56,7 @@ export abstract class ShapeObject implements CommonProperties {
   }
 
   set Visible(visible: boolean) {
-    this.visible=visible;
+    this.visible = visible;
   }
 
   get Visible() {
@@ -67,11 +71,27 @@ export abstract class ShapeObject implements CommonProperties {
     return this.color;
   }
 
-  get Name(){
+  get Name() {
     return this.name;
   }
 
-  set Name(name:string){
-    this.name=name;
+  set Name(name: string) {
+    this.name = name;
+  }
+
+  get BgColor() {
+    return ShapeObject.bgColor;
+  }
+
+  set BgColor(color: string) {
+    ShapeObject.bgColor = color;
+  }
+
+  get FgColor() {
+    return ShapeObject.fgColor;
+  }
+
+  set FgColor(color: string) {
+    ShapeObject.fgColor = color;
   }
 }

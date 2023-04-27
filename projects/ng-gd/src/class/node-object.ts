@@ -1,18 +1,18 @@
 import { ShapeObject } from "./shape-object";
-import { distance, toRadians, move, hexColor, fillCircle } from "../trigonometrics";
+import { distance, toRadians, move, fillCircle, getTransformedPoint } from "../trigonometrics";
 export class NodeObject extends ShapeObject {
     description!: string;
     net: boolean = false;
     angleLabel: number = 0;
     distanceLabel: number = 10;
-    radius:number=10;
-    constructor(x: number, y: number, name: string, radius:number,description?: string, net?: boolean, angleLabel?: number, distanceLabel?: number) {
+    radius: number = 10;
+    constructor(x: number, y: number, name: string, radius: number, description?: string, net?: boolean, angleLabel?: number, distanceLabel?: number) {
         super();
         this.x = x;
         this.y = y;
         this.name = name;
         this.type = 'node';
-        this.radius=radius;
+        this.radius = radius;
         if (description) {
             this.description = description;
         }
@@ -26,17 +26,41 @@ export class NodeObject extends ShapeObject {
             this.distanceLabel = distanceLabel;
         }
     }
-     override drawShape(ctx: CanvasRenderingContext2D): void {
-        if (this.visible===true){
+    override moveMouse(ctx: CanvasRenderingContext2D, event: MouseEvent) {
+        const point = getTransformedPoint(ctx, event.offsetX, event.offsetY);
+        this.x = point.x;
+        this.y = point.y;
+    }
+
+    override move(x: number, y: number) {
+        this.x = x;
+        this.y = y;
+    }
+
+    override inverseShape(ctx: CanvasRenderingContext2D): void {
+        const path = new Path2D();
+        const movePos = move(this.x, this.y, toRadians(this.angleLabel), this.distanceLabel);
+        ctx.font = "16px Arial"
+        ctx.fillStyle = this.BgColor;
+        ctx.strokeStyle = this.BgColor;
+        ctx.fillText(this.name, movePos.x, movePos.y);
+        fillCircle(ctx, this.x, this.y, 10, this.BgColor);
+        ctx.lineWidth = 1
+    }
+
+    override drawShape(ctx: CanvasRenderingContext2D): void {
+        if (this.visible === true) {
             const path = new Path2D();
             const movePos = move(this.x, this.y, toRadians(this.angleLabel), this.distanceLabel);
             ctx.font = "16px Arial"
+            ctx.fillStyle = this.FgColor;
+            ctx.strokeStyle = this.FgColor;
             ctx.fillText(this.name, movePos.x, movePos.y);
-            fillCircle(ctx, this.x, this.y, 10, hexColor(this.color));
+            fillCircle(ctx, this.x, this.y, 10, this.color);
             ctx.lineWidth = 1
             if (this.net === true) {
-                ctx.fillStyle = 'black';
-                ctx.strokeStyle = 'black';
+                ctx.fillStyle = this.Color;
+                ctx.strokeStyle = this.Color;
                 ctx.lineWidth = 1;
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, 2, 0, 2 * Math.PI);
@@ -45,6 +69,7 @@ export class NodeObject extends ShapeObject {
             }
         }
     }
+
     override inPoint(x: number, y: number): boolean {
         if (distance(this.x, this.y, x, y) < this.radius) {
             return true;
