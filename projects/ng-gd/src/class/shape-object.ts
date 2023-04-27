@@ -1,13 +1,12 @@
 import { CommonProperties } from "../interfaces/common-properties";
-import { getTransformedPoint } from "../trigonometrics";
 export abstract class ShapeObject implements CommonProperties {
-  private static maxId: number = 0;
+  private static maxId: number = -1;
   private static maxZOrder: number = 0;
   private static bgColor = "#000000";
   private static fgColor = "#ffffff";
   public static width = 0;
   public static height = 0;
-  id: number = -1;
+  id: number = 0;
   x = 0;
   y = 0;
   name = '';

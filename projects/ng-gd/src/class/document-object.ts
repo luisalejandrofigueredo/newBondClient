@@ -1,4 +1,5 @@
-import { ShapeObject } from "ng-gd";
+import { ShapeObject } from "./shape-object";
+
 
 export class DocumentObject extends ShapeObject{
 
@@ -10,14 +11,14 @@ export class DocumentObject extends ShapeObject{
     }    
     override drawShape(ctx: CanvasRenderingContext2D): void {
     }
-    override inverseShape(ctx: CanvasRenderingContext2D): void {
+    inverseShape(ctx: CanvasRenderingContext2D): void {
     }
     override inPoint(x: number, y: number): boolean {
         return false;
     }
     override move(x: number, y: number): void {
     }
-    override moveMouse(ctx: CanvasRenderingContext2D, event: MouseEvent): void {   
+    moveMouse(ctx: CanvasRenderingContext2D, event: MouseEvent): void {   
     }
     setSize(width:number,height:number){
         ShapeObject.width=width;

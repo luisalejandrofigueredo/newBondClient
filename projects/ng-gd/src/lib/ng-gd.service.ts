@@ -17,24 +17,28 @@ export class NgGdService {
   bkColor: string = "#000000";
   frColor: string = "#ffffff";
   clicks: { shape: ShapeObject, action: string }[] = [];
-  constructor() {}
+  constructor() { }
 
   start(width: number, height: number) {
     if (this.canvasObjects.length === 0) {
       this.canvasObjects.push(new DocumentObject(width, height));
     } else {
-      (this.getItem(0) as DocumentObject).setSize(width, height);
+      (this.getItem(0) as unknown as DocumentObject).setSize(width, height);
     }
   }
 
   setDarkMode() {
-    this.bkColor = "#000000"
-    this.frColor = "#ffffff"
+    this.bkColor = "#000000";
+    this.frColor = "#ffffff";
+    this.getItem(0).BgColor = this.bkColor;
+    this.getItem(0).FgColor = this.frColor;
   }
 
   setLightMode() {
-    this.bkColor = "#ffffff"
-    this.frColor = "#000000"
+    this.bkColor = "#ffffff";
+    this.frColor = "#000000";
+    this.getItem(0).BgColor = this.bkColor;
+    this.getItem(0).FgColor = this.frColor;
   }
 
 

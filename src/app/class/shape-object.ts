@@ -1,7 +1,10 @@
-import { CommonProperties } from "./interfaces/common-properties";
+import { CommonProperties } from "projects/ng-gd/src/interfaces/common-properties";
+
 export abstract class ShapeObject implements CommonProperties {
   private static maxId: number = 0;
   private static maxZOrder: number = 0;
+  public static width=0;
+  public static height=0;
   id: number = 0;
   x = 0;
   y = 0;
