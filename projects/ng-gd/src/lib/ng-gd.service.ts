@@ -5,6 +5,7 @@ import { NodeObject } from '../class/node-object';
 import { ConnectionObject } from '../class/connection-object';
 import { LabelObject } from '../class/label-object';
 import { getTransformedPoint } from '../trigonometrics';
+import { DocumentObject } from '../public-api';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +16,15 @@ export class NgGdService {
   height = 600;
   bkColor: string = "#000000";
   frColor: string = "#ffffff";
-  clicks: ShapeObject[] = [];
-  constructor() {
+  clicks: { shape: ShapeObject, action: string }[] = [];
+  constructor() {}
+
+  start(width: number, height: number) {
+    if (this.canvasObjects.length === 0) {
+      this.canvasObjects.push(new DocumentObject(width, height));
+    } else {
+      (this.getItem(0) as DocumentObject).setSize(width, height);
+    }
   }
 
   setDarkMode() {
@@ -28,6 +36,8 @@ export class NgGdService {
     this.bkColor = "#ffffff"
     this.frColor = "#000000"
   }
+
+
 
   canvasSetSize(width: number, height: number) {
     this.width = width;
@@ -60,7 +70,7 @@ export class NgGdService {
     this.canvasObjects.push(newLabel)
   }
 
-  click(ctx: CanvasRenderingContext2D, event: MouseEvent): ShapeObject[] {
+  click(ctx: CanvasRenderingContext2D, event: MouseEvent): { shape: ShapeObject, action: string }[] {
     const currentTransformedCursor = getTransformedPoint(ctx, event.offsetX, event.offsetY);
     this.clicks = this.touch(currentTransformedCursor, ctx);
     return this.clicks;
@@ -70,11 +80,22 @@ export class NgGdService {
     return this.clicks;
   }
 
-  touch(position: Point, ctx?: CanvasRenderingContext2D): ShapeObject[] {
-    let onclick: ShapeObject[] = []
+  touch(position: Point, ctx?: CanvasRenderingContext2D): { shape: ShapeObject, action: string }[] {
+    let onclick: { shape: ShapeObject, action: string }[] = []
     this.canvasObjects.forEach((element) => {
       if (element.inPoint(position.x, position.y)) {
-        onclick.push(element);
+        onclick.push({ shape: element, action: 'inPoint' });
+      }
+      if (element.type === 'connection') {
+        if ((element as ConnectionObject).inPointXY(position.x, position.y)) {
+          onclick.push({ shape: element, action: 'inPointXY' });
+        }
+        if ((element as ConnectionObject).inPointToXY(position.x, position.y)) {
+          onclick.push({ shape: element, action: 'inPointToXY' });
+        }
+        if ((element as ConnectionObject).inRectangle(position.x, position.y)) {
+          onclick.push({ shape: element, action: 'inRectangle' });
+        }
       }
     });
     return onclick;

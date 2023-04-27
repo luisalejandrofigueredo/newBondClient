@@ -131,6 +131,38 @@ export function isPointInsideTrapezoid(A: Point, B: Point, C: Point, D: Point, p
   }
 }
 
+export function isPointInTriangle(point: Point, a: Point, b: Point, c: Point): boolean {
+  const ab = { x: b.x - a.x, y: b.y - a.y };
+  const ac = { x: c.x - a.x, y: c.y - a.y };
+  const ap = { x: point.x - a.x, y: point.y - a.y };
+
+  const crossABAP = ab.x * ap.y - ab.y * ap.x;
+  const crossACAP = ac.x * ap.y - ac.y * ap.x;
+  if (crossABAP * crossACAP < 0) {
+    return false;
+  }
+
+  const bp = { x: point.x - b.x, y: point.y - b.y };
+  const bc = { x: c.x - b.x, y: c.y - b.y };
+
+  const crossBPCB = bp.x * bc.y - bp.y * bc.x;
+  const crossABPB = ab.x * bp.y - ab.y * bp.x;
+  if (crossBPCB * crossABPB < 0) {
+    return false;
+  }
+
+  const cp = { x: point.x - c.x, y: point.y - c.y };
+  const ca = { x: a.x - c.x, y: a.y - c.y };
+
+  const crossCPAC = cp.x * ca.y - cp.y * ca.x;
+  const crossBCPC = bc.x * cp.y - bc.y * cp.x;
+  if (crossCPAC * crossBCPC < 0) {
+    return false;
+  }
+
+  return true;
+}
+
 
 
 /**

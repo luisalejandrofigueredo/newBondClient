@@ -7,7 +7,7 @@ export abstract class ShapeObject implements CommonProperties {
   private static fgColor = "#ffffff";
   public static width = 0;
   public static height = 0;
-  id: number = 0;
+  id: number = -1;
   x = 0;
   y = 0;
   name = '';

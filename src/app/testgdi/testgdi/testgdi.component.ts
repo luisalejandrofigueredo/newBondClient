@@ -32,17 +32,39 @@ export class TestgdiComponent implements AfterViewInit, OnInit {
 
   @HostListener("mousedown", ["$event"])
   async onMouseDown(event: MouseEvent) {
-    if (this.gd.click(this.ctx, event).length > 0)
+    if (this.gd.click(this.ctx, event).length > 0){
+      console.log('click');
       this.move = true;
+    }
   }
 
   @HostListener("mousemove", ["$event"])
   async onMouseMove(event: MouseEvent) {
     if (this.move === true) {
       this.gd.getClicks().forEach((element) => {
-        element.inverseShape(this.ctx);
-        element.moveMouse(this.ctx, event);
-        element.drawShape(this.ctx);
+        if (element.shape.type!=='connection'){
+          element.shape.inverseShape(this.ctx);
+          element.shape.moveMouse(this.ctx, event);
+          element.shape.drawShape(this.ctx);
+        }
+        else {
+          if (element.action ==='inPointXY'){
+            element.shape.inverseShape(this.ctx);
+            (element.shape as ConnectionObject).moveMouseXY(this.ctx,event)
+            element.shape.drawShape(this.ctx);
+          }
+          if (element.action ==='inPointToXY'){
+            element.shape.inverseShape(this.ctx);
+            (element.shape as ConnectionObject).moveMouseToXY(this.ctx,event)
+            element.shape.drawShape(this.ctx);
+          }
+          if (element.action ==='inRectangle'){
+            element.shape.inverseShape(this.ctx);
+            (element.shape as ConnectionObject).moveMouse(this.ctx,event)
+            element.shape.drawShape(this.ctx);
+          }
+
+        }
       });
     }
   }
