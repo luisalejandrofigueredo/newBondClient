@@ -1,5 +1,6 @@
+import { identifierName } from '@angular/compiler';
 import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild, inject } from '@angular/core';
-import { NgGdService, ConnectionObject } from 'ng-gd'
+import { NgGdService, ConnectionObject, Point, LabelObject, NodeObject} from 'ng-gd'
 @Component({
   selector: 'app-testgdi',
   templateUrl: './testgdi.component.html',
@@ -12,13 +13,21 @@ export class TestgdiComponent implements AfterViewInit, OnInit {
   @ViewChild('canvas', { static: true }) canvas!: ElementRef<HTMLCanvasElement>;
   constructor() {
     this.gd.start(800,600);
-    this.gd.addNode({ x: 150, y: 150 }, "uno", 10, "number one", false, 10, 10);
-    this.gd.addNode({ x: 50, y: 50 }, "dos", 10, "number two", false, 10, 10);
+    this.gd.setDarkMode();
+    this.gd.addNode({ x: 150, y: 150 }, "one", "one", false, 10, 10);
+    this.gd.addNode({ x: 50, y: 50 }, "two", "two", false, 10, 10);
     this.gd.addConnection({ x: 150, y: 150 }, { x: 50, y: 50 }, "#000000")
-    this.gd.addLabel(70, 70, "Hola Mundo", 20, 270);
-    const connect = this.gd.getItem(3);
-    (connect as unknown as ConnectionObject).Name = "hello word" ;
-    (connect as unknown as ConnectionObject).
+    this.gd.addLabel({x:200,y:200} as Point, "Hola Mundo", 20, 270);
+    const connect = this.gd.castingConnection(3);
+    connect.Name = "hello word" ;
+    connect.MirrorLabel=true;
+    const label=this.gd.getItem(4);
+    (label as unknown as LabelObject).font="Arial"
+    const node2= this.gd.casting(2);
+    if (node2 instanceof NodeObject){
+      node2.name="Dos";
+    }
+    
   }
 
   ngAfterViewInit(): void {
@@ -35,7 +44,6 @@ export class TestgdiComponent implements AfterViewInit, OnInit {
   @HostListener("mousedown", ["$event"])
   async onMouseDown(event: MouseEvent) {
     if (this.gd.click(this.ctx, event).length > 0){
-      console.log('click');
       this.move = true;
     }
   }

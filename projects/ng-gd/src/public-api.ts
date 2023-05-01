@@ -10,3 +10,4 @@ export * from './class/label-object'
 export * from './class/node-object'
 export * from './class/shape-object'
 export * from './class/document-object'
+export * from './interfaces/point';

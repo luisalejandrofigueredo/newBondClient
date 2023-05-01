@@ -4,8 +4,8 @@ export class ConnectionObject extends ShapeObject {
   toX: number;
   toY: number;
   mirrorLabel: boolean = false;
-  align: number=0;
-  distance: number=0;
+  align: number = 0;
+  distance: number = 0;
   shape = 0;
   constructor(x: number, y: number, toX: number, toY: number, color: string, name?: string) {
     super()
@@ -18,6 +18,16 @@ export class ConnectionObject extends ShapeObject {
     if (name !== undefined) {
       this.name = name;
     }
+  }
+
+  
+
+  set MirrorLabel(mirror: boolean) {
+    this.mirrorLabel = mirror
+  }
+
+  get MirrorLabel(): boolean {
+    return this.mirrorLabel;
   }
 
   override moveMouse(ctx: CanvasRenderingContext2D, event: MouseEvent) {
@@ -170,7 +180,7 @@ export class ConnectionObject extends ShapeObject {
       if (this.mirrorLabel === false) {
         rotateText(ctx, this.name, textPosition.x, textPosition.y, angleC, this.FgColor, 16);
       } else {
-        rotateText(ctx, this.name, textPosition.x, textPosition.y, angleC + Math.PI, this.BgColor, 16);
+        rotateText(ctx, this.name, textPosition.x, textPosition.y, angleC + Math.PI, this.FgColor, 16);
       }
     }
   }

@@ -27,6 +27,100 @@ export class NgGdService {
     }
   }
 
+  getLabels():LabelObject[]{
+    let labels:LabelObject[]=[];
+    this.canvasObjects.forEach(element => {
+      if (element instanceof LabelObject){
+        labels.push(element)
+      }
+    });
+    return labels;
+  }
+
+
+  getConnections():ConnectionObject[]{
+    let connections:ConnectionObject[]=[];
+    this.canvasObjects.forEach(element => {
+      if (element instanceof ConnectionObject){
+        connections.push(element)
+      }
+    });
+    return connections;
+  }
+
+  getNodes():NodeObject[]{
+    let nodes:NodeObject[]=[];
+    this.canvasObjects.forEach(element => {
+      if (element instanceof NodeObject){
+        nodes.push(element)
+      }
+    });
+    return nodes;
+  }
+
+  castingNode(id: number): NodeObject {
+    for (let index = 0; index < this.canvasObjects.length; index++) {
+      const element = this.canvasObjects[index];
+      if (!(element instanceof NodeObject)) {
+        console.log('error type in casting node')
+      }
+      if (element.id === id) {
+        return element as NodeObject;
+      }
+    }
+    return <NodeObject>{}
+  }
+
+  castingLabel(id: number): LabelObject {
+    for (let index = 0; index < this.canvasObjects.length; index++) {
+      const element = this.canvasObjects[index];
+      if (element.id === id) {
+        if (!(element instanceof LabelObject)) {
+          console.log('error type in casting label')
+        }
+        return element as LabelObject;
+      }
+    }
+    return <LabelObject>{}
+  }
+
+  castingConnection(id: number): ConnectionObject {
+    for (let index = 0; index < this.canvasObjects.length; index++) {
+      const element = this.canvasObjects[index];
+      if (element.id === id) {
+        if (!(element instanceof ConnectionObject)) {
+          console.log('error type in casting connection')
+        }
+        return element as ConnectionObject;
+      }
+    }
+    return <ConnectionObject>{}
+  }
+
+  casting(id: number): ConnectionObject | NodeObject | LabelObject | ShapeObject {
+    for (let index = 0; index < this.canvasObjects.length; index++) {
+      const element = this.canvasObjects[index];
+      if (element.id === id) {
+        switch ((element as ShapeObject).type) {
+          case 'label':
+            return (element as LabelObject);
+          case 'node':
+            return (element as NodeObject);
+          case 'connection':
+            return (element as ConnectionObject);
+          default:
+            break;
+        }
+        return (element as ShapeObject);
+      }
+    }
+    return <ConnectionObject>{}
+  }
+
+  getMousePoint(ctx: CanvasRenderingContext2D, x: number, y: number): Point {
+    return getTransformedPoint(ctx, x, y);
+  }
+
   setDarkMode() {
     this.bkColor = "#000000";
     this.frColor = "#ffffff";
@@ -59,8 +153,8 @@ export class NgGdService {
 
 
 
-  addNode(point: Point, name: string, radius: number, description?: string, net?: boolean, angleLabel?: number, distanceLabel?: number) {
-    const newNode = new NodeObject(point.x, point.y, name, radius, description, net, angleLabel, distanceLabel);
+  addNode(point: Point, name: string, description?: string, net?: boolean, angleLabel?: number, distanceLabel?: number) {
+    const newNode = new NodeObject(point.x, point.y, name, 4, description, net, angleLabel, distanceLabel);
     this.canvasObjects.push((<ShapeObject>newNode));
   }
 
@@ -69,8 +163,8 @@ export class NgGdService {
     this.canvasObjects.push((<ShapeObject>newConnection));
   }
 
-  addLabel(x: number, y: number, text: string, fontSize: number, angle: number) {
-    const newLabel = new LabelObject(x, y, text, fontSize, angle);
+  addLabel(point: Point, text: string, fontSize: number, angle: number) {
+    const newLabel = new LabelObject(point.x, point.y, text, fontSize, angle);
     this.canvasObjects.push(newLabel)
   }
 
@@ -102,6 +196,7 @@ export class NgGdService {
         }
       }
     });
+    onclick.sort((a,b)=> a.shape.zOrder - b.shape.zOrder);
     return onclick;
   }
 

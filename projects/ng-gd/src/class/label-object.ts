@@ -8,6 +8,7 @@ export class LabelObject extends ShapeObject {
     fontSize = 16;
     text: string = "select label text";
     sizeText = 0;
+    public font="Arial";
     constructor(x: number, y: number, text: string, fontSize?: number, angle?: number) {
         super()
         this.color=this.FgColor;
@@ -32,7 +33,7 @@ export class LabelObject extends ShapeObject {
         ctx.translate(this.x, this.y);
         ctx.rotate(this.angle);
         ctx.fillStyle = this.BgColor;
-        ctx.font = Math.abs(this.fontSize).toString() + "px Arial"
+        ctx.font = Math.abs(this.fontSize).toString() + "px "+this.font
         this.sizeText = ctx.measureText(this.text).actualBoundingBoxRight+ctx.measureText(this.text).actualBoundingBoxLeft;
         ctx.fillText(this.text, 0, 0);
         ctx.restore();
@@ -53,7 +54,7 @@ export class LabelObject extends ShapeObject {
         ctx.translate(this.x, this.y);
         ctx.rotate(this.angle);
         ctx.fillStyle = this.color;
-        ctx.font = Math.abs(this.fontSize).toString() + "px Arial"
+        ctx.font = Math.abs(this.fontSize).toString() + "px "+this.font
         this.sizeText = ctx.measureText(this.text).actualBoundingBoxRight+ctx.measureText(this.text).actualBoundingBoxLeft;
         ctx.fillText(this.text, 0, 0);
         ctx.restore();
@@ -62,4 +63,13 @@ export class LabelObject extends ShapeObject {
     setAngleInGrades(grades: number) {
         this.angle = toRadians(grades);
     }
+
+    set Font(font:string) {
+        this.font = font;
+      }
+    
+    get Font(): string {
+        return this.font;
+      }
+    
 }
