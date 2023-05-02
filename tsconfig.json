@@ -21,10 +21,10 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "ES2022",
+    "target": "ES2018",
     "module": "es2020",
     "lib": [
-      "es2020",
+      "es2018",
       "dom"
     ],
     "useDefineForClassFields": false

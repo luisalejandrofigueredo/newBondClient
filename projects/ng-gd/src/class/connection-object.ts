@@ -7,12 +7,16 @@ export class ConnectionObject extends ShapeObject {
   align: number = 0;
   distance: number = 0;
   shape = 0;
-  constructor(x: number, y: number, toX: number, toY: number, color: string, name?: string) {
+  constructor(x: number, y: number, toX: number, toY: number, color?: string, name?: string) {
     super()
     this.x = x;
     this.y = y;
     this.type = 'connection';
-    this.color = color;
+    if (color !== undefined) {
+      this.color = color;
+    } else {
+      this.color = this.FgColor;
+    }
     this.toX = toX;
     this.toY = toY;
     if (name !== undefined) {
@@ -20,7 +24,7 @@ export class ConnectionObject extends ShapeObject {
     }
   }
 
-  
+
 
   set MirrorLabel(mirror: boolean) {
     this.mirrorLabel = mirror
@@ -151,8 +155,8 @@ export class ConnectionObject extends ShapeObject {
 
   override drawShape(ctx: CanvasRenderingContext2D): void {
     if (this.visible === true) {
-      ctx.fillStyle = this.FgColor;
-      ctx.strokeStyle = this.FgColor;
+      ctx.fillStyle = this.color;
+      ctx.strokeStyle = this.color;
       const nodeAngle = angle(this.x, this.y, this.toX, this.toY);
       const toNodeAngle = angle(this.toX, this.toY, this.x, this.y);
       let moveNode = move(this.x, this.y, nodeAngle, 30);
@@ -166,8 +170,8 @@ export class ConnectionObject extends ShapeObject {
       ctx.lineTo(rect.forth.x, rect.forth.y);
       ctx.lineTo(rect.first.x, rect.first.y);
       ctx.fill();
-      fillCircle(ctx, moveNode.x, moveNode.y, 4, this.FgColor);
-      fillCircle(ctx, moveToNode.x, moveToNode.y, 4, this.FgColor);
+      fillCircle(ctx, moveNode.x, moveNode.y, 4, this.color);
+      fillCircle(ctx, moveToNode.x, moveToNode.y, 4, this.color);
       const distPara = distance(moveNode.x, moveNode.y, moveToNode.x, moveToNode.y);
       const angleC = angle(moveNode.x, moveNode.y, moveToNode.x, moveToNode.y);
       let textPosition = { x: 0, y: 0 }

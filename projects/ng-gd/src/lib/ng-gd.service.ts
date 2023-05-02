@@ -158,8 +158,8 @@ export class NgGdService {
     this.canvasObjects.push((<ShapeObject>newNode));
   }
 
-  addConnection(point: Point, toPoint: Point, color: string) {
-    const newConnection = new ConnectionObject(point.x, point.y, toPoint.x, toPoint.y, color);
+  addConnection(point: Point, toPoint: Point, color?: string,label?:string) {
+    const newConnection = new ConnectionObject(point.x, point.y, toPoint.x, toPoint.y, color,label);
     this.canvasObjects.push((<ShapeObject>newConnection));
   }
 

@@ -89,11 +89,6 @@ export function rotateText(ctx: CanvasRenderingContext2D, text: string, x: numbe
 }
 
 export function isPointInsideRectangle(point: Point, rectVertex1: Point, rectVertex2: Point, rectVertex3: Point, rectVertex4: Point): boolean {
-  console.log('Point:',point);
-  console.log('rectVertex1:',rectVertex1);
-  console.log('rectVertex2:',rectVertex2);
-  console.log('rectVertex3:',rectVertex3);
-  console.log('rectVertex4:',rectVertex4);
   const vec1 = { x: rectVertex2.x - rectVertex1.x, y: rectVertex2.y - rectVertex1.y };
   const vec2 = { x: rectVertex3.x - rectVertex2.x, y: rectVertex3.y - rectVertex2.y };
   const vec3 = { x: rectVertex4.x - rectVertex3.x, y: rectVertex4.y - rectVertex3.y };

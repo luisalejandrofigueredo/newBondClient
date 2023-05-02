@@ -45,5 +45,5 @@ this.ctx = this.canvas.nativeElement.getContext('2d')!;
 this.ctx.fillStyle = "black";
 }
 ```
-[Demo in stackblitz](https://stackblitz.com/edit/angular-atkcvp?file=src/main.ts)
+[Demo in stackblitz](https://stackblitz.com/edit/angular-ngdemo?file=src%2Fmain.ts)
 

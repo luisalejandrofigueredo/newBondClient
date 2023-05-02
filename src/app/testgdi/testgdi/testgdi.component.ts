@@ -16,7 +16,7 @@ export class TestgdiComponent implements AfterViewInit, OnInit {
     this.gd.setDarkMode();
     this.gd.addNode({ x: 150, y: 150 }, "one", "one", false, 10, 10);
     this.gd.addNode({ x: 50, y: 50 }, "two", "two", false, 10, 10);
-    this.gd.addConnection({ x: 150, y: 150 }, { x: 50, y: 50 }, "#000000")
+    this.gd.addConnection({ x: 150, y: 150 }, { x: 50, y: 50 }, "#ff0000")
     this.gd.addLabel({x:200,y:200} as Point, "Hola Mundo", 20, 270);
     const connect = this.gd.castingConnection(3);
     connect.Name = "hello word" ;
