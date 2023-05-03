@@ -1,5 +1,5 @@
 import { ShapeObject } from "./shape-object";
-import { angle, move, rectangle, distance, fillCircle, getNewParallelPoint, rotateText, isPointInsideRectangle, translateLineToNewPosition, getTransformedPoint, drawRectangle } from "../trigonometrics";
+import { angle, move, rectangle, distance, fillCircle, getNewParallelPoint, rotateText, isPointInsideRectangle, translateLineToNewPosition, getTransformedPoint } from "../trigonometrics";
 export class ConnectionObject extends ShapeObject {
   toX: number;
   toY: number;

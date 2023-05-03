@@ -6,6 +6,9 @@ import { ConnectionObject } from '../class/connection-object';
 import { LabelObject } from '../class/label-object';
 import { getTransformedPoint } from '../trigonometrics';
 import { DocumentObject } from '../public-api';
+import { RectangleObject } from '../class/rectangleObject';
+import { CircleObject } from '../class/circleObject';
+import { TriangleObject } from '../class/triangleObject';
 
 @Injectable({
   providedIn: 'root'
@@ -27,10 +30,10 @@ export class NgGdService {
     }
   }
 
-  getLabels():LabelObject[]{
-    let labels:LabelObject[]=[];
+  getLabels(): LabelObject[] {
+    let labels: LabelObject[] = [];
     this.canvasObjects.forEach(element => {
-      if (element instanceof LabelObject){
+      if (element instanceof LabelObject) {
         labels.push(element)
       }
     });
@@ -38,20 +41,20 @@ export class NgGdService {
   }
 
 
-  getConnections():ConnectionObject[]{
-    let connections:ConnectionObject[]=[];
+  getConnections(): ConnectionObject[] {
+    let connections: ConnectionObject[] = [];
     this.canvasObjects.forEach(element => {
-      if (element instanceof ConnectionObject){
+      if (element instanceof ConnectionObject) {
         connections.push(element)
       }
     });
     return connections;
   }
 
-  getNodes():NodeObject[]{
-    let nodes:NodeObject[]=[];
+  getNodes(): NodeObject[] {
+    let nodes: NodeObject[] = [];
     this.canvasObjects.forEach(element => {
-      if (element instanceof NodeObject){
+      if (element instanceof NodeObject) {
         nodes.push(element)
       }
     });
@@ -97,7 +100,7 @@ export class NgGdService {
     return <ConnectionObject>{}
   }
 
-  casting(id: number): ConnectionObject | NodeObject | LabelObject | ShapeObject {
+  casting(id: number): ConnectionObject | NodeObject | LabelObject | ShapeObject | RectangleObject | CircleObject | TriangleObject {
     for (let index = 0; index < this.canvasObjects.length; index++) {
       const element = this.canvasObjects[index];
       if (element.id === id) {
@@ -108,6 +111,12 @@ export class NgGdService {
             return (element as NodeObject);
           case 'connection':
             return (element as ConnectionObject);
+          case 'rectangle':
+            return (element as RectangleObject);
+          case 'circle':
+            return (element as CircleObject);
+          case 'triangle':
+              return (element as TriangleObject); 
           default:
             break;
         }
@@ -151,15 +160,28 @@ export class NgGdService {
     this.canvasObjects = [];
   }
 
+  addTriangle(first: Point, second: Point, third: Point, color?: string, borderColor?: string) {
+    const newTriangle = new TriangleObject(first, second, third, color, borderColor);
+    this.canvasObjects.push(<ShapeObject>newTriangle);
+  }
 
+  addCircle(point: Point, radius: number, color?: string, borderColor?: string) {
+    const newCircle = new CircleObject(point.x, point.y, radius, color, borderColor);
+    this.canvasObjects.push((<ShapeObject>newCircle));
+  }
+
+  addRectangle(point: Point, width: number, height: number, color?: string, borderColor?: string) {
+    const newRectangle = new RectangleObject(point.x, point.y, width, height, 10, color, borderColor);
+    this.canvasObjects.push((<ShapeObject>newRectangle));
+  }
 
   addNode(point: Point, name: string, description?: string, net?: boolean, angleLabel?: number, distanceLabel?: number) {
     const newNode = new NodeObject(point.x, point.y, name, 4, description, net, angleLabel, distanceLabel);
     this.canvasObjects.push((<ShapeObject>newNode));
   }
 
-  addConnection(point: Point, toPoint: Point, color?: string,label?:string) {
-    const newConnection = new ConnectionObject(point.x, point.y, toPoint.x, toPoint.y, color,label);
+  addConnection(point: Point, toPoint: Point, color?: string, label?: string) {
+    const newConnection = new ConnectionObject(point.x, point.y, toPoint.x, toPoint.y, color, label);
     this.canvasObjects.push((<ShapeObject>newConnection));
   }
 
@@ -196,7 +218,7 @@ export class NgGdService {
         }
       }
     });
-    onclick.sort((a,b)=> a.shape.zOrder - b.shape.zOrder);
+    onclick.sort((a, b) => a.shape.zOrder - b.shape.zOrder);
     return onclick;
   }
 

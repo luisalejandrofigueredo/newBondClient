@@ -1,10 +1,11 @@
 {
   "name": "ng-gd",
-  "version": "0.0.21",
+  "version": "0.0.24",
   "keywords": [
     "canvas",
     "Angular"
   ],
+  "author": {"name": "Luis Alejandro Figueredo Casadei","email": "luisalejandrofigueredo@gmail.com"},
   "license": "MIT",
   "peerDependencies": {
     "@angular/common": "^15.0.0",
@@ -12,5 +13,8 @@
   },
   "dependencies": {
     "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "ng-gd": "file:ng-gd-0.0.24.tgz"
   }
 }

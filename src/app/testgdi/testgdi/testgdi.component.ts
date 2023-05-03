@@ -1,4 +1,3 @@
-import { identifierName } from '@angular/compiler';
 import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild, inject } from '@angular/core';
 import { NgGdService, ConnectionObject, Point, LabelObject, NodeObject} from 'ng-gd'
 @Component({
@@ -18,6 +17,9 @@ export class TestgdiComponent implements AfterViewInit, OnInit {
     this.gd.addNode({ x: 50, y: 50 }, "two", "two", false, 10, 10);
     this.gd.addConnection({ x: 150, y: 150 }, { x: 50, y: 50 }, "#ff0000")
     this.gd.addLabel({x:200,y:200} as Point, "Hola Mundo", 20, 270);
+    this.gd.addRectangle({x:100,y:100},50,50,"#0000ff","#ff0000");
+    this.gd.addCircle({x:80,y:80},10,"#00ff00","#ff0000");
+    this.gd.addTriangle({x:90,y:90},{x:100,y:110},{x:120,y:120},"#00ff00","#0000ff");
     const connect = this.gd.castingConnection(3);
     connect.Name = "hello word" ;
     connect.MirrorLabel=true;
@@ -26,8 +28,7 @@ export class TestgdiComponent implements AfterViewInit, OnInit {
     const node2= this.gd.casting(2);
     if (node2 instanceof NodeObject){
       node2.name="Dos";
-    }
-    
+    }    
   }
 
   ngAfterViewInit(): void {
@@ -73,7 +74,6 @@ export class TestgdiComponent implements AfterViewInit, OnInit {
             (element.shape as ConnectionObject).moveMouse(this.ctx,event)
             element.shape.drawShape(this.ctx);
           }
-
         }
       });
     }

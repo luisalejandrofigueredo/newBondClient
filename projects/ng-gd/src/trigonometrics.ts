@@ -126,36 +126,29 @@ export function isPointInsideTrapezoid(A: Point, B: Point, C: Point, D: Point, p
   }
 }
 
-export function isPointInTriangle(point: Point, a: Point, b: Point, c: Point): boolean {
-  const ab = { x: b.x - a.x, y: b.y - a.y };
-  const ac = { x: c.x - a.x, y: c.y - a.y };
-  const ap = { x: point.x - a.x, y: point.y - a.y };
+export function isPointInTriangle(p1: Point, p2: Point, p3: Point, target: Point): boolean {
+  // Calculate the vectors between the triangle points
+  const v1x = p3.x - p1.x;
+  const v1y = p3.y - p1.y;
+  const v2x = p2.x - p1.x;
+  const v2y = p2.y - p1.y;
+  const v3x = target.x - p1.x;
+  const v3y = target.y - p1.y;
 
-  const crossABAP = ab.x * ap.y - ab.y * ap.x;
-  const crossACAP = ac.x * ap.y - ac.y * ap.x;
-  if (crossABAP * crossACAP < 0) {
-    return false;
-  }
+  // Calculate dot products
+  const dot11 = v1x * v1x + v1y * v1y;
+  const dot12 = v1x * v2x + v1y * v2y;
+  const dot13 = v1x * v3x + v1y * v3y;
+  const dot22 = v2x * v2x + v2y * v2y;
+  const dot23 = v2x * v3x + v2y * v3y;
 
-  const bp = { x: point.x - b.x, y: point.y - b.y };
-  const bc = { x: c.x - b.x, y: c.y - b.y };
+  // Calculate barycentric coordinates
+  const invDenom = 1 / (dot11 * dot22 - dot12 * dot12);
+  const u = (dot22 * dot13 - dot12 * dot23) * invDenom;
+  const v = (dot11 * dot23 - dot12 * dot13) * invDenom;
 
-  const crossBPCB = bp.x * bc.y - bp.y * bc.x;
-  const crossABPB = ab.x * bp.y - ab.y * bp.x;
-  if (crossBPCB * crossABPB < 0) {
-    return false;
-  }
-
-  const cp = { x: point.x - c.x, y: point.y - c.y };
-  const ca = { x: a.x - c.x, y: a.y - c.y };
-
-  const crossCPAC = cp.x * ca.y - cp.y * ca.x;
-  const crossBCPC = bc.x * cp.y - bc.y * cp.x;
-  if (crossCPAC * crossBCPC < 0) {
-    return false;
-  }
-
-  return true;
+  // Check if point is in triangle
+  return u >= 0 && v >= 0 && (u + v) < 1;
 }
 
 

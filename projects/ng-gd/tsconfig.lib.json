@@ -6,7 +6,10 @@
     "declaration": true,
     "declarationMap": true,
     "inlineSources": true,
-    "types": []
+    "types": [],
+    "paths": {
+      "ng-gd":["ng-gd/src/"]
+    }
   },
   "exclude": [
     "**/*.spec.ts"

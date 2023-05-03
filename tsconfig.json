@@ -13,15 +13,16 @@
     "sourceMap": true,
     "paths": {
       "ng-gd": [
-        "dist/ng-gd"
-      ]
+        "dist/ng-gd",
+        "../node_modules/ng-gd/dist"
+      ],
     },
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "ES2018",
+    "target": "ES2015",
     "module": "es2020",
     "lib": [
       "es2018",
