@@ -9,6 +9,7 @@ import { DocumentObject } from '../public-api';
 import { RectangleObject } from '../class/rectangleObject';
 import { CircleObject } from '../class/circleObject';
 import { TriangleObject } from '../class/triangleObject';
+import { MultiplesSidesObject } from '../class/multiplesSides';
 
 @Injectable({
   providedIn: 'root'
@@ -61,11 +62,50 @@ export class NgGdService {
     return nodes;
   }
 
+  castingMultiplesSides(id: number): MultiplesSidesObject {
+    for (let index = 0; index < this.canvasObjects.length; index++) {
+      const element = this.canvasObjects[index];
+      if (!(element instanceof MultiplesSidesObject)) {
+        console.log('error type in casting rectangle id:%s as type:%s',id,element.type)
+      }
+      if (element.id === id) {
+        return element as MultiplesSidesObject;
+      }
+    }
+    return <MultiplesSidesObject>{}
+  }
+
+  castingRectangle(id: number): RectangleObject {
+    for (let index = 0; index < this.canvasObjects.length; index++) {
+      const element = this.canvasObjects[index];
+      if (!(element instanceof RectangleObject)) {
+        console.log('error type in casting rectangle id:%d as type %s',id,element.type)
+      }
+      if (element.id === id) {
+        return element as RectangleObject;
+      }
+    }
+    return <RectangleObject>{}
+  }
+
+  castingCircle(id: number): CircleObject {
+    for (let index = 0; index < this.canvasObjects.length; index++) {
+      const element = this.canvasObjects[index];
+      if (!(element instanceof CircleObject)) {
+        console.log('error type in casting circle id:&d as type %s',id,element.type)
+      }
+      if (element.id === id) {
+        return element as CircleObject;
+      }
+    }
+    return <CircleObject>{}
+  }
+
   castingNode(id: number): NodeObject {
     for (let index = 0; index < this.canvasObjects.length; index++) {
       const element = this.canvasObjects[index];
       if (!(element instanceof NodeObject)) {
-        console.log('error type in casting node')
+        console.log('error type in casting node id:%d as type:%s',id,element.type)
       }
       if (element.id === id) {
         return element as NodeObject;
@@ -79,7 +119,7 @@ export class NgGdService {
       const element = this.canvasObjects[index];
       if (element.id === id) {
         if (!(element instanceof LabelObject)) {
-          console.log('error type in casting label')
+          console.log('error type in casting label id:%d as type:%s',id,element.type);
         }
         return element as LabelObject;
       }
@@ -92,7 +132,7 @@ export class NgGdService {
       const element = this.canvasObjects[index];
       if (element.id === id) {
         if (!(element instanceof ConnectionObject)) {
-          console.log('error type in casting connection')
+          console.log('error type in casting connection id:%d, as type:%s ',id,element.type);
         }
         return element as ConnectionObject;
       }
@@ -100,7 +140,7 @@ export class NgGdService {
     return <ConnectionObject>{}
   }
 
-  casting(id: number): ConnectionObject | NodeObject | LabelObject | ShapeObject | RectangleObject | CircleObject | TriangleObject {
+  casting(id: number): ConnectionObject | NodeObject | LabelObject | ShapeObject | RectangleObject | CircleObject | TriangleObject | MultiplesSidesObject{
     for (let index = 0; index < this.canvasObjects.length; index++) {
       const element = this.canvasObjects[index];
       if (element.id === id) {
@@ -117,6 +157,8 @@ export class NgGdService {
             return (element as CircleObject);
           case 'triangle':
               return (element as TriangleObject); 
+          case 'multiplesSides':
+              return (element as MultiplesSidesObject);
           default:
             break;
         }
@@ -159,7 +201,10 @@ export class NgGdService {
   clearObjects() {
     this.canvasObjects = [];
   }
-
+  addMultiplesSides(point:Point,sides:number,radius:number,color?:string,borderColor?:string){
+    const newMultiplesSides= new MultiplesSidesObject(point.x,point.y,sides,radius,color,borderColor);
+    this.canvasObjects.push(<ShapeObject>newMultiplesSides);
+  }
   addTriangle(first: Point, second: Point, third: Point, color?: string, borderColor?: string) {
     const newTriangle = new TriangleObject(first, second, third, color, borderColor);
     this.canvasObjects.push(<ShapeObject>newTriangle);

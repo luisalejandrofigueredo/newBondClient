@@ -13,4 +13,5 @@ export * from './class/document-object';
 export * from './class/rectangleObject';
 export * from './class/circleObject';
 export * from './class/triangleObject';
+export * from './class/multiplesSides';
 export * from './interfaces/point';

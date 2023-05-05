@@ -20,6 +20,7 @@ export class TestgdiComponent implements AfterViewInit, OnInit {
     this.gd.addRectangle({x:100,y:100},50,50,"#0000ff","#ff0000");
     this.gd.addCircle({x:80,y:80},10,"#00ff00","#ff0000");
     this.gd.addTriangle({x:90,y:90},{x:100,y:110},{x:120,y:120},"#00ff00","#0000ff");
+    this.gd.addMultiplesSides({x:180,y:180},6,20,"#0000ff")
     const connect = this.gd.castingConnection(3);
     connect.Name = "hello word" ;
     connect.MirrorLabel=true;
@@ -86,5 +87,15 @@ export class TestgdiComponent implements AfterViewInit, OnInit {
       this.gd.draw(this.ctx)
       this.move = false;
     }
+  }
+
+  @HostListener("mousewheel", ["$event"])
+  zoomWheel(event: WheelEvent) {
+    event.preventDefault();
+    const mouse=this.gd.getMousePoint(this.ctx,event.offsetX,event.offsetY);
+    const zoom = event.deltaY < 0 ? 1.1 : 0.9;
+    this.gd.zoomInPoint(this.ctx,mouse.x,mouse.y,zoom);
+    this.gd.clear(this.ctx);
+    this.gd.draw(this.ctx);
   }
 }

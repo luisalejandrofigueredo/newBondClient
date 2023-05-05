@@ -2,12 +2,13 @@ import { ShapeObject } from "./shape-object";
 import { distance, getTransformedPoint } from "../trigonometrics";
 export class CircleObject extends ShapeObject {
     radius = 0;
-    borderColor = ""
+    borderColor = "";
     constructor(x: number, y: number, radius: number, color?: string, borderColor?: string) {
         super();
         this.x = x;
         this.y = y;
         this.radius = radius;
+        this.type="circle";
         if (color) {
             this.color = color;
         } else {

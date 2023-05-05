@@ -1,5 +1,5 @@
 import { ShapeObject } from './shape-object'
-import { rectangle,isPointInsideRectangle,getTransformedPoint } from "../trigonometrics";
+import { rectangle,isPointInsideRectangle,getTransformedPoint, distance, angle, move } from "../trigonometrics";
 export class RectangleObject extends ShapeObject {
     angle = 0;
     borderColor = "#ffffff";
@@ -66,7 +66,14 @@ export class RectangleObject extends ShapeObject {
     }
     override moveMouse(ctx: CanvasRenderingContext2D, event: MouseEvent): void {
         const point = getTransformedPoint(ctx, event.offsetX, event.offsetY);
-        this.x = point.x;
-        this.y = point.y;
+        const dist=distance(this.x,this.y,point.x,point.y);
+        const ang=angle(this.x,this.y,point.x,point.y);
+        const pointDisplacement=move(this.x,this.y,ang,dist);
+        ctx.beginPath();
+        ctx.arc(pointDisplacement.x,pointDisplacement.y,5,0,2*Math.PI)
+        ctx.closePath();
+        ctx.stroke();
+        this.x = pointDisplacement.x;
+        this.y = pointDisplacement.y;
     }
 }
