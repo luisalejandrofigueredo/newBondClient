@@ -1,35 +1,37 @@
 import { ShapeObject } from './shape-object'
-import { rectangle,isPointInsideRectangle,getTransformedPoint, distance, angle, move } from "../trigonometrics";
+import { rectangle, isPointInsideRectangle, getTransformedPoint, distance, angle, move, calculateHypotenuse } from "../trigonometrics";
+import { Point } from '../interfaces/point';
 export class RectangleObject extends ShapeObject {
     angle = 0;
     borderColor = "#ffffff";
     height = 10;
     width = 10;
-    constructor(x: number, y: number, width: number, height: number, angle?:number,color?: string,borderColor?:string) {
+    lastMove: Point = { x: 0, y: 0 };
+    constructor(x: number, y: number, width: number, height: number, angle?: number, color?: string, borderColor?: string) {
         super();
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        this.type="rectangle";
-        if (angle){
-            this.angle=angle;
+        this.type = "rectangle";
+        if (angle) {
+            this.angle = angle;
         }
-        if (color){
+        if (color) {
             this.color = color;
         } else {
-            this.color=this.FgColor;
+            this.color = this.FgColor;
         }
-        if (borderColor){
-            this.borderColor=borderColor;
+        if (borderColor) {
+            this.borderColor = borderColor;
         } else {
-            this.borderColor=this.FgColor;
+            this.borderColor = this.FgColor;
         }
     }
     override drawShape(ctx: CanvasRenderingContext2D): void {
         const rect = rectangle(this.x, this.y, this.height, this.width, this.angle);
-        ctx.fillStyle=this.color;
-        ctx.strokeStyle=this.borderColor;
+        ctx.fillStyle = this.color;
+        ctx.strokeStyle = this.borderColor;
         ctx.beginPath();
         ctx.moveTo(rect.first.x, rect.first.y);
         ctx.lineTo(rect.second.x, rect.second.y);
@@ -42,8 +44,8 @@ export class RectangleObject extends ShapeObject {
     }
     override inverseShape(ctx: CanvasRenderingContext2D): void {
         const rect = rectangle(this.x, this.y, this.height, this.width, this.angle);
-        ctx.fillStyle=this.BgColor;
-        ctx.strokeStyle=this.BgColor;
+        ctx.fillStyle = this.BgColor;
+        ctx.strokeStyle = this.BgColor;
         ctx.beginPath();
         ctx.moveTo(rect.first.x, rect.first.y);
         ctx.lineTo(rect.second.x, rect.second.y);
@@ -55,25 +57,24 @@ export class RectangleObject extends ShapeObject {
     }
     override inPoint(x: number, y: number): boolean {
         const rect = rectangle(this.x, this.y, this.height, this.width, this.angle);
-        if (isPointInsideRectangle({x:x,y:y},rect.first,rect.second,rect.third,rect.forth)){
+        if (isPointInsideRectangle({ x: x, y: y }, rect.first, rect.second, rect.third, rect.forth)) {
             return true;
         }
         return false
     }
     override move(x: number, y: number): void {
-        this.x=x;
-        this.y=y;
+        this.x = x;
+        this.y = y;
     }
     override moveMouse(ctx: CanvasRenderingContext2D, event: MouseEvent): void {
         const point = getTransformedPoint(ctx, event.offsetX, event.offsetY);
-        const dist=distance(this.x,this.y,point.x,point.y);
-        const ang=angle(this.x,this.y,point.x,point.y);
-        const pointDisplacement=move(this.x,this.y,ang,dist);
-        ctx.beginPath();
-        ctx.arc(pointDisplacement.x,pointDisplacement.y,5,0,2*Math.PI)
-        ctx.closePath();
-        ctx.stroke();
-        this.x = pointDisplacement.x;
-        this.y = pointDisplacement.y;
+        if (this.lastMove.x!==0 && this.lastMove.y!==0){
+            const dist=distance(this.lastMove.x,this.lastMove.y,this.x,this.y);
+            const ang=angle(this.lastMove.x,this.lastMove.y,this.x,this.y);
+            const movePoint=move(point.x,point.y,ang,dist);
+            this.x=movePoint.x;
+            this.y=movePoint.y;
+        }
+        this.lastMove=point;
     }
 }

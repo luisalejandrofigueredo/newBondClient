@@ -1,4 +1,3 @@
-import { elementAt } from 'rxjs';
 import { Point } from '../interfaces/point';
 import { move,isPointInTriangle, distance, angle, getTransformedPoint } from '../trigonometrics';
 import { ShapeObject } from './shape-object'

@@ -2,6 +2,8 @@
  * Public API Surface of ng-gd
  */
 
+import { from } from 'rxjs';
+
 export * from './lib/ng-gd.service';
 export * from './lib/ng-gd.component';
 export * from './lib/ng-gd.module';
@@ -14,4 +16,5 @@ export * from './class/rectangleObject';
 export * from './class/circleObject';
 export * from './class/triangleObject';
 export * from './class/multiplesSides';
+export * from  './class/lineObject';
 export * from './interfaces/point';

@@ -1,6 +1,7 @@
 import { ShapeObject } from "./shape-object";
-import { toRadians, isPointInsideRectangle, rectangle, getTransformedPoint } from "../trigonometrics";
+import { toRadians, isPointInsideRectangle, rectangle, getTransformedPoint, distance, angle, move } from "../trigonometrics";
 import { Rectangle } from "../interfaces/rectangle";
+import { Point } from "../interfaces/point";
 
 export class LabelObject extends ShapeObject {
     
@@ -8,6 +9,7 @@ export class LabelObject extends ShapeObject {
     fontSize = 16;
     text: string = "select label text";
     sizeText = 0;
+    lastMove:Point={x:0,y:0};
     public font="Arial";
     constructor(x: number, y: number, text: string, fontSize?: number, angle?: number) {
         super()
@@ -25,8 +27,14 @@ export class LabelObject extends ShapeObject {
     }
     override moveMouse(ctx: CanvasRenderingContext2D, event: MouseEvent) {
         const point = getTransformedPoint(ctx, event.offsetX, event.offsetY);
-        this.x = point.x;
-        this.y = point.y;
+        if (this.lastMove.x!==0 && this.lastMove.y!==0){
+            const dist=distance(this.lastMove.x,this.lastMove.y,this.x,this.y);
+            const ang=angle(this.lastMove.x,this.lastMove.y,this.x,this.y);
+            const movePoint=move(point.x,point.y,ang,dist);
+            this.x=movePoint.x;
+            this.y=movePoint.y;
+        }
+        this.lastMove=point;
     }
     override inverseShape(ctx: CanvasRenderingContext2D): void {
         ctx.save();
@@ -58,6 +66,11 @@ export class LabelObject extends ShapeObject {
         this.sizeText = ctx.measureText(this.text).actualBoundingBoxRight+ctx.measureText(this.text).actualBoundingBoxLeft;
         ctx.fillText(this.text, 0, 0);
         ctx.restore();
+    }
+
+    getSizeText(ctx:CanvasRenderingContext2D):number{
+        this.sizeText = ctx.measureText(this.text).actualBoundingBoxRight+ctx.measureText(this.text).actualBoundingBoxLeft;
+        return this.sizeText;
     }
 
     setAngleInGrades(grades: number) {

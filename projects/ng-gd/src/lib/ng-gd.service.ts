@@ -5,11 +5,13 @@ import { NodeObject } from '../class/node-object';
 import { ConnectionObject } from '../class/connection-object';
 import { LabelObject } from '../class/label-object';
 import { getTransformedPoint } from '../trigonometrics';
-import { DocumentObject } from '../public-api';
+import { DocumentObject, LineObject } from '../public-api';
 import { RectangleObject } from '../class/rectangleObject';
 import { CircleObject } from '../class/circleObject';
 import { TriangleObject } from '../class/triangleObject';
 import { MultiplesSidesObject } from '../class/multiplesSides';
+import { ReturnStatement } from '@angular/compiler';
+import { NumberSymbol } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -65,23 +67,37 @@ export class NgGdService {
   castingMultiplesSides(id: number): MultiplesSidesObject {
     for (let index = 0; index < this.canvasObjects.length; index++) {
       const element = this.canvasObjects[index];
-      if (!(element instanceof MultiplesSidesObject)) {
-        console.log('error type in casting rectangle id:%s as type:%s',id,element.type)
-      }
       if (element.id === id) {
+        if (!(element instanceof MultiplesSidesObject)) {
+          console.log('error type in casting rectangle id:%s as type:%s', id, element.type)
+        }
         return element as MultiplesSidesObject;
       }
     }
     return <MultiplesSidesObject>{}
   }
 
+  castingLine(id: number): LineObject {
+    for (let index = 0; index < this.canvasObjects.length; index++) {
+      const element = this.canvasObjects[index];
+      if (element.id === id) {
+        if (!(element instanceof LineObject)) {
+          console.log('error type in casting rectangle id:%d as type %s', id, element.type)
+        }
+        return element as LineObject;
+      }
+    }
+    return <LineObject>{}
+  }
+
+
   castingRectangle(id: number): RectangleObject {
     for (let index = 0; index < this.canvasObjects.length; index++) {
       const element = this.canvasObjects[index];
-      if (!(element instanceof RectangleObject)) {
-        console.log('error type in casting rectangle id:%d as type %s',id,element.type)
-      }
       if (element.id === id) {
+        if (!(element instanceof RectangleObject)) {
+          console.log('error type in casting rectangle id:%d as type %s', id, element.type)
+        }
         return element as RectangleObject;
       }
     }
@@ -91,10 +107,10 @@ export class NgGdService {
   castingCircle(id: number): CircleObject {
     for (let index = 0; index < this.canvasObjects.length; index++) {
       const element = this.canvasObjects[index];
-      if (!(element instanceof CircleObject)) {
-        console.log('error type in casting circle id:&d as type %s',id,element.type)
-      }
       if (element.id === id) {
+        if (!(element instanceof CircleObject)) {
+          console.log('error type in casting circle id:&d as type %s', id, element.type)
+        }
         return element as CircleObject;
       }
     }
@@ -104,10 +120,10 @@ export class NgGdService {
   castingNode(id: number): NodeObject {
     for (let index = 0; index < this.canvasObjects.length; index++) {
       const element = this.canvasObjects[index];
-      if (!(element instanceof NodeObject)) {
-        console.log('error type in casting node id:%d as type:%s',id,element.type)
-      }
       if (element.id === id) {
+        if (!(element instanceof NodeObject)) {
+          console.log('error type in casting node id:%d as type:%s', id, element.type)
+        }
         return element as NodeObject;
       }
     }
@@ -119,7 +135,7 @@ export class NgGdService {
       const element = this.canvasObjects[index];
       if (element.id === id) {
         if (!(element instanceof LabelObject)) {
-          console.log('error type in casting label id:%d as type:%s',id,element.type);
+          console.log('error type in casting label id:%d as type:%s', id, element.type);
         }
         return element as LabelObject;
       }
@@ -132,7 +148,7 @@ export class NgGdService {
       const element = this.canvasObjects[index];
       if (element.id === id) {
         if (!(element instanceof ConnectionObject)) {
-          console.log('error type in casting connection id:%d, as type:%s ',id,element.type);
+          console.log('error type in casting connection id:%d, as type:%s ', id, element.type);
         }
         return element as ConnectionObject;
       }
@@ -140,7 +156,7 @@ export class NgGdService {
     return <ConnectionObject>{}
   }
 
-  casting(id: number): ConnectionObject | NodeObject | LabelObject | ShapeObject | RectangleObject | CircleObject | TriangleObject | MultiplesSidesObject{
+  casting(id: number): ConnectionObject | NodeObject | LabelObject | ShapeObject | RectangleObject | CircleObject | TriangleObject | MultiplesSidesObject | LineObject {
     for (let index = 0; index < this.canvasObjects.length; index++) {
       const element = this.canvasObjects[index];
       if (element.id === id) {
@@ -156,9 +172,11 @@ export class NgGdService {
           case 'circle':
             return (element as CircleObject);
           case 'triangle':
-              return (element as TriangleObject); 
+            return (element as TriangleObject);
           case 'multiplesSides':
-              return (element as MultiplesSidesObject);
+            return (element as MultiplesSidesObject);
+          case 'line':
+            return (element as LineObject);
           default:
             break;
         }
@@ -194,45 +212,109 @@ export class NgGdService {
   }
 
   clear(ctx: CanvasRenderingContext2D) {
-    ctx.fillStyle = this.bkColor;
+    ctx.save();
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.fillStyle=this.bkColor;
     ctx.fillRect(0, 0, this.width, this.height);
+    ctx.restore();
   }
 
   clearObjects() {
     this.canvasObjects = [];
   }
-  addMultiplesSides(point:Point,sides:number,radius:number,color?:string,borderColor?:string){
-    const newMultiplesSides= new MultiplesSidesObject(point.x,point.y,sides,radius,color,borderColor);
-    this.canvasObjects.push(<ShapeObject>newMultiplesSides);
+
+  addGraphBars(ctx: CanvasRenderingContext2D, point: Point, width: number, values: number[], color: string[], distance: number) {
+    let pos = 0;
+    for (let index = 0; index < values.length; index++) {
+      const element = values[index];
+      this.addRectangle({ x: point.x+ pos,y: point.y  }, width, element,0,color[index]);
+      pos = width*(index+1)+distance*(index+1);
+    }
+
   }
-  addTriangle(first: Point, second: Point, third: Point, color?: string, borderColor?: string) {
+
+  addAxisY(ctx: CanvasRenderingContext2D, point: Point, dist: number, steps: number, labels: string[], fontSize: number, angleGrades?: number, distance?: number) {
+    let ang = 0;
+    let distance2 = 0;
+    if (angleGrades) {
+      ang = angleGrades;
+    }
+    if (distance) {
+      distance2 = distance;
+    }
+    this.addLine(point, { x: point.x, y: point.y - dist }, steps);
+    const increment = dist / steps;
+    labels.forEach((element, index) => {
+      let label = this.addLabel({ x: point.x, y: point.y + fontSize / 2 - increment * index + distance2 }, element, fontSize, ang);
+      const size = label.getSizeText(ctx);
+      label.x -= label.getSizeText(ctx) + fontSize;
+    });
+  }
+
+  addAxisX(ctx: CanvasRenderingContext2D, point: Point, dist: number, steps: number, labels: string[], fontSize: number, angleGrades?: number, distance?: number) {
+    let distance2 = 0;
+    let ang = 0;
+    if (distance) {
+      const distance2 = distance;
+    }
+    if (angleGrades) {
+      ang = angleGrades;
+    }
+    this.addLine(point, { x: point.x + dist, y: point.y }, steps);
+    const increment = dist / steps;
+    labels.forEach((element, index) => {
+      let label = this.addLabel({ x: point.x + increment * index, y: point.y + fontSize + distance2 }, element, fontSize, ang);
+      const size = label.getSizeText(ctx);
+      label.x += increment / 2 - size;
+    });
+  }
+
+  addMultiplesSides(point: Point, sides: number, radius: number, color?: string, borderColor?: string): MultiplesSidesObject {
+    const newMultiplesSides = new MultiplesSidesObject(point.x, point.y, sides, radius, color, borderColor);
+    this.canvasObjects.push(<ShapeObject>newMultiplesSides);
+    return newMultiplesSides;
+  }
+
+  addTriangle(first: Point, second: Point, third: Point, color?: string, borderColor?: string): TriangleObject {
     const newTriangle = new TriangleObject(first, second, third, color, borderColor);
     this.canvasObjects.push(<ShapeObject>newTriangle);
+    return newTriangle;
   }
 
-  addCircle(point: Point, radius: number, color?: string, borderColor?: string) {
+  addCircle(point: Point, radius: number, color?: string, borderColor?: string): CircleObject {
     const newCircle = new CircleObject(point.x, point.y, radius, color, borderColor);
     this.canvasObjects.push((<ShapeObject>newCircle));
+    return newCircle;
   }
 
-  addRectangle(point: Point, width: number, height: number, color?: string, borderColor?: string) {
-    const newRectangle = new RectangleObject(point.x, point.y, width, height, 10, color, borderColor);
+  addRectangle(point: Point, width: number, height: number, angle:number,color?: string, borderColor?: string): RectangleObject {
+    const newRectangle = new RectangleObject(point.x, point.y, width, height, angle, color, borderColor);
     this.canvasObjects.push((<ShapeObject>newRectangle));
+    return newRectangle
   }
 
-  addNode(point: Point, name: string, description?: string, net?: boolean, angleLabel?: number, distanceLabel?: number) {
+  addNode(point: Point, name: string, description?: string, net?: boolean, angleLabel?: number, distanceLabel?: number): NodeObject {
     const newNode = new NodeObject(point.x, point.y, name, 4, description, net, angleLabel, distanceLabel);
     this.canvasObjects.push((<ShapeObject>newNode));
+    return newNode;
   }
 
-  addConnection(point: Point, toPoint: Point, color?: string, label?: string) {
+  addConnection(point: Point, toPoint: Point, color?: string, label?: string): ConnectionObject {
     const newConnection = new ConnectionObject(point.x, point.y, toPoint.x, toPoint.y, color, label);
     this.canvasObjects.push((<ShapeObject>newConnection));
+    return newConnection;
   }
 
-  addLabel(point: Point, text: string, fontSize: number, angle: number) {
+  addLine(point: Point, toPoint: Point, steps?: number, color?: string): LineObject {
+    const newLine = new LineObject(point.x, point.y, toPoint.x, toPoint.y, steps, color);
+    this.canvasObjects.push((<ShapeObject>newLine));
+    return newLine;
+  }
+
+  addLabel(point: Point, text: string, fontSize: number, angle: number): LabelObject {
     const newLabel = new LabelObject(point.x, point.y, text, fontSize, angle);
     this.canvasObjects.push(newLabel)
+    return newLabel;
   }
 
   click(ctx: CanvasRenderingContext2D, event: MouseEvent): { shape: ShapeObject, action: string }[] {
@@ -259,6 +341,17 @@ export class NgGdService {
           onclick.push({ shape: element, action: 'inPointToXY' });
         }
         if ((element as ConnectionObject).inRectangle(position.x, position.y)) {
+          onclick.push({ shape: element, action: 'inRectangle' });
+        }
+      }
+      if (element.type === 'line') {
+        if ((element as LineObject).inPointXY(position.x, position.y)) {
+          onclick.push({ shape: element, action: 'inPointXY' });
+        }
+        if ((element as LineObject).inPointToXY(position.x, position.y)) {
+          onclick.push({ shape: element, action: 'inPointToXY' });
+        }
+        if ((element as LineObject).inRectangle(position.x, position.y)) {
           onclick.push({ shape: element, action: 'inRectangle' });
         }
       }

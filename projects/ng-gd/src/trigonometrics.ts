@@ -195,3 +195,19 @@ export function translateLineToNewPosition(pointA: Point, pointB: Point, newCent
   // 4. Retornar los nuevos puntos A y B
   return { newPointA, newPointB };
 }
+
+export function calculateOppositeCathetus(angle: number, hypotenuse: number): number {
+  const oppositeCathetus = hypotenuse * Math.sin(angle);
+  return oppositeCathetus;
+}
+
+export function calculateAdjacentCathetus(angle: number, hypotenuse: number): number {
+  const adjacentCathetus = hypotenuse * Math.cos(angle);
+  return adjacentCathetus;
+}
+
+export function calculateHypotenuse(a: number, b: number): number {
+  const squareSum = Math.pow(a, 2) + Math.pow(b, 2);
+  const hypotenuse = Math.sqrt(squareSum);
+  return hypotenuse;
+}

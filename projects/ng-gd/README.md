@@ -34,10 +34,17 @@ npm i ng-gd
 ### declare vars in your component class and call the lib;
 
 ```typescript
+import {
+  NgGdService,
+  Point,
+  NodeObject,
+} from 'ng-gd/src/public-api';
+
+export class App implements OnInit {
 gd = inject(NgGdService);
 private ctx!: CanvasRenderingContext2D;
 @ViewChild('canvas', { static: true }) canvas!: ElementRef<HTMLCanvasElement>;
-
+}
 
 ngOnInit(): void {
     this.ctx = this.canvas.nativeElement.getContext('2d')!;
@@ -49,4 +56,6 @@ ngOnInit(): void {
 }
 ```
 
-[Demo in stackblitz](https://stackblitz.com/edit/angular-ngdemo?file=src%2Fmain.ts)
+[Demo objects in stackblitz](https://stackblitz.com/edit/angular-ngdemo?file=src%2Fmain.ts)
+
+[Demo graph in stackblitz](https://stackblitz.com/edit/angular-ng-demo-graphics?file=src%2Fmain.ts)

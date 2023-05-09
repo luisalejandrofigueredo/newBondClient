@@ -1,9 +1,10 @@
 {
   "name": "ng-gd",
-  "version": "0.0.30",
+  "version": "0.0.38",
   "keywords": [
     "canvas",
-    "Angular"
+    "Angular",
+    "Front-end"
   ],
   "author": {
     "name": "Luis Alejandro Figueredo Casadei",
