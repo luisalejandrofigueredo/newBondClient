@@ -9,7 +9,6 @@ export class LabelObject extends ShapeObject {
     fontSize = 16;
     text: string = "select label text";
     sizeText = 0;
-    lastMove:Point={x:0,y:0};
     public font="Arial";
     constructor(x: number, y: number, text: string, fontSize?: number, angle?: number) {
         super()
@@ -27,14 +26,13 @@ export class LabelObject extends ShapeObject {
     }
     override moveMouse(ctx: CanvasRenderingContext2D, event: MouseEvent) {
         const point = getTransformedPoint(ctx, event.offsetX, event.offsetY);
-        if (this.lastMove.x!==0 && this.lastMove.y!==0){
-            const dist=distance(this.lastMove.x,this.lastMove.y,this.x,this.y);
-            const ang=angle(this.lastMove.x,this.lastMove.y,this.x,this.y);
-            const movePoint=move(point.x,point.y,ang,dist);
-            this.x=movePoint.x;
-            this.y=movePoint.y;
+        if (ShapeObject.lastMove.x!==0 && ShapeObject.lastMove.y!==0){
+            const deltaX=point.x-ShapeObject.lastMove.x;
+            const deltaY=point.y-ShapeObject.lastMove.y;
+            this.x+=deltaX;
+            this.y+=deltaY;
         }
-        this.lastMove=point;
+        ShapeObject.lastMove=point;
     }
     override inverseShape(ctx: CanvasRenderingContext2D): void {
         ctx.save();

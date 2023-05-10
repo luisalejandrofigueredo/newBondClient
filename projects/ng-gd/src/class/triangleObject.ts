@@ -64,9 +64,14 @@ export class TriangleObject extends ShapeObject{
     }
     override moveMouse(ctx: CanvasRenderingContext2D, event: MouseEvent): void {
         const point = getTransformedPoint(ctx, event.offsetX, event.offsetY);
-        this.moveTriangle({x:point.x,y:point.y});
-        this.x = point.x;
-        this.y = point.y;
+        if (ShapeObject.lastMove.x!==0 && ShapeObject.lastMove.y!==0){
+            const deltaX=point.x-ShapeObject.lastMove.x;
+            const deltaY=point.y-ShapeObject.lastMove.y;
+            this.moveTriangle({x:this.x+deltaX,y:this.y+deltaY});
+            this.x+=deltaX;
+            this.y+=deltaY;
+        }
+        ShapeObject.lastMove=point;
     }
     moveTriangle(point:Point){
         const secondPoint:vector={distance:distance(this.x,this.y,this.second.x,this.second.y),angle:angle(this.x,this.y,this.second.x,this.second.y)};

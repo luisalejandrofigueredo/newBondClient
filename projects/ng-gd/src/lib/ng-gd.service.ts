@@ -10,8 +10,6 @@ import { RectangleObject } from '../class/rectangleObject';
 import { CircleObject } from '../class/circleObject';
 import { TriangleObject } from '../class/triangleObject';
 import { MultiplesSidesObject } from '../class/multiplesSides';
-import { ReturnStatement } from '@angular/compiler';
-import { NumberSymbol } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -209,6 +207,10 @@ export class NgGdService {
   canvasSetSize(width: number, height: number) {
     this.width = width;
     this.height = height;
+  }
+
+  resetMouse(){
+    (this.canvasObjects[1] as ShapeObject).resetMouse();
   }
 
   clear(ctx: CanvasRenderingContext2D) {

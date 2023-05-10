@@ -48,7 +48,12 @@ export class CircleObject extends ShapeObject {
     }
     override moveMouse(ctx: CanvasRenderingContext2D, event: MouseEvent): void {
         const point = getTransformedPoint(ctx, event.offsetX, event.offsetY);
-        this.x = point.x;
-        this.y = point.y;
+        if (ShapeObject.lastMove.x!==0 && ShapeObject.lastMove.y!==0){
+            const deltaX=point.x-ShapeObject.lastMove.x;
+            const deltaY=point.y-ShapeObject.lastMove.y;
+            this.x+=deltaX;
+            this.y+=deltaY;
+        }
+        ShapeObject.lastMove=point;
     }
 }

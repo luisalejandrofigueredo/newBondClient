@@ -18,9 +18,9 @@ export class TestgdiComponent implements AfterViewInit, OnInit {
     this.gd.addConnection({ x: 150, y: 150 }, { x: 50, y: 50 }, "#ff0000")
     this.gd.addLabel({ x: 200, y: 200 } as Point, "Hola Mundo", 20, 270);*/
     this.gd.addRectangle({ x: 100, y: 100 }, 50, 50,10, "#0000ff", "#ff0000");
-    /*this.gd.addCircle({ x: 80, y: 80 }, 10, "#00ff00", "#ff0000");
+    this.gd.addCircle({ x: 80, y: 80 }, 10, "#00ff00", "#ff0000");
     this.gd.addTriangle({ x: 90, y: 90 }, { x: 100, y: 110 }, { x: 120, y: 120 }, "#00ff00", "#0000ff");
-    this.gd.addMultiplesSides({ x: 180, y: 180 }, 6, 20, "#0000ff") */
+    this.gd.addMultiplesSides({ x: 180, y: 180 }, 6, 20, "#0000ff") 
     
     
     const connect = this.gd.castingConnection(3);
@@ -42,10 +42,10 @@ export class TestgdiComponent implements AfterViewInit, OnInit {
   ngOnInit(): void {
     this.ctx = this.canvas.nativeElement.getContext('2d')!;
     this.ctx.fillStyle = "black";
-    this.gd.canvasSetSize(this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+   /*  this.gd.canvasSetSize(this.canvas.nativeElement.width, this.canvas.nativeElement.height);
     this.gd.addAxisX(this.ctx,{x:40,y:250},250,4,["one","two","three","four"],16,90);
     this.gd.addAxisY(this.ctx,{x:40,y:250},250,4,["0","50","100","200","300"],16);
-    this.gd.addGraphBars(this.ctx,{x:48,y:245},45,[10,50,80,20],["#ff0000","#00ff00","#0000ff","#00ffff"],17)
+    this.gd.addGraphBars(this.ctx,{x:48,y:245},45,[10,50,80,20],["#ff0000","#00ff00","#0000ff","#00ffff"],17) */
   }
 
   @HostListener("mousedown", ["$event"])
@@ -107,7 +107,8 @@ export class TestgdiComponent implements AfterViewInit, OnInit {
   async onMouseUp(event: MouseEvent) {
     if (this.move === true) {
       this.gd.clear(this.ctx);
-      this.gd.draw(this.ctx)
+      this.gd.draw(this.ctx);
+      this.gd.resetMouse();
       this.move = false;
     }
   }
