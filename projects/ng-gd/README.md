@@ -25,6 +25,28 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ### install the lib
 npm i ng-gd
 
+### declare in a module program
+
+```typescript
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+
+import { AppComponent } from './app.component';
+import { NgGdService } from 'ng-gd';
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule
+  ],
+  providers: [NgGdService],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
+
 ### create a canvas in html
 
 ```html
@@ -38,7 +60,7 @@ import {
   NgGdService,
   Point,
   NodeObject,
-} from 'ng-gd/src/public-api';
+} from 'ng-gd';
 
 export class App implements OnInit {
 gd = inject(NgGdService);
@@ -59,3 +81,133 @@ ngOnInit(): void {
 [Demo objects in stackblitz](https://stackblitz.com/edit/angular-ngdemo?file=src%2Fmain.ts)
 
 [Demo graph in stackblitz](https://stackblitz.com/edit/angular-ng-demo-graphics?file=src%2Fmain.ts)
+
+[Demo ZOrder in GitHub](https://github.com/luisalejandrofigueredo/ZOrderDemo)
+
+
+## List gd service commands
+
+start(width: number, height: number) start gd lib required for start.
+
+getLabels(): get all labels.
+
+getConnections() get all connections.
+
+getNodes() get all nodes.
+
+castingMultiplesSides(id: number) get a multiples sides object with id number;
+
+castingLine(id:number) get a line Object.
+
+castingRectangle(id: number) get a rectangle object.
+
+castingCircle(id: number) get a circle object.
+
+castingNode(id:number) get a node object.
+
+castingLabel(id: number) get a label object.
+
+castingConnection(id: number): get connection object.
+
+casting(id): get a any object with casting.
+
+getMousePoint(ctx: CanvasRenderingContext2D, x: number, y: number): return a position the mouse.
+
+setDarkMode() change the background color to black and ink white;
+
+setLightMode() change the background color to white and ink black;
+
+canvasSetSize(width: number, height: number) change canvas size for the library not the canvas.
+
+resetMouse() reset last position.
+
+clear(ctx: CanvasRenderingContext2D) clear the canvas.
+
+clearObjects() delete all objects in the library.
+
+addGraphBars(ctx: CanvasRenderingContext2D, point: Point, width: number, values: number[], color: string[], 
+distance: number) create graph bars.
+
+addAxisY(ctx: CanvasRenderingContext2D, point: Point, dist: number, steps: number, labels: string[], fontSize: number, angleGrades?: number, distance?: number) create a y axis.
+
+addAxisX(ctx: CanvasRenderingContext2D, point: Point, dist: number, steps: number, labels: string[], fontSize: number, angleGrades?: number, distance?: number) create a x axis.
+
+addMultiplesSides(point: Point, sides: number, radius: number, color?: string, borderColor?: string) create a figure with 5 sides minimum.
+
+addTriangle(first: Point, second: Point, third: Point, color?: string, borderColor?: string) create a triangle.
+
+addCircle(point: Point, radius: number, color?: string, borderColor?: string) create a circle.
+
+addRectangle(point: Point, width: number, height: number, angle:number,color?: string, borderColor?: string) create a rectangle.
+
+addNode(point: Point, name: string, description?: string, net?: boolean, angleLabel?: number, distanceLabel?: number) add node.
+
+addConnection(point: Point, toPoint: Point, color?: string, label?: string) create a connection.
+
+addLine(point: Point, toPoint: Point, steps?: number, color?: string) create a line steps mark the line like rule.
+
+addLabel(point: Point, text: string, fontSize: number, angle: number) create a label.
+
+click(ctx: CanvasRenderingContext2D, event: MouseEvent) return a list all objects are clicked with mouse.
+
+getClicks() return a list created for click function speed reasons.
+
+draw(ctx: CanvasRenderingContext2D) draw all objects.
+
+zoomInPoint(ctx: CanvasRenderingContext2D, x: number, y: number, zoom: number) zoom in x,y position.
+
+getItem(id:number) return a object with casting to ShapeObject.
+
+
+## Object properties all object are derived the class ShapeObject.
+x:position x.
+y:position y.
+
+color object color;
+
+visible toggle object to visible you turn false the object not draw.
+
+type var with string class of the object the possibles values are.
+
+label
+
+node
+
+connection
+
+rectangle
+
+circle
+
+triangle
+
+multiplesSides
+
+line
+
+
+## Object functions
+
+drawShape(ctx: CanvasRenderingContext2D) draw the object in the canvas.
+
+inverseShape(ctx: CanvasRenderingContext2D) draw the object with background color.
+
+inPoint(x: number, y: number) return true if the object is in position x,y.
+
+move(x:number,y:number) Move the object to new position.
+
+moveMouse(ctx: CanvasRenderingContext2D, event: MouseEvent) Move the object to mouse position.
+
+toFront() Move the object to fist plane over all objects.
+
+toTop() Move the object to first plane.
+
+toBack() Move the object to last plane.
+
+nextZOrder() Move the object one plane to front.
+
+backZOrder() Move the object one plane to back.
+
+
+
+

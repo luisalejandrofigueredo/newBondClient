@@ -229,7 +229,7 @@ export class NgGdService {
     let pos = 0;
     for (let index = 0; index < values.length; index++) {
       const element = values[index];
-      this.addRectangle({ x: point.x+ pos,y: point.y  }, width, element,0,color[index]);
+      this.addRectangle({ x: point.x+ pos,y: point.y  }, width, element,0,color[index],color[index]);
       pos = width*(index+1)+distance*(index+1);
     }
 

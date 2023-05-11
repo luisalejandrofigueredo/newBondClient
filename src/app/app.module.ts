@@ -20,7 +20,8 @@ import { MatListModule } from '@angular/material/list';
 import { HomeComponent } from './home/home.component';
 import { PathNotFoundComponent } from './path-not-found/path-not-found.component';
 import { LayoutModule } from '@angular/cdk/layout';
-/*import { ImagePipe } from './image.pipe';*/
+import { NgGdModule,NgGdService } from 'ng-gd';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,9 +46,10 @@ import { LayoutModule } from '@angular/cdk/layout';
     MatSidenavModule,
     MatIconModule,
     MatListModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    NgGdModule
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: InterceptorInterceptor, multi: true }],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: InterceptorInterceptor, multi: true },NgGdService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

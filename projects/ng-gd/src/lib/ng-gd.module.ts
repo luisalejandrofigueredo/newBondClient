@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { NgGdComponent } from './ng-gd.component';
+import {NgGdService} from  './ng-gd.service';
 
 
 
@@ -9,6 +10,7 @@ import { NgGdComponent } from './ng-gd.component';
   ],
   imports: [
   ],
+  providers:[NgGdService],
   exports: [
     NgGdComponent
   ]
