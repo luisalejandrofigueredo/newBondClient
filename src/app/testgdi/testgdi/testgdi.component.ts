@@ -15,14 +15,14 @@ export class TestgdiComponent implements AfterViewInit, OnInit {
   constructor() {
     this.gd.start(800, 600);
     this.gd.setDarkMode();
-    /* this.gd.addNode({ x: 150, y: 150 }, "one", "one", false, 10, 10);
+    this.gd.addNode({ x: 150, y: 150 }, "one", "one", false, 10, 10);
     this.gd.addNode({ x: 50, y: 50 }, "two", "two", false, 10, 10);
     this.gd.addConnection({ x: 150, y: 150 }, { x: 50, y: 50 }, "#ff0000")
-    this.gd.addLabel({ x: 200, y: 200 } as Point, "Hola Mundo", 20, 270);*/
-    /* this.gd.addRectangle({ x: 100, y: 100 }, 50, 50, 10, "#0000ff", "#ff0000");
+    this.gd.addLabel({ x: 200, y: 200 } as Point, "Hola Mundo", 20, 270);
+    this.gd.addRectangle({ x: 100, y: 100 }, 50, 50, 10, "#0000ff", "#ff0000");
     this.gd.addCircle({ x: 80, y: 80 }, 10, "#00ff00", "#ff0000");
     this.gd.addTriangle({ x: 90, y: 90 }, { x: 100, y: 110 }, { x: 120, y: 120 }, "#00ff00", "#0000ff");
-    this.gd.addMultiplesSides({ x: 180, y: 180 }, 6, 20, "#0000ff") */
+    this.gd.addMultiplesSides({ x: 180, y: 180 }, 6, 20, "#0000ff");
 
 
     const connect = this.gd.castingConnection(3);
@@ -49,9 +49,9 @@ export class TestgdiComponent implements AfterViewInit, OnInit {
     for (let index = 0; index < 5; index++) {
       this.gd.addRectangle({ x: 50 + index * 10, y: 250 + index * 20 }, 100, 100, 0, colors[index]).toFront();
     }
-    for (let index = 0; index < 100; index++) {
+    /* for (let index = 0; index < 100; index++) {
       await this.wait();
-    }
+    } */
   }
 
 

@@ -87,88 +87,88 @@ ngOnInit(): void {
 
 ## List gd service commands
 
-start(width: number, height: number) start gd lib required for start.
+**start(width: number, height: number)** start gd lib required for start.
 
-getLabels(): get all labels.
+**getLabels():** get all labels.
 
-getConnections() get all connections.
+**getConnections()** get all connections.
 
-getNodes() get all nodes.
+**getNodes()** get all nodes.
 
-castingMultiplesSides(id: number) get a multiples sides object with id number;
+**castingMultiplesSides(id: number)** get a multiples sides object with id number;
 
-castingLine(id:number) get a line Object.
+**castingLine(id:number)** get a line Object.
 
-castingRectangle(id: number) get a rectangle object.
+**castingRectangle(id: number)** get a rectangle object.
 
-castingCircle(id: number) get a circle object.
+**castingCircle(id: number)** get a circle object.
 
-castingNode(id:number) get a node object.
+**castingNode(id:number)** get a node object.
 
-castingLabel(id: number) get a label object.
+**castingLabel(id: number)** get a label object.
 
-castingConnection(id: number): get connection object.
+**castingConnection(id: number)** get connection object.
 
-casting(id): get a any object with casting.
+**casting(id)** get a any object with casting.
 
-getMousePoint(ctx: CanvasRenderingContext2D, x: number, y: number): return a position the mouse.
+**getMousePoint(ctx: CanvasRenderingContext2D, x: number, y: number)** return a position the mouse.
 
-setDarkMode() change the background color to black and ink white;
+**setDarkMode()** change the background color to black and ink white;
 
-setLightMode() change the background color to white and ink black;
+**setLightMode()** change the background color to white and ink black;
 
-canvasSetSize(width: number, height: number) change canvas size for the library not the canvas.
+**canvasSetSize(width: number, height: number)** change canvas size for the library not the canvas.
 
-resetMouse() reset last position.
+**resetMouse()** reset last position.
 
-clear(ctx: CanvasRenderingContext2D) clear the canvas.
+**clear(ctx: CanvasRenderingContext2D)** clear the canvas.
 
-clearObjects() delete all objects in the library.
+**clearObjects()** delete all objects in the library.
 
-addGraphBars(ctx: CanvasRenderingContext2D, point: Point, width: number, values: number[], color: string[], 
-distance: number) create graph bars.
+**addGraphBars(ctx: CanvasRenderingContext2D, point: Point, width: number, values: number[], color: string[], distance: number)** create graph bars.
 
-addAxisY(ctx: CanvasRenderingContext2D, point: Point, dist: number, steps: number, labels: string[], fontSize: number, angleGrades?: number, distance?: number) create a y axis.
+**addAxisY(ctx: CanvasRenderingContext2D, point: Point, dist: number, steps: number, labels: string[], fontSize: number, angleGrades?: number, distance?: number)** create a y axis.
 
-addAxisX(ctx: CanvasRenderingContext2D, point: Point, dist: number, steps: number, labels: string[], fontSize: number, angleGrades?: number, distance?: number) create a x axis.
+**addAxisX(ctx: CanvasRenderingContext2D, point: Point, dist: number, steps: number, labels: string[], fontSize: number, angleGrades?: number, distance?: number)** create a x axis.
 
-addMultiplesSides(point: Point, sides: number, radius: number, color?: string, borderColor?: string) create a figure with 5 sides minimum.
+**addMultiplesSides(point: Point, sides: number, radius: number, color?: string, borderColor?: string)** create a figure with 5 sides minimum.
 
-addTriangle(first: Point, second: Point, third: Point, color?: string, borderColor?: string) create a triangle.
+**addTriangle(first: Point, second: Point, third: Point, color?: string, borderColor?: string)** create a triangle.
 
-addCircle(point: Point, radius: number, color?: string, borderColor?: string) create a circle.
+**addCircle(point: Point, radius: number, color?: string, borderColor?: string)** create a circle.
 
-addRectangle(point: Point, width: number, height: number, angle:number,color?: string, borderColor?: string) create a rectangle.
+**addRectangle(point: Point, width: number, height: number, angle:number,color?: string, borderColor?: string)** create a rectangle.
 
-addNode(point: Point, name: string, description?: string, net?: boolean, angleLabel?: number, distanceLabel?: number) add node.
+**addNode(point: Point, name: string, description?: string, net?: boolean, angleLabel?: number, distanceLabel?: number)** add node.
 
-addConnection(point: Point, toPoint: Point, color?: string, label?: string) create a connection.
+**addConnection(point: Point, toPoint: Point, color?: string, label?: string)** create a connection.
 
-addLine(point: Point, toPoint: Point, steps?: number, color?: string) create a line steps mark the line like rule.
+**addLine(point: Point, toPoint: Point, steps?: number, color?: string)** create a line steps mark the line like rule.
 
-addLabel(point: Point, text: string, fontSize: number, angle: number) create a label.
+**addLabel(point: Point, text: string, fontSize: number, angle: number)** create a label.
 
-click(ctx: CanvasRenderingContext2D, event: MouseEvent) return a list all objects are clicked with mouse.
+**click(ctx: CanvasRenderingContext2D, event: MouseEvent)** return a list all objects are clicked with mouse order for ZOrder.
 
-getClicks() return a list created for click function speed reasons.
+**getClicks()** return a list created for click function speed reasons.
 
-draw(ctx: CanvasRenderingContext2D) draw all objects.
+**draw(ctx: CanvasRenderingContext2D)** draw all objects.
 
-zoomInPoint(ctx: CanvasRenderingContext2D, x: number, y: number, zoom: number) zoom in x,y position.
+**zoomInPoint(ctx: CanvasRenderingContext2D, x: number, y: number, zoom: number)** zoom in x,y position.
 
-getItem(id:number) return a object with casting to ShapeObject.
+**getItem(id:number)** return a object with casting to ShapeObject.
 
 
 ## Object properties all object are derived the class ShapeObject.
 x:position x.
 y:position y.
 
-color object color;
+**color** object color;
 
-visible toggle object to visible you turn false the object not draw.
+**visible** toggle object to visible you turn false the object not draw.
 
-type var with string class of the object the possibles values are.
+**type** var with string class of the object the easy way to obtain the type class the one object.
 
+**possibles values are**
 label
 
 node
@@ -186,28 +186,24 @@ multiplesSides
 line
 
 
-## Object functions
+## Objects common functions
 
-drawShape(ctx: CanvasRenderingContext2D) draw the object in the canvas.
+**drawShape(ctx: CanvasRenderingContext2D)** draw the object in the canvas.
 
-inverseShape(ctx: CanvasRenderingContext2D) draw the object with background color.
+**inverseShape(ctx: CanvasRenderingContext2D)** draw the object with background color.
 
-inPoint(x: number, y: number) return true if the object is in position x,y.
+**inPoint(x: number, y: number)** return true if the object is in position x,y.
 
-move(x:number,y:number) Move the object to new position.
+**move(x:number,y:number)** Move the object to new position.
 
-moveMouse(ctx: CanvasRenderingContext2D, event: MouseEvent) Move the object to mouse position.
+**moveMouse(ctx: CanvasRenderingContext2D, event: MouseEvent)** Move the object to mouse position.
 
-toFront() Move the object to fist plane over all objects.
+**toFront()** Move the object to fist plane over all objects.
 
-toTop() Move the object to first plane.
+**toTop()** Move the object to first plane.
 
-toBack() Move the object to last plane.
+**toBack()** Move the object to last plane.
 
-nextZOrder() Move the object one plane to front.
+**nextZOrder()** Move the object one plane to front.
 
-backZOrder() Move the object one plane to back.
-
-
-
-
+**backZOrder()** Move the object one plane to back.

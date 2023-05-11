@@ -358,7 +358,7 @@ export class NgGdService {
         }
       }
     });
-    onclick.sort((a, b) => a.shape.zOrder - b.shape.zOrder);
+    onclick.sort((a, b) =>  b.shape.zOrder - a.shape.zOrder );
     return onclick;
   }
 
