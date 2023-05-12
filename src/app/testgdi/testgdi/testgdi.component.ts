@@ -1,5 +1,8 @@
 import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild, inject } from '@angular/core';
-import { NgGdService, ConnectionObject, Point, LabelObject, NodeObject, LineObject } from 'ng-gd'
+import { NgGdService, ConnectionObject, Point, LabelObject, NodeObject, LineObject, ShapeObject } from 'ng-gd'
+
+
+
 @Component({
   selector: 'app-testgdi',
   templateUrl: './testgdi.component.html',
@@ -9,6 +12,7 @@ export class TestgdiComponent implements AfterViewInit, OnInit {
   gd = inject(NgGdService);
   private ctx!: CanvasRenderingContext2D;
   move = false;
+  id = 1;
   drag: boolean = false;
   @ViewChild('canvas', { static: true }) canvas!: ElementRef<HTMLCanvasElement>;
   dragStartPosition: Point = { x: 0, y: 0 };
@@ -34,6 +38,20 @@ export class TestgdiComponent implements AfterViewInit, OnInit {
     if (node2 instanceof NodeObject) {
       node2.name = "Dos";
     }
+  }
+
+  renumber(){
+    this.gd.renumberZOrder();
+  }
+
+  acceptToFront() {
+    (this.gd.casting(this.id) as unknown as ShapeObject ).toFront()
+    console.log('To Front',this.gd.casting(this.id) as ShapeObject,this.id);
+  }
+
+  listNodes(){
+    console.log('Objects',this.gd.canvasObjects);
+
   }
 
   ngAfterViewInit(): void {

@@ -8,6 +8,7 @@ export class DocumentObject extends ShapeObject{
         ShapeObject.width=width;
         ShapeObject.height=height;
         this.type="Document"
+        this.zOrder=0;
     }    
     override drawShape(ctx: CanvasRenderingContext2D): void {
     }

@@ -1,3 +1,4 @@
+import { ShapeObject } from "./class/shape-object";
 import { Point } from "./interfaces/point";
 import { Rectangle } from "./interfaces/rectangle";
 
@@ -210,4 +211,22 @@ export function calculateHypotenuse(a: number, b: number): number {
   const squareSum = Math.pow(a, 2) + Math.pow(b, 2);
   const hypotenuse = Math.sqrt(squareSum);
   return hypotenuse;
+}
+
+export function convertArray(arr: ShapeObject[]): number[] {
+  const values = arr.map((obj) => obj.zOrder);
+  const sortedArr = [...values].sort((a, b) => a - b);
+  const uniqueValues = Array.from(new Set(sortedArr));
+
+  const map = new Map<number, number>();
+  let count = 0;
+
+  for (const num of uniqueValues) {
+    map.set(num, count);
+    count++;
+  }
+
+  const result = values.map((num) => map.get(num) || 0);
+
+  return result;
 }

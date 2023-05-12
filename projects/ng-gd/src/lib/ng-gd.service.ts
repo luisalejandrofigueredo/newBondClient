@@ -4,7 +4,7 @@ import { Point } from "../interfaces/point";
 import { NodeObject } from '../class/node-object';
 import { ConnectionObject } from '../class/connection-object';
 import { LabelObject } from '../class/label-object';
-import { getTransformedPoint } from '../trigonometrics';
+import { convertArray, getTransformedPoint } from '../trigonometrics';
 import { DocumentObject, LineObject } from '../public-api';
 import { RectangleObject } from '../class/rectangleObject';
 import { CircleObject } from '../class/circleObject';
@@ -22,6 +22,14 @@ export class NgGdService {
   frColor: string = "#ffffff";
   clicks: { shape: ShapeObject, action: string }[] = [];
   constructor() { }
+
+  renumberZOrder() {
+    const ret = convertArray(this.canvasObjects.sort((a, b) => a.zOrder - b.zOrder) as ShapeObject[]);
+    for (let index = 0; index < ret.length; index++) {
+      const element = ret[index];
+      (this.canvasObjects[index] as ShapeObject).zOrder = element;
+    }
+  }
 
   start(width: number, height: number) {
     if (this.canvasObjects.length === 0) {
@@ -154,34 +162,14 @@ export class NgGdService {
     return <ConnectionObject>{}
   }
 
-  casting(id: number): ConnectionObject | NodeObject | LabelObject | ShapeObject | RectangleObject | CircleObject | TriangleObject | MultiplesSidesObject | LineObject {
+  casting(id: number): ConnectionObject | NodeObject | LabelObject | ShapeObject | RectangleObject | CircleObject | TriangleObject | MultiplesSidesObject | LineObject|undefined {;
     for (let index = 0; index < this.canvasObjects.length; index++) {
-      const element = this.canvasObjects[index];
-      if (element.id === id) {
-        switch ((element as ShapeObject).type) {
-          case 'label':
-            return (element as LabelObject);
-          case 'node':
-            return (element as NodeObject);
-          case 'connection':
-            return (element as ConnectionObject);
-          case 'rectangle':
-            return (element as RectangleObject);
-          case 'circle':
-            return (element as CircleObject);
-          case 'triangle':
-            return (element as TriangleObject);
-          case 'multiplesSides':
-            return (element as MultiplesSidesObject);
-          case 'line':
-            return (element as LineObject);
-          default:
-            break;
+      if (this.canvasObjects[index].id===id) {
+        return this.canvasObjects[index] ;
+        break;
         }
-        return (element as ShapeObject);
-      }
     }
-    return <ConnectionObject>{}
+    return undefined;
   }
 
   getMousePoint(ctx: CanvasRenderingContext2D, x: number, y: number): Point {
@@ -209,14 +197,14 @@ export class NgGdService {
     this.height = height;
   }
 
-  resetMouse(){
+  resetMouse() {
     (this.canvasObjects[1] as ShapeObject).resetMouse();
   }
 
   clear(ctx: CanvasRenderingContext2D) {
     ctx.save();
-    ctx.setTransform(1,0,0,1,0,0);
-    ctx.fillStyle=this.bkColor;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.fillStyle = this.bkColor;
     ctx.fillRect(0, 0, this.width, this.height);
     ctx.restore();
   }
@@ -229,8 +217,8 @@ export class NgGdService {
     let pos = 0;
     for (let index = 0; index < values.length; index++) {
       const element = values[index];
-      this.addRectangle({ x: point.x+ pos,y: point.y  }, width, element,0,color[index],color[index]);
-      pos = width*(index+1)+distance*(index+1);
+      this.addRectangle({ x: point.x + pos, y: point.y }, width, element, 0, color[index], color[index]);
+      pos = width * (index + 1) + distance * (index + 1);
     }
 
   }
@@ -289,7 +277,7 @@ export class NgGdService {
     return newCircle;
   }
 
-  addRectangle(point: Point, width: number, height: number, angle:number,color?: string, borderColor?: string): RectangleObject {
+  addRectangle(point: Point, width: number, height: number, angle: number, color?: string, borderColor?: string): RectangleObject {
     const newRectangle = new RectangleObject(point.x, point.y, width, height, angle, color, borderColor);
     this.canvasObjects.push((<ShapeObject>newRectangle));
     return newRectangle
@@ -358,7 +346,7 @@ export class NgGdService {
         }
       }
     });
-    onclick.sort((a, b) =>  b.shape.zOrder - a.shape.zOrder );
+    onclick.sort((a, b) => b.shape.zOrder - a.shape.zOrder);
     return onclick;
   }
 

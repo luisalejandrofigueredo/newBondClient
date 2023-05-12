@@ -1,2 +1,10 @@
 <p>testgdi works!</p>
 <canvas #canvas width="640" height="480"></canvas>
+<div class="column">
+    <mat-form-field>
+        <input type="number"  [(ngModel)]="id" matInput placeholder="Id" >
+    </mat-form-field>
+    <button mat-button (click)="acceptToFront()">Send to front</button>
+    <button mat-button (click)="listNodes()">list nodes</button>
+    <button mat-button (click)="renumber()">list nodes</button>
+</div>
