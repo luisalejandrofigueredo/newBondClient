@@ -28,8 +28,13 @@ export class NodeObject extends ShapeObject {
     }
     override moveMouse(ctx: CanvasRenderingContext2D, event: MouseEvent) {
         const point = getTransformedPoint(ctx, event.offsetX, event.offsetY);
-        this.x = point.x;
-        this.y = point.y;
+        if (ShapeObject.lastMove.x!==0 && ShapeObject.lastMove.y!==0){
+            const deltaX=point.x-ShapeObject.lastMove.x;
+            const deltaY=point.y-ShapeObject.lastMove.y;
+            this.x+=deltaX;
+            this.y+=deltaY;
+        }
+        ShapeObject.lastMove=point;
     }
 
     override move(x: number, y: number) {
@@ -44,7 +49,7 @@ export class NodeObject extends ShapeObject {
         ctx.fillStyle = this.BgColor;
         ctx.strokeStyle = this.BgColor;
         ctx.fillText(this.name, movePos.x, movePos.y);
-        fillCircle(ctx, this.x, this.y, 10, this.BgColor);
+        fillCircle(ctx, this.x, this.y, this.radius, this.BgColor);
         ctx.lineWidth = 1
     }
 
@@ -56,7 +61,7 @@ export class NodeObject extends ShapeObject {
             ctx.fillStyle = this.FgColor;
             ctx.strokeStyle = this.FgColor;
             ctx.fillText(this.name, movePos.x, movePos.y);
-            fillCircle(ctx, this.x, this.y, 10, this.color);
+            fillCircle(ctx, this.x, this.y, this.radius, this.color);
             ctx.lineWidth = 1
             if (this.net === true) {
                 ctx.fillStyle = this.Color;
@@ -71,7 +76,7 @@ export class NodeObject extends ShapeObject {
     }
 
     override inPoint(x: number, y: number): boolean {
-        if (distance(this.x, this.y, x, y) < this.radius) {
+        if (distance(this.x, this.y, x, y) <= this.radius) {
             return true;
         }
         else {

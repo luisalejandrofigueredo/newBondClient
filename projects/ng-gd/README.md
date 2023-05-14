@@ -169,6 +169,7 @@ y:position y.
 **type** var with string class of the object the easy way to obtain the type class the one object.
 
 **possibles values are**
+
 label
 
 node
@@ -198,6 +199,7 @@ line
 
 **moveMouse(ctx: CanvasRenderingContext2D, event: MouseEvent)** Move the object to mouse position.
 
+## Objects level
 **toFront()** Move the object to fist plane over all objects.
 
 **toTop()** Move the object to first plane.
@@ -207,3 +209,7 @@ line
 **nextZOrder()** Move the object one plane to front.
 
 **backZOrder()** Move the object one plane to back.
+
+service renumber is for not let plane withouts objects.
+for sample .
+this.gd.renumber()

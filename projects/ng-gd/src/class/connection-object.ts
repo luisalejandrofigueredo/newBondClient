@@ -36,19 +36,37 @@ export class ConnectionObject extends ShapeObject {
 
   override moveMouse(ctx: CanvasRenderingContext2D, event: MouseEvent) {
     const point = getTransformedPoint(ctx, event.offsetX, event.offsetY);
-    this.move(point.x, point.y)
+    let deltaX=0;
+    let deltaY=0;
+    if (ShapeObject.lastMove.x!==0 && ShapeObject.lastMove.y!==0){
+      deltaX=point.x-ShapeObject.lastMove.x;
+      deltaY=point.y-ShapeObject.lastMove.y;
+      this.x+=deltaX;
+      this.y+=deltaY;
+    }
+    this.move(point.x+deltaX, point.y+deltaY)
   }
 
   moveMouseXY(ctx: CanvasRenderingContext2D, event: MouseEvent) {
     const point = getTransformedPoint(ctx, event.offsetX, event.offsetY);
-    this.x = point.x;
-    this.y = point.y;
+    if (ShapeObject.lastMove.x!==0 && ShapeObject.lastMove.y!==0){
+        const deltaX=point.x-ShapeObject.lastMove.x;
+        const deltaY=point.y-ShapeObject.lastMove.y;
+        this.x+=deltaX;
+        this.y+=deltaY;
+    }
+    ShapeObject.lastMove=point;
   }
 
   moveMouseToXY(ctx: CanvasRenderingContext2D, event: MouseEvent) {
     const point = getTransformedPoint(ctx, event.offsetX, event.offsetY);
-    this.toX = point.x;
-    this.toY = point.y;
+        if (ShapeObject.lastMove.x!==0 && ShapeObject.lastMove.y!==0){
+            const deltaX=point.x-ShapeObject.lastMove.x;
+            const deltaY=point.y-ShapeObject.lastMove.y;
+            this.toX+=deltaX;
+            this.toY+=deltaY;
+        }
+        ShapeObject.lastMove=point;
   }
 
   override move(x: number, y: number): void {

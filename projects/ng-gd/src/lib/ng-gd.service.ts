@@ -259,8 +259,8 @@ export class NgGdService {
     });
   }
 
-  addMultiplesSides(point: Point, sides: number, radius: number, color?: string, borderColor?: string): MultiplesSidesObject {
-    const newMultiplesSides = new MultiplesSidesObject(point.x, point.y, sides, radius, color, borderColor);
+  addMultiplesSides(point: Point, sides: number, radius: number, color?: string, borderColor?: string,angle?:number): MultiplesSidesObject {
+    const newMultiplesSides = new MultiplesSidesObject(point.x, point.y, sides, radius, color, borderColor,angle);
     this.canvasObjects.push(<ShapeObject>newMultiplesSides);
     return newMultiplesSides;
   }

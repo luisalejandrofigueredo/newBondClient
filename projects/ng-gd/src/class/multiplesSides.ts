@@ -1,5 +1,5 @@
 import { Point } from '../interfaces/point';
-import { move, isPointInTriangle, distance, angle, getTransformedPoint } from '../trigonometrics';
+import { move, isPointInTriangle, distance, angle, getTransformedPoint, toRadians } from '../trigonometrics';
 import { ShapeObject } from './shape-object'
 interface Triangle {
     p1: Point;
@@ -11,7 +11,8 @@ export class MultiplesSidesObject extends ShapeObject {
     radius: number = 0;
     borderColor: string = ""
     triangles: Triangle[] = [];
-    constructor(x: number, y: number, sides: number, radius: number, color?: string, borderColor?: string) {
+    angle=0;
+    constructor(x: number, y: number, sides: number, radius: number, color?: string, borderColor?: string,angle?:number) {
         super();
         this.x = x;
         this.y = y;
@@ -28,10 +29,14 @@ export class MultiplesSidesObject extends ShapeObject {
         } else {
             this.borderColor = this.FgColor;
         }
+        if (angle){
+            this.angle=toRadians(angle);
+
+        }
         const radian = 2 * Math.PI / this.sides;
         for (let i = 0; i < this.sides; i++) {
-            const secondPoint = move(x, y, i * radian, this.radius);
-            const thirdPoint = move(x, y, i * radian + radian, this.radius);
+            const secondPoint = move(x, y, i * radian+this.angle, this.radius);
+            const thirdPoint = move(x, y, i * radian + radian+this.angle, this.radius);
             this.triangles.push({ p1: { x: x, y: y }, p2: secondPoint, p3: thirdPoint } as Triangle)
         }
     }
