@@ -84,6 +84,8 @@ ngOnInit(): void {
 
 [Demo ZOrder in GitHub](https://github.com/luisalejandrofigueredo/ZOrderDemo)
 
+[Demo ZOrder in stackblitz](https://stackblitz.com/edit/angular-demozorder?file=src%2Fmain.ts)
+
 
 ## List gd service commands
 
@@ -147,7 +149,19 @@ ngOnInit(): void {
 
 **addLabel(point: Point, text: string, fontSize: number, angle: number)** create a label.
 
-**click(ctx: CanvasRenderingContext2D, event: MouseEvent)** return a list all objects are clicked with mouse order for ZOrder.
+**click(ctx: CanvasRenderingContext2D, event: MouseEvent):{ shape: ShapeObject, action: string }** return a array all objects are clicked with mouse order for ZOrder. 
+Possible events off object:
+
+## inPoint Object are clicked.
+
+### Line and connection private events
+
+**inPointXY Object clicked in first point.**
+
+**inPointToXY Object clicked in second point.**
+
+**inRectangle Object clicked in the line.**
+
 
 **getClicks()** return a list created for click function speed reasons.
 
@@ -198,6 +212,20 @@ line
 **move(x:number,y:number)** Move the object to new position.
 
 **moveMouse(ctx: CanvasRenderingContext2D, event: MouseEvent)** Move the object to mouse position.
+
+## Additional functions for LineObject and ConnectionObject
+
+**inPointXY(x: number, y: number): boolean** if the mouse is over the first point the line or connection.
+
+**inPointToXY(x: number, y: number): boolean** if the mouse is over the second point the line or connection.
+
+
+**inRectangle(x: number, y: number): boolean** if the mouse is over the line.
+
+**moveMouseXY(ctx: CanvasRenderingContext2D, event: MouseEvent)** Mouse move the first point to new position. 
+
+**moveMouseToXY(ctx: CanvasRenderingContext2D, event: MouseEvent)** Mouse move the second point to new position. 
+
 
 ## Objects level
 **toFront()** Move the object to fist plane over all objects.
