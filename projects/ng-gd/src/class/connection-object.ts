@@ -1,5 +1,5 @@
 import { ShapeObject } from "./shape-object";
-import { angle, move, rectangle, distance, fillCircle, getNewParallelPoint, rotateText, isPointInsideRectangle, translateLineToNewPosition, getTransformedPoint } from "../trigonometrics";
+import { angle, move, rectangle, distance, fillCircle, getNewParallelPoint, rotateText, isPointInsideRectangle, translateLineToNewPosition, getTransformedPoint, moveLineToPoint } from "../trigonometrics";
 export class ConnectionObject extends ShapeObject {
   toX: number;
   toY: number;
@@ -36,15 +36,7 @@ export class ConnectionObject extends ShapeObject {
 
   override moveMouse(ctx: CanvasRenderingContext2D, event: MouseEvent) {
     const point = getTransformedPoint(ctx, event.offsetX, event.offsetY);
-    let deltaX=0;
-    let deltaY=0;
-    if (ShapeObject.lastMove.x!==0 && ShapeObject.lastMove.y!==0){
-      deltaX=point.x-ShapeObject.lastMove.x;
-      deltaY=point.y-ShapeObject.lastMove.y;
-      this.x+=deltaX;
-      this.y+=deltaY;
-    }
-    this.move(point.x+deltaX, point.y+deltaY)
+    this.move(point.x, point.y);
   }
 
   moveMouseXY(ctx: CanvasRenderingContext2D, event: MouseEvent) {
@@ -70,11 +62,15 @@ export class ConnectionObject extends ShapeObject {
   }
 
   override move(x: number, y: number): void {
-    const point = translateLineToNewPosition({ x: this.x, y: this.y }, { x: this.toX, y: this.toY }, { x: x, y: y });
-    this.x = point.newPointA.x;
-    this.y = point.newPointA.y;
-    this.toX = point.newPointB.x;
-    this.toY = point.newPointB.y;
+        if (!(ShapeObject.lastMove.x===0 && ShapeObject.lastMove.y===0)) {
+            const deltaX=x-ShapeObject.lastMove.x;
+            const deltaY=y-ShapeObject.lastMove.y;
+            this.x+=deltaX;
+            this.y+=deltaY;
+            this.toX+=deltaX;
+            this.toY+=deltaY;
+        }
+        ShapeObject.lastMove={x:x,y:y};
   }
 
   override inverseShape(ctx: CanvasRenderingContext2D): void {

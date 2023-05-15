@@ -27,6 +27,7 @@ export class TestgdiComponent implements AfterViewInit, OnInit {
     this.gd.addCircle({ x: 80, y: 80 }, 10, "#00ff00", "#ff0000");
     this.gd.addTriangle({ x: 90, y: 90 }, { x: 100, y: 110 }, { x: 120, y: 120 }, "#00ff00", "#0000ff");
     this.gd.addMultiplesSides({ x: 180, y: 180 }, 6, 20, "#0000ff","#0000ff",10);
+    this.gd.addLine({x:100,y:100},{x:150,y:150},3);
 
 
     const connect = this.gd.castingConnection(3);

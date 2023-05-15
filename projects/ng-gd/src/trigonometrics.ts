@@ -128,7 +128,6 @@ export function isPointInsideTrapezoid(A: Point, B: Point, C: Point, D: Point, p
 }
 
 export function isPointInTriangle(p1: Point, p2: Point, p3: Point, target: Point): boolean {
-  // Calculate the vectors between the triangle points
   const v1x = p3.x - p1.x;
   const v1y = p3.y - p1.y;
   const v2x = p2.x - p1.x;
@@ -136,19 +135,16 @@ export function isPointInTriangle(p1: Point, p2: Point, p3: Point, target: Point
   const v3x = target.x - p1.x;
   const v3y = target.y - p1.y;
 
-  // Calculate dot products
   const dot11 = v1x * v1x + v1y * v1y;
   const dot12 = v1x * v2x + v1y * v2y;
   const dot13 = v1x * v3x + v1y * v3y;
   const dot22 = v2x * v2x + v2y * v2y;
   const dot23 = v2x * v3x + v2y * v3y;
 
-  // Calculate barycentric coordinates
   const invDenom = 1 / (dot11 * dot22 - dot12 * dot12);
   const u = (dot22 * dot13 - dot12 * dot23) * invDenom;
   const v = (dot11 * dot23 - dot12 * dot13) * invDenom;
-
-  // Check if point is in triangle
+  
   return u >= 0 && v >= 0 && (u + v) < 1;
 }
 
@@ -169,31 +165,51 @@ export function getTransformedPoint(ctx: CanvasRenderingContext2D, x: number, y:
   return { x: transformedX, y: transformedY };
 }
 
+export function moveLineToPoint(lineStart: Point, lineEnd: Point, mousePosition: Point): { newStart: Point, newEnd: Point } {
+  const lineVector = {
+    x: lineEnd.x - lineStart.x,
+    y: lineEnd.y - lineStart.y,
+  };
+  const mouseVector = {
+    x: mousePosition.x - lineStart.x,
+    y: mousePosition.y - lineStart.y,
+  };
+  const lineMagnitude = Math.sqrt(lineVector.x ** 2 + lineVector.y ** 2);
+  const dotProduct = lineVector.x * mouseVector.x + lineVector.y * mouseVector.y;
+  const projection = {
+    x: (dotProduct / (lineMagnitude ** 2)) * lineVector.x,
+    y: (dotProduct / (lineMagnitude ** 2)) * lineVector.y,
+  };
+  const newStart = {
+    x: lineStart.x + projection.x,
+    y: lineStart.y + projection.y,
+  };
+  const newEnd = {
+    x: lineEnd.x + projection.x,
+    y: lineEnd.y + projection.y,
+  };
+  return { newStart, newEnd };
+}
+
+
 export function translateLineToNewPosition(pointA: Point, pointB: Point, newCenter: Point): { newPointA: Point, newPointB: Point } {
-  // 1. Calcular el vector que define la recta
   const lineVector = {
     x: pointB.x - pointA.x,
     y: pointB.y - pointA.y,
   };
-
-  // 2. Calcular el vector que define la distancia y dirección de traslación
   const translationVector = {
     x: newCenter.x - ((pointA.x + pointB.x) / 2),
     y: newCenter.y - ((pointA.y + pointB.y) / 2),
   };
-
-  // 3. Calcular las nuevas posiciones de los puntos
   const newPointA = {
     x: pointA.x + translationVector.x,
     y: pointA.y + translationVector.y,
   };
-
   const newPointB = {
     x: pointB.x + translationVector.x,
     y: pointB.y + translationVector.y,
   };
 
-  // 4. Retornar los nuevos puntos A y B
   return { newPointA, newPointB };
 }
 

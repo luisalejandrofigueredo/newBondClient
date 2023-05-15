@@ -48,7 +48,6 @@ export class LineObject extends ShapeObject {
         }
     }
     override inverseShape(ctx: CanvasRenderingContext2D): void {
-
          ctx.fillStyle = this.BgColor;
         ctx.strokeStyle = this.BgColor;
         const nodeAngle = angle(this.x, this.y, this.toX, this.toY);
@@ -109,11 +108,15 @@ export class LineObject extends ShapeObject {
         return false;
       }
     override move(x: number, y: number): void {
-        const point = translateLineToNewPosition({ x: this.x, y: this.y }, { x: this.toX, y: this.toY }, { x: x, y: y });
-        this.x = point.newPointA.x;
-        this.y = point.newPointA.y;
-        this.toX = point.newPointB.x;
-        this.toY = point.newPointB.y;
+        if (!(ShapeObject.lastMove.x===0 && ShapeObject.lastMove.y===0)) {
+            const deltaX=x-ShapeObject.lastMove.x;
+            const deltaY=y-ShapeObject.lastMove.y;
+            this.x+=deltaX;
+            this.y+=deltaY;
+            this.toX+=deltaX;
+            this.toY+=deltaY;
+        }
+        ShapeObject.lastMove={x:x,y:y};
     }
     override moveMouse(ctx: CanvasRenderingContext2D, event: MouseEvent): void {
         const point = getTransformedPoint(ctx, event.offsetX, event.offsetY);
