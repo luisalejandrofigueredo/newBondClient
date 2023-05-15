@@ -238,6 +238,6 @@ line
 
 **backZOrder()** Move the object one plane to back.
 
-service renumber is for not let plane withouts objects.
+Service renumber is for not let plane withouts objects.
 for sample .
 this.gd.renumber()
