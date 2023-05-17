@@ -2,7 +2,7 @@
 
 The easy way to manage the canvas.
 Support object and clicks events to the objects
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.0.0.
+This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.0.0. Testing in angular 15.0 and 15.2
 
 ## Build
 
@@ -11,14 +11,6 @@ Run `ng build ng-gd` to build the lib. The build artifacts will be stored in the
 ## Publishing
 
 After building your library with `ng build ng-gd`, go to the dist folder `cd dist/ng-gd` and run `npm publish`.
-
-## Running unit tests
-
-Run `ng test ng-gd` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
 
 ## Usage
 
@@ -70,13 +62,15 @@ private ctx!: CanvasRenderingContext2D;
 
 ngOnInit(): void {
     this.ctx = this.canvas.nativeElement.getContext('2d')!;
-    this.gd.start(800,600);
+    this.gd.start(640,480);
     this.gd.setDarkMode();
-    this.gd.addNode({ x: 150, y: 150 }, "one", "one", false, 10, 10);
+    this.gd.addNode({ x: 150, y: 150 }, "one", "this is the node one", false, 10, 10);
     this.gd.clear(this.ctx);
     this.gd.draw(this.ctx);
 }
 ```
+If you have problems with go another page and return use after view init for refresh.
+
 
 [Demo objects in stackblitz](https://stackblitz.com/edit/angular-ngdemo?file=src%2Fmain.ts)
 

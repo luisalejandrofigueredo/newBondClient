@@ -19,7 +19,7 @@ export class TestgdiComponent implements AfterViewInit, OnInit {
   constructor() {
     this.gd.start(800, 600);
     this.gd.setDarkMode();
-    this.gd.addNode({ x: 150, y: 150 }, "one", "one", false, 10, 10);
+    /* this.gd.addNode({ x: 150, y: 150 }, "one", "one", false, 10, 10);
     this.gd.addNode({ x: 50, y: 50 }, "two", "two", false, 10, 10);
     this.gd.addConnection({ x: 150, y: 150 }, { x: 50, y: 50 }, "#ff0000")
     this.gd.addLabel({ x: 200, y: 200 } as Point, "Hola Mundo", 20, 270);
@@ -27,10 +27,10 @@ export class TestgdiComponent implements AfterViewInit, OnInit {
     this.gd.addCircle({ x: 80, y: 80 }, 10, "#00ff00", "#ff0000");
     this.gd.addTriangle({ x: 90, y: 90 }, { x: 100, y: 110 }, { x: 120, y: 120 }, "#00ff00", "#0000ff");
     this.gd.addMultiplesSides({ x: 180, y: 180 }, 6, 20, "#0000ff","#0000ff",10);
-    this.gd.addLine({x:100,y:100},{x:150,y:150},3);
-
-
-    const connect = this.gd.castingConnection(3);
+    this.gd.addLine({x:100,y:100},{x:150,y:150},3); */
+    
+    
+    /* const connect = this.gd.castingConnection(3);
     connect.Name = "hello word";
     connect.MirrorLabel = true;
     const label = this.gd.getItem(4);
@@ -38,36 +38,38 @@ export class TestgdiComponent implements AfterViewInit, OnInit {
     const node2 = this.gd.casting(2);
     if (node2 instanceof NodeObject) {
       node2.name = "Dos";
-    }
+    } */
   }
-
+  
   renumber(){
     this.gd.renumberZOrder();
   }
-
+  
   acceptToFront() {
     (this.gd.casting(this.id) as unknown as ShapeObject ).toFront()
     console.log('To Front',this.gd.casting(this.id) as ShapeObject,this.id);
   }
-
+  
   listNodes(){
     console.log('Objects',this.gd.canvasObjects);
-
+    
   }
-
+  
   ngAfterViewInit(): void {
     this.gd.clear(this.ctx);
     this.gd.draw(this.ctx);
   }
-
+  
   async ngOnInit(): Promise<void> {
     const colors = ["#ff0000", "#ff00ff", "#0000ff", "#ffff00", "#f0000f"]
     this.ctx = this.canvas.nativeElement.getContext('2d')!;
     this.ctx.fillStyle = "black";
     this.gd.canvasSetSize(this.canvas.nativeElement.width, this.canvas.nativeElement.height);
-    for (let index = 0; index < 5; index++) {
+    /* for (let index = 0; index < 5; index++) {
       this.gd.addRectangle({ x: 50 + index * 10, y: 250 + index * 20 }, 100, 100, 0, colors[index]).toFront();
-    }
+    } */
+    this.gd.addPieChart(this.ctx,{x:200,y:200},40,[180,160,20],["#ff0000","#0000ff","#00ff00"],10);
+
     /* for (let index = 0; index < 100; index++) {
       await this.wait();
     } */

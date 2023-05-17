@@ -10,6 +10,7 @@ import { RectangleObject } from '../class/rectangleObject';
 import { CircleObject } from '../class/circleObject';
 import { TriangleObject } from '../class/triangleObject';
 import { MultiplesSidesObject } from '../class/multiplesSides';
+import {ArcObject} from '../class/arcObject'
 
 @Injectable({
   providedIn: 'root'
@@ -162,12 +163,13 @@ export class NgGdService {
     return <ConnectionObject>{}
   }
 
-  casting(id: number): ConnectionObject | NodeObject | LabelObject | ShapeObject | RectangleObject | CircleObject | TriangleObject | MultiplesSidesObject | LineObject|undefined {;
+  casting(id: number): ConnectionObject | NodeObject | LabelObject | ShapeObject | RectangleObject | CircleObject | TriangleObject | MultiplesSidesObject | LineObject | undefined {
+    ;
     for (let index = 0; index < this.canvasObjects.length; index++) {
-      if (this.canvasObjects[index].id===id) {
-        return this.canvasObjects[index] ;
+      if (this.canvasObjects[index].id === id) {
+        return this.canvasObjects[index];
         break;
-        }
+      }
     }
     return undefined;
   }
@@ -211,6 +213,17 @@ export class NgGdService {
 
   clearObjects() {
     this.canvasObjects = [];
+  }
+
+  addPieChart(ctx: CanvasRenderingContext2D,point:Point,size:number,values:number[],color: string[], distance: number,start?:number){
+    let beginGrades=0;
+    if(start) {
+      beginGrades+=start;
+    }
+    for (let index = 0; index < values.length; index++) {
+      this.addArc(point.x,point.y,size,beginGrades,beginGrades+values[index],color[index]);
+      beginGrades+=values[index];
+    }
   }
 
   addGraphBars(ctx: CanvasRenderingContext2D, point: Point, width: number, values: number[], color: string[], distance: number) {
@@ -259,8 +272,14 @@ export class NgGdService {
     });
   }
 
-  addMultiplesSides(point: Point, sides: number, radius: number, color?: string, borderColor?: string,angle?:number): MultiplesSidesObject {
-    const newMultiplesSides = new MultiplesSidesObject(point.x, point.y, sides, radius, color, borderColor,angle);
+  addArc(x: number, y: number, size: number, beginGrades: number, endGrades: number, color?: string, borderColor?: string):ArcObject {
+    const newArc=new ArcObject(x,y,size,beginGrades,endGrades,color,borderColor);
+    this.canvasObjects.push(<ShapeObject>newArc);
+    return newArc;
+  }
+
+  addMultiplesSides(point: Point, sides: number, radius: number, color?: string, borderColor?: string, angle?: number): MultiplesSidesObject {
+    const newMultiplesSides = new MultiplesSidesObject(point.x, point.y, sides, radius, color, borderColor, angle);
     this.canvasObjects.push(<ShapeObject>newMultiplesSides);
     return newMultiplesSides;
   }
