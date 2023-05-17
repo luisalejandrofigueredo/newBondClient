@@ -68,7 +68,7 @@ export class TestgdiComponent implements AfterViewInit, OnInit {
     /* for (let index = 0; index < 5; index++) {
       this.gd.addRectangle({ x: 50 + index * 10, y: 250 + index * 20 }, 100, 100, 0, colors[index]).toFront();
     } */
-    this.gd.addPieChart(this.ctx,{x:200,y:200},40,[180,160,20],["#ff0000","#0000ff","#00ff00"],10);
+    this.gd.addPieChart(this.ctx,{x:200,y:200},40,[180,160,20],["#ff0000","#0000ff","#00ff00"],0);
 
     /* for (let index = 0; index < 100; index++) {
       await this.wait();

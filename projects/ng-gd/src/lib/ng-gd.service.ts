@@ -4,7 +4,7 @@ import { Point } from "../interfaces/point";
 import { NodeObject } from '../class/node-object';
 import { ConnectionObject } from '../class/connection-object';
 import { LabelObject } from '../class/label-object';
-import { convertArray, getTransformedPoint } from '../trigonometrics';
+import { convertArray, getTransformedPoint, move, toRadians } from '../trigonometrics';
 import { DocumentObject, LineObject } from '../public-api';
 import { RectangleObject } from '../class/rectangleObject';
 import { CircleObject } from '../class/circleObject';
@@ -216,13 +216,14 @@ export class NgGdService {
   }
 
   addPieChart(ctx: CanvasRenderingContext2D,point:Point,size:number,values:number[],color: string[], distance: number,start?:number){
-    let beginGrades=0;
+    let beginGrade=0;
     if(start) {
-      beginGrades+=start;
+      beginGrade+=start;
     }
     for (let index = 0; index < values.length; index++) {
-      this.addArc(point.x,point.y,size,beginGrades,beginGrades+values[index],color[index]);
-      beginGrades+=values[index];
+      const newPoint=move(point.x,point.y,toRadians(beginGrade+values[index]/2),distance)
+      this.addArc(newPoint.x,newPoint.y,size,beginGrade,beginGrade+values[index],color[index]);
+      beginGrade+=values[index];
     }
   }
 
