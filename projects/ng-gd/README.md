@@ -74,7 +74,7 @@ If you have problems with go another page and return use after view init for ref
 
 [Demo objects in stackblitz](https://stackblitz.com/edit/angular-ngdemo?file=src%2Fmain.ts)
 
-[Demo graph in stackblitz](https://stackblitz.com/edit/angular-ng-demo-graphics?file=src%2Fmain.ts)
+[Demo charts in stackblitz](https://stackblitz.com/edit/angular-ng-demo-graphics?file=src%2Fmain.ts)
 
 [Demo ZOrder in GitHub](https://github.com/luisalejandrofigueredo/ZOrderDemo)
 
@@ -121,6 +121,8 @@ If you have problems with go another page and return use after view init for ref
 
 **clearObjects()** delete all objects in the library.
 
+**addPieChart(ctx: CanvasRenderingContext2D, point: Point, size: number, values: number[], color: string[], distance: number, start?: number, labels?: string[])** create a pie chart.
+
 **addGraphBars(ctx: CanvasRenderingContext2D, point: Point, width: number, values: number[], color: string[], distance: number)** create graph bars.
 
 **addAxisY(ctx: CanvasRenderingContext2D, point: Point, dist: number, steps: number, labels: string[], fontSize: number, angleGrades?: number, distance?: number)** create a y axis.
@@ -142,6 +144,8 @@ If you have problems with go another page and return use after view init for ref
 **addLine(point: Point, toPoint: Point, steps?: number, color?: string)** create a line steps mark the line like rule.
 
 **addLabel(point: Point, text: string, fontSize: number, angle: number)** create a label.
+
+ **addArc(x: number, y: number, size: number, beginGrades: number, endGrades: number, color?: string, borderColor?: string): ArcObject** create a arc object
 
 **click(ctx: CanvasRenderingContext2D, event: MouseEvent):{ shape: ShapeObject, action: string }** return a array all objects are clicked with mouse order for ZOrder. 
 Possible events off object:
@@ -194,6 +198,7 @@ multiplesSides
 
 line
 
+arc
 
 ## Objects common functions
 
@@ -234,4 +239,7 @@ line
 
 Service renumber is for not let plane withouts objects.
 for sample .
-this.gd.renumber()
+this.gd.renumberZOrder()
+
+For help send email to:**luisalejandrofigueredo@gmail.com**
+or:[Likedin](https://www.linkedin.com/public-profile/settings?trk=d_flagship3_profile_self_view_public_profile)

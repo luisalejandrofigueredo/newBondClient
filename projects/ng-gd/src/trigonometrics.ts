@@ -18,12 +18,11 @@ export function rectangle(x: number, y: number, height: number, width: number, a
 
 export function drawRectangle(ctx: CanvasRenderingContext2D,rect:Rectangle) {
     ctx.beginPath();
-    ctx.fillStyle="white";
     ctx.moveTo(rect.first.x,rect.first.y);
     ctx.lineTo(rect.second.x,rect.second.y);
     ctx.lineTo(rect.third.x,rect.third.y);
     ctx.lineTo(rect.forth.x,rect.forth.y);
-    ctx.lineTo(rect.first.x,rect.first.y);
+    ctx.closePath();
     ctx.stroke();
     ctx.fill();
 }

@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild, inject } from '@angular/core';
-import { NgGdService, ConnectionObject, Point, LabelObject, NodeObject, LineObject, ShapeObject } from 'ng-gd'
+import { NgGdService, ConnectionObject, Point, LineObject, ShapeObject } from 'ng-gd'
 
 
 
@@ -67,9 +67,9 @@ export class TestgdiComponent implements AfterViewInit, OnInit {
     this.gd.canvasSetSize(this.canvas.nativeElement.width, this.canvas.nativeElement.height);
     /* for (let index = 0; index < 5; index++) {
       this.gd.addRectangle({ x: 50 + index * 10, y: 250 + index * 20 }, 100, 100, 0, colors[index]).toFront();
-    } */
-    this.gd.addPieChart(this.ctx,{x:200,y:200},40,[180,160,20],["#ff0000","#0000ff","#00ff00"],0);
-
+    }*/ 
+    this.gd.addPieChart(this.ctx,{x:200,y:200},40,[180,160,20],["#ff0000","#0000ff","#00ff00"],0,0,["one","two","three"]);
+    this.gd.addLineChart({x:200,y:200},[50,80,30],50,"#ff0000",true);
     /* for (let index = 0; index < 100; index++) {
       await this.wait();
     } */

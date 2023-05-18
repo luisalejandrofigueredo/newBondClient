@@ -10,7 +10,8 @@ import { RectangleObject } from '../class/rectangleObject';
 import { CircleObject } from '../class/circleObject';
 import { TriangleObject } from '../class/triangleObject';
 import { MultiplesSidesObject } from '../class/multiplesSides';
-import {ArcObject} from '../class/arcObject'
+import { ArcObject } from '../class/arcObject'
+import { LineChartObject } from '../class/lineChartObject'
 
 @Injectable({
   providedIn: 'root'
@@ -164,7 +165,6 @@ export class NgGdService {
   }
 
   casting(id: number): ConnectionObject | NodeObject | LabelObject | ShapeObject | RectangleObject | CircleObject | TriangleObject | MultiplesSidesObject | LineObject | undefined {
-    ;
     for (let index = 0; index < this.canvasObjects.length; index++) {
       if (this.canvasObjects[index].id === id) {
         return this.canvasObjects[index];
@@ -215,15 +215,32 @@ export class NgGdService {
     this.canvasObjects = [];
   }
 
-  addPieChart(ctx: CanvasRenderingContext2D,point:Point,size:number,values:number[],color: string[], distance: number,start?:number){
-    let beginGrade=0;
-    if(start) {
-      beginGrade+=start;
+  addLineChart(point: Point, values: number[], dist: number, color: string,marks?:boolean): LineChartObject {
+    const newLineChart = new LineChartObject(point, values, dist, color,marks);
+    this.canvasObjects.push(<ShapeObject>newLineChart)
+    return newLineChart;
+  }
+
+  addPieChart(ctx: CanvasRenderingContext2D, point: Point, size: number, values: number[], color: string[], distance: number, start?: number, labels?: string[]) {
+    let beginGrade = 0;
+    if (start) {
+      beginGrade += start;
     }
     for (let index = 0; index < values.length; index++) {
-      const newPoint=move(point.x,point.y,toRadians(beginGrade+values[index]/2),distance)
-      this.addArc(newPoint.x,newPoint.y,size,beginGrade,beginGrade+values[index],color[index]);
-      beginGrade+=values[index];
+      const newPoint = move(point.x, point.y, toRadians(beginGrade + values[index] / 2), distance)
+      this.addArc(newPoint.x, newPoint.y, size, beginGrade, beginGrade + values[index], color[index]);
+      beginGrade += values[index];
+    }
+    if (labels) {
+      beginGrade = 0;
+      if (start) {
+        beginGrade += start;
+      }
+      for (let index = 0; index < labels.length; index++) {
+        const newPoint = move(point.x, point.y, toRadians(beginGrade + values[index] / 2), distance + size + size / 2)
+        this.addLabel(newPoint, labels[index], size / 2, 0);
+        beginGrade += values[index];
+      }
     }
   }
 
@@ -273,8 +290,8 @@ export class NgGdService {
     });
   }
 
-  addArc(x: number, y: number, size: number, beginGrades: number, endGrades: number, color?: string, borderColor?: string):ArcObject {
-    const newArc=new ArcObject(x,y,size,beginGrades,endGrades,color,borderColor);
+  addArc(x: number, y: number, size: number, beginGrades: number, endGrades: number, color?: string, borderColor?: string): ArcObject {
+    const newArc = new ArcObject(x, y, size, beginGrades, endGrades, color, borderColor);
     this.canvasObjects.push(<ShapeObject>newArc);
     return newArc;
   }

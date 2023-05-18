@@ -17,5 +17,6 @@ export * from './class/circleObject';
 export * from './class/triangleObject';
 export * from './class/multiplesSides';
 export * from './class/arcObject';
+export * from './class/lineChartObject';
 export * from  './class/lineObject';
 export * from './interfaces/point';
