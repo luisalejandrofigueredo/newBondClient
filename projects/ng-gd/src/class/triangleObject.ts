@@ -8,8 +8,8 @@ interface vector{
 export class TriangleObject extends ShapeObject{
     second:Point={x:0,y:0};
     third:Point={x:0,y:0};
-    borderColor="";
-    constructor(first:Point,second:Point,third:Point,color?:string,borderColor?:string){
+    borderColor: string | CanvasGradient | CanvasPattern="";
+    constructor(first:Point,second:Point,third:Point,color?:string | CanvasGradient | CanvasPattern,borderColor?:string | CanvasGradient | CanvasPattern){
         super();
         this.x=first.x;
         this.y=first.y;
@@ -28,16 +28,18 @@ export class TriangleObject extends ShapeObject{
         }
     }
     override drawShape(ctx: CanvasRenderingContext2D): void {
-        ctx.fillStyle=this.color;
-        ctx.strokeStyle=this.borderColor;
-        ctx.beginPath();
-        ctx.moveTo(this.x,this.y);
-        ctx.lineTo(this.second.x,this.second.y);
-        ctx.lineTo(this.third.x,this.third.y);
-        ctx.lineTo(this.x,this.y);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
+        if (this.visible===true){
+            ctx.fillStyle=this.color;
+            ctx.strokeStyle=this.borderColor;
+            ctx.beginPath();
+            ctx.moveTo(this.x,this.y);
+            ctx.lineTo(this.second.x,this.second.y);
+            ctx.lineTo(this.third.x,this.third.y);
+            ctx.lineTo(this.x,this.y);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+        }
     }
     override inverseShape(ctx: CanvasRenderingContext2D): void {
         ctx.fillStyle=this.BgColor;

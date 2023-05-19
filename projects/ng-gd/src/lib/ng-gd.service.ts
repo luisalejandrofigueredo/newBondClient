@@ -215,13 +215,13 @@ export class NgGdService {
     this.canvasObjects = [];
   }
 
-  addLineChart(point: Point, values: number[], dist: number, color: string,marks?:boolean): LineChartObject {
+  addLineChart(point: Point, values: number[], dist: number, color: string | CanvasGradient | CanvasPattern,marks?:boolean): LineChartObject {
     const newLineChart = new LineChartObject(point, values, dist, color,marks);
     this.canvasObjects.push(<ShapeObject>newLineChart)
     return newLineChart;
   }
 
-  addPieChart(ctx: CanvasRenderingContext2D, point: Point, size: number, values: number[], color: string[], distance: number, start?: number, labels?: string[]) {
+  addPieChart(ctx: CanvasRenderingContext2D, point: Point, size: number, values: number[], color: (string | CanvasGradient | CanvasPattern)[], distance: number, start?: number, labels?: string[]) {
     let beginGrade = 0;
     if (start) {
       beginGrade += start;
@@ -290,31 +290,31 @@ export class NgGdService {
     });
   }
 
-  addArc(x: number, y: number, size: number, beginGrades: number, endGrades: number, color?: string, borderColor?: string): ArcObject {
+  addArc(x: number, y: number, size: number, beginGrades: number, endGrades: number, color?: string | CanvasGradient | CanvasPattern, borderColor?: string | CanvasGradient | CanvasPattern): ArcObject {
     const newArc = new ArcObject(x, y, size, beginGrades, endGrades, color, borderColor);
     this.canvasObjects.push(<ShapeObject>newArc);
     return newArc;
   }
 
-  addMultiplesSides(point: Point, sides: number, radius: number, color?: string, borderColor?: string, angle?: number): MultiplesSidesObject {
+  addMultiplesSides(point: Point, sides: number, radius: number, color?: string | CanvasGradient | CanvasPattern, borderColor?: string | CanvasGradient | CanvasPattern, angle?: number): MultiplesSidesObject {
     const newMultiplesSides = new MultiplesSidesObject(point.x, point.y, sides, radius, color, borderColor, angle);
     this.canvasObjects.push(<ShapeObject>newMultiplesSides);
     return newMultiplesSides;
   }
 
-  addTriangle(first: Point, second: Point, third: Point, color?: string, borderColor?: string): TriangleObject {
+  addTriangle(first: Point, second: Point, third: Point, color?: string | CanvasGradient | CanvasPattern, borderColor?: string | CanvasGradient | CanvasPattern): TriangleObject {
     const newTriangle = new TriangleObject(first, second, third, color, borderColor);
     this.canvasObjects.push(<ShapeObject>newTriangle);
     return newTriangle;
   }
 
-  addCircle(point: Point, radius: number, color?: string, borderColor?: string): CircleObject {
+  addCircle(point: Point, radius: number, color?: string | CanvasGradient | CanvasPattern, borderColor?: string | CanvasGradient | CanvasPattern): CircleObject {
     const newCircle = new CircleObject(point.x, point.y, radius, color, borderColor);
     this.canvasObjects.push((<ShapeObject>newCircle));
     return newCircle;
   }
 
-  addRectangle(point: Point, width: number, height: number, angle: number, color?: string, borderColor?: string): RectangleObject {
+  addRectangle(point: Point, width: number, height: number, angle: number, color?: string | CanvasGradient | CanvasPattern, borderColor?: string | CanvasGradient | CanvasPattern): RectangleObject {
     const newRectangle = new RectangleObject(point.x, point.y, width, height, angle, color, borderColor);
     this.canvasObjects.push((<ShapeObject>newRectangle));
     return newRectangle
@@ -326,13 +326,13 @@ export class NgGdService {
     return newNode;
   }
 
-  addConnection(point: Point, toPoint: Point, color?: string, label?: string): ConnectionObject {
+  addConnection(point: Point, toPoint: Point, color?: string | CanvasGradient | CanvasPattern, label?: string): ConnectionObject {
     const newConnection = new ConnectionObject(point.x, point.y, toPoint.x, toPoint.y, color, label);
     this.canvasObjects.push((<ShapeObject>newConnection));
     return newConnection;
   }
 
-  addLine(point: Point, toPoint: Point, steps?: number, color?: string): LineObject {
+  addLine(point: Point, toPoint: Point, steps?: number, color?: string | CanvasGradient | CanvasPattern): LineObject {
     const newLine = new LineObject(point.x, point.y, toPoint.x, toPoint.y, steps, color);
     this.canvasObjects.push((<ShapeObject>newLine));
     return newLine;

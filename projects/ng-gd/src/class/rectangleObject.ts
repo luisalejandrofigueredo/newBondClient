@@ -3,10 +3,10 @@ import { rectangle, isPointInsideRectangle, getTransformedPoint, distance, angle
 import { Point } from '../interfaces/point';
 export class RectangleObject extends ShapeObject {
     angle = 0;
-    borderColor = "#ffffff";
+    borderColor:string | CanvasGradient | CanvasPattern = "#ffffff";
     height = 10;
     width = 10;
-    constructor(x: number, y: number, width: number, height: number, angle?: number, color?: string, borderColor?: string) {
+    constructor(x: number, y: number, width: number, height: number, angle?: number, color?: string | CanvasGradient | CanvasPattern, borderColor?: string | CanvasGradient | CanvasPattern) {
         super();
         this.x = x;
         this.y = y;

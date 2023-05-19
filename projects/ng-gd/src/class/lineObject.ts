@@ -4,7 +4,7 @@ export class LineObject extends ShapeObject {
     toX: number;
     toY: number;
     steps:number=0;
-    constructor(x: number, y: number, toX: number, toY: number, steps?:number,color?: string) {
+    constructor(x: number, y: number, toX: number, toY: number, steps?:number,color?: string | CanvasGradient | CanvasPattern) {
         super();
         this.x = x;
         this.y = y;

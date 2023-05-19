@@ -3,7 +3,6 @@ export interface CommonProperties {
     y: number;
     name: string;
     zOrder: number;
-    color: string;
     visible: boolean;
     toX?:number;
     toY?:number;

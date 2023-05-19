@@ -56,14 +56,16 @@ export class LabelObject extends ShapeObject {
     }
 
     override drawShape(ctx: CanvasRenderingContext2D): void {
-        ctx.save();
-        ctx.translate(this.x, this.y);
-        ctx.rotate(this.angle);
-        ctx.fillStyle = this.color;
-        ctx.font = Math.abs(this.fontSize).toString() + "px "+this.font
-        this.sizeText = ctx.measureText(this.text).actualBoundingBoxRight+ctx.measureText(this.text).actualBoundingBoxLeft;
-        ctx.fillText(this.text, 0, 0);
-        ctx.restore();
+        if (this.visible===true){
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.rotate(this.angle);
+            ctx.fillStyle = this.color;
+            ctx.font = Math.abs(this.fontSize).toString() + "px "+this.font
+            this.sizeText = ctx.measureText(this.text).actualBoundingBoxRight+ctx.measureText(this.text).actualBoundingBoxLeft;
+            ctx.fillText(this.text, 0, 0);
+            ctx.restore();
+        }
     }
 
     getSizeText(ctx:CanvasRenderingContext2D):number{

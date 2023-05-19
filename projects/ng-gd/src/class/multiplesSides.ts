@@ -9,10 +9,10 @@ interface Triangle {
 export class MultiplesSidesObject extends ShapeObject {
     sides: number = 0;
     radius: number = 0;
-    borderColor: string = ""
+    borderColor: string | CanvasGradient | CanvasPattern = ""
     triangles: Triangle[] = [];
-    angle=0;
-    constructor(x: number, y: number, sides: number, radius: number, color?: string, borderColor?: string,angle?:number) {
+    angle = 0;
+    constructor(x: number, y: number, sides: number, radius: number, color?: string | CanvasGradient | CanvasPattern, borderColor?: string | CanvasGradient | CanvasPattern, angle?: number) {
         super();
         this.x = x;
         this.y = y;
@@ -29,36 +29,38 @@ export class MultiplesSidesObject extends ShapeObject {
         } else {
             this.borderColor = this.FgColor;
         }
-        if (angle){
-            this.angle=toRadians(angle);
+        if (angle) {
+            this.angle = toRadians(angle);
 
         }
         const radian = 2 * Math.PI / this.sides;
         for (let i = 0; i < this.sides; i++) {
-            const secondPoint = move(x, y, i * radian+this.angle, this.radius);
-            const thirdPoint = move(x, y, i * radian + radian+this.angle, this.radius);
+            const secondPoint = move(x, y, i * radian + this.angle, this.radius);
+            const thirdPoint = move(x, y, i * radian + radian + this.angle, this.radius);
             this.triangles.push({ p1: { x: x, y: y }, p2: secondPoint, p3: thirdPoint } as Triangle)
         }
     }
 
     override drawShape(ctx: CanvasRenderingContext2D): void {
-        ctx.beginPath();
-        ctx.fillStyle = this.color;
-        ctx.strokeStyle = this.borderColor;
-        const length = this.triangles.length;
-        this.triangles.forEach((triangle, index) => {
-            if (index === 0) {
-                ctx.moveTo(triangle.p2.x, triangle.p2.y);
-            }
-            if (index < length - 1) {
-                ctx.lineTo(triangle.p3.x, triangle.p3.y);
-            } else {
-                ctx.lineTo(this.triangles[0].p2.x, this.triangles[0].p2.y);
-            }
-        });
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
+        if (this.visible === true) {
+            ctx.beginPath();
+            ctx.fillStyle = this.color;
+            ctx.strokeStyle = this.borderColor;
+            const length = this.triangles.length;
+            this.triangles.forEach((triangle, index) => {
+                if (index === 0) {
+                    ctx.moveTo(triangle.p2.x, triangle.p2.y);
+                }
+                if (index < length - 1) {
+                    ctx.lineTo(triangle.p3.x, triangle.p3.y);
+                } else {
+                    ctx.lineTo(this.triangles[0].p2.x, this.triangles[0].p2.y);
+                }
+            });
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+        }
     }
 
     override inverseShape(ctx: CanvasRenderingContext2D): void {

@@ -2,8 +2,8 @@ import { ShapeObject } from "./shape-object";
 import { distance, getTransformedPoint } from "../trigonometrics";
 export class CircleObject extends ShapeObject {
     radius = 0;
-    borderColor = "";
-    constructor(x: number, y: number, radius: number, color?: string, borderColor?: string) {
+    borderColor: string | CanvasGradient | CanvasPattern= "";
+    constructor(x: number, y: number, radius: number, color?: string | CanvasGradient | CanvasPattern, borderColor?: string | CanvasGradient | CanvasPattern) {
         super();
         this.x = x;
         this.y = y;
@@ -21,12 +21,14 @@ export class CircleObject extends ShapeObject {
         }
     }
     override drawShape(ctx: CanvasRenderingContext2D): void {
-        ctx.fillStyle = this.color;
-        ctx.strokeStyle = this.borderColor;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-        ctx.fill();
-        ctx.stroke();
+        if (this.visible===true){
+            ctx.fillStyle = this.color;
+            ctx.strokeStyle = this.borderColor;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.stroke();
+        }
     }
     override inverseShape(ctx: CanvasRenderingContext2D): void {
         ctx.fillStyle = this.BgColor;

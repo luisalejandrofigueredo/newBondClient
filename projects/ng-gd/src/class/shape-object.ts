@@ -3,8 +3,8 @@ import { Point } from "../interfaces/point";
 export abstract class ShapeObject implements CommonProperties {
   private static maxId: number = -1;
   private static maxZOrder: number = 0;
-  private static bgColor = "#000000";
-  private static fgColor = "#ffffff";
+  private static bgColor:string| CanvasGradient | CanvasPattern = "#000000";
+  private static fgColor:string | CanvasGradient | CanvasPattern = "#ffffff";
   public static width = 0;
   public static height = 0;
   public static lastMove:Point={x:0,y:0};
@@ -13,9 +13,9 @@ export abstract class ShapeObject implements CommonProperties {
   y = 0;
   name = '';
   zOrder = 0;
-  color = '#ff0000';
   visible = true;
   type = '';
+  color: string| CanvasGradient | CanvasPattern="#ff0000";
   constructor() {
     ShapeObject.maxId++;
     this.id = ShapeObject.maxId;
@@ -64,7 +64,7 @@ export abstract class ShapeObject implements CommonProperties {
     return this.visible;
   }
 
-  set Color(color: string) {
+  set Color(color: string| CanvasGradient | CanvasPattern) {
     this.color = color;
   }
 
@@ -84,7 +84,7 @@ export abstract class ShapeObject implements CommonProperties {
     return ShapeObject.bgColor;
   }
 
-  set BgColor(color: string) {
+  set BgColor(color: string| CanvasGradient | CanvasPattern) {
     ShapeObject.bgColor = color;
   }
 
@@ -92,7 +92,7 @@ export abstract class ShapeObject implements CommonProperties {
     return ShapeObject.fgColor;
   }
 
-  set FgColor(color: string) {
+  set FgColor(color: string| CanvasGradient | CanvasPattern) {
     ShapeObject.fgColor = color;
   }
 

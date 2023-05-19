@@ -3,7 +3,7 @@ export interface CommonProperties {
     y: number;
     name: string;
     zOrder: number;
-    color: string;
+    color: string | CanvasGradient | CanvasPattern;
     visible: boolean;
     toX?:number;
     toY?:number;

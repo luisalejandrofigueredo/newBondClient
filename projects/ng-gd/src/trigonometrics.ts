@@ -43,7 +43,7 @@ export function hexColor(color: string): string {
   return '#' + color;
 }
 
-export function fillCircle(ctx: CanvasRenderingContext2D, x: number, y: number, radius: number, color: string) {
+export function fillCircle(ctx: CanvasRenderingContext2D, x: number, y: number, radius: number, color: string | CanvasGradient | CanvasPattern) {
   let path: Path2D = new Path2D();
   ctx.fillStyle = color;
   ctx.strokeStyle = color;
@@ -78,7 +78,7 @@ export function getNewParallelPoint(x: number, y: number, xx: number, yy: number
   return move(middlePoint.x, middlePoint.y, anglePara + Math.PI / 3, distanceParallel);
 }
 
-export function rotateText(ctx: CanvasRenderingContext2D, text: string, x: number, y: number, angle: number, color: string, fontSize: number) {
+export function rotateText(ctx: CanvasRenderingContext2D, text: string, x: number, y: number, angle: number, color: string | CanvasGradient | CanvasPattern, fontSize: number) {
   ctx.save();
   ctx.translate(x, y);
   ctx.rotate(angle);

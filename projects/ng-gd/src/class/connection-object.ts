@@ -7,7 +7,7 @@ export class ConnectionObject extends ShapeObject {
   align: number = 0;
   distance: number = 0;
   shape = 0;
-  constructor(x: number, y: number, toX: number, toY: number, color?: string, name?: string) {
+  constructor(x: number, y: number, toX: number, toY: number, color?: string | CanvasGradient | CanvasPattern, name?: string) {
     super()
     this.x = x;
     this.y = y;

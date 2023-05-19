@@ -7,7 +7,7 @@ export class LineChartObject extends ShapeObject {
     pointValues: Point[] = [];
     dist: number = 0;
     marks=false;
-    constructor(point: Point, values: number[], dist: number, color: string,marks?:boolean) {
+    constructor(point: Point, values: number[], dist: number, color: string | CanvasGradient | CanvasPattern,marks?:boolean) {
         super();
         this.x = point.x;
         this.y = point.y;
@@ -25,22 +25,24 @@ export class LineChartObject extends ShapeObject {
     }
 
     override drawShape(ctx: CanvasRenderingContext2D): void {
-        ctx.beginPath();
-        ctx.strokeStyle = this.color;
-        ctx.fillStyle=this.color;
-        const point = this.pointValues[0];
-        ctx.moveTo(point.x, point.y);
-        for (let index = 1; index < this.pointValues.length; index++) {
-            const pointTo = this.pointValues[index]
-            ctx.lineTo(pointTo.x, pointTo.y);
-        }
-        ctx.stroke();
-        if (this.marks===true){
-            this.pointValues.forEach((element)=>{
-                const movePoint=move(element.x,element.y,Math.PI/2,1)
-                const rect=rectangle(movePoint.x,movePoint.y,2,2,0);
-                drawRectangle(ctx,rect);
-            });
+        if (this.visible){
+            ctx.beginPath();
+            ctx.strokeStyle = this.color;
+            ctx.fillStyle=this.color;
+            const point = this.pointValues[0];
+            ctx.moveTo(point.x, point.y);
+            for (let index = 1; index < this.pointValues.length; index++) {
+                const pointTo = this.pointValues[index]
+                ctx.lineTo(pointTo.x, pointTo.y);
+            }
+            ctx.stroke();
+            if (this.marks===true){
+                this.pointValues.forEach((element)=>{
+                    const movePoint=move(element.x,element.y,Math.PI/2,1)
+                    const rect=rectangle(movePoint.x,movePoint.y,2,2,0);
+                    drawRectangle(ctx,rect);
+                });
+            }
         }
     }
 
@@ -87,7 +89,7 @@ export class LineChartObject extends ShapeObject {
             this.pointValues.push(point);
         })
     }
-    
+
     override moveMouse(ctx: CanvasRenderingContext2D, event: MouseEvent): void {
         const point = getTransformedPoint(ctx, event.offsetX, event.offsetY);
         if (ShapeObject.lastMove.x !== 0 && ShapeObject.lastMove.y !== 0) {

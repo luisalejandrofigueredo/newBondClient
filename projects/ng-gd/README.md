@@ -125,6 +125,9 @@ If you have problems with go another page and return use after view init for ref
 
 **addGraphBars(ctx: CanvasRenderingContext2D, point: Point, width: number, values: number[], color: string[], distance: number)** create graph bars.
 
+**addLineChart(point: Point, values: number[], dist: number, color: string,marks?:boolean): LineChartObject** create a line for chart;
+
+
 **addAxisY(ctx: CanvasRenderingContext2D, point: Point, dist: number, steps: number, labels: string[], fontSize: number, angleGrades?: number, distance?: number)** create a y axis.
 
 **addAxisX(ctx: CanvasRenderingContext2D, point: Point, dist: number, steps: number, labels: string[], fontSize: number, angleGrades?: number, distance?: number)** create a x axis.
@@ -174,7 +177,7 @@ Possible events off object:
 x:position x.
 y:position y.
 
-**color** object color;
+**color** object color gd support string,patterns or gradients;
 
 **visible** toggle object to visible you turn false the object not draw.
 
@@ -182,23 +185,26 @@ y:position y.
 
 **possibles values are**
 
-label
+__label__
 
-node
 
-connection
+__node__
 
-rectangle
+__connection__
 
-circle
+__rectangle__
 
-triangle
+__circle__
 
-multiplesSides
+__triangle__
 
-line
+__multiplesSides__
 
-arc
+__line__
+
+__arc__
+
+__lineChart__
 
 ## Objects common functions
 
@@ -242,4 +248,4 @@ for sample .
 this.gd.renumberZOrder()
 
 For help send email to:**luisalejandrofigueredo@gmail.com**
-or:[Likedin](https://www.linkedin.com/public-profile/settings?trk=d_flagship3_profile_self_view_public_profile)
+or:[Likedin](http://www.linkedin.com/in/luis-figueredo-casadei)
