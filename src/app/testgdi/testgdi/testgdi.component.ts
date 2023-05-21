@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild, inject } from '@angular/core';
-import { NgGdService, ConnectionObject, Point, LineObject, ShapeObject } from 'ng-gd'
+import { NgGdService, ConnectionObject, Point, LineObject, ShapeObject, CandlestickObject, Candlestick, } from 'ng-gd'
 
 
 
@@ -28,8 +28,8 @@ export class TestgdiComponent implements AfterViewInit, OnInit {
     this.gd.addTriangle({ x: 90, y: 90 }, { x: 100, y: 110 }, { x: 120, y: 120 }, "#00ff00", "#0000ff");
     this.gd.addMultiplesSides({ x: 180, y: 180 }, 6, 20, "#0000ff","#0000ff",10);
     this.gd.addLine({x:100,y:100},{x:150,y:150},3); */
-    
-    
+
+
     /* const connect = this.gd.castingConnection(3);
     connect.Name = "hello word";
     connect.MirrorLabel = true;
@@ -40,26 +40,26 @@ export class TestgdiComponent implements AfterViewInit, OnInit {
       node2.name = "Dos";
     } */
   }
-  
-  renumber(){
+
+  renumber() {
     this.gd.renumberZOrder();
   }
-  
+
   acceptToFront() {
-    (this.gd.casting(this.id) as unknown as ShapeObject ).toFront()
-    console.log('To Front',this.gd.casting(this.id) as ShapeObject,this.id);
+    (this.gd.casting(this.id) as unknown as ShapeObject).toFront()
+    console.log('To Front', this.gd.casting(this.id) as ShapeObject, this.id);
   }
-  
-  listNodes(){
-    console.log('Objects',this.gd.canvasObjects);
-    
+
+  listNodes() {
+    console.log('Objects', this.gd.canvasObjects);
+
   }
-  
+
   ngAfterViewInit(): void {
     this.gd.clear(this.ctx);
     this.gd.draw(this.ctx);
   }
-  
+
   async ngOnInit(): Promise<void> {
     const colors = ["#ff0000", "#ff00ff", "#0000ff", "#ffff00", "#f0000f"]
     this.ctx = this.canvas.nativeElement.getContext('2d')!;
@@ -67,13 +67,47 @@ export class TestgdiComponent implements AfterViewInit, OnInit {
     this.gd.canvasSetSize(this.canvas.nativeElement.width, this.canvas.nativeElement.height);
     /* for (let index = 0; index < 5; index++) {
       this.gd.addRectangle({ x: 50 + index * 10, y: 250 + index * 20 }, 100, 100, 0, colors[index]).toFront();
-    }*/ 
-    let gradientFillStyle = this.ctx.createRadialGradient(200,200, 0, 200,200,40);
+    }*/
+    let gradientFillStyle = this.ctx.createRadialGradient(200, 200, 0, 200, 200, 40);
     gradientFillStyle.addColorStop(0, 'red');
     gradientFillStyle.addColorStop(0.5, 'yellow');
     gradientFillStyle.addColorStop(1, 'blue');
-    this.gd.addPieChart(this.ctx,{x:200,y:200},40,[180,160,20],[gradientFillStyle,"#0000ff","#00ff00"],0,0,["one","two","three"]);
-    this.gd.addLineChart({x:200,y:200},[50,80,30],50,"#ff0000",true);
+    /*this.gd.addPieChart(this.ctx,{x:200,y:200},40,[180,160,20],[gradientFillStyle,"#0000ff","#00ff00"],0,0,["one","two","three"]);*/
+    this.gd.addLineChart({ x: 200, y: 200 }, [50, 80, 30], 50, "#ff0000", true);
+    const candleStick: Candlestick[] = [
+      { timestamp: 1621244400000, open: 100, high: 150, low: 80, close: 120 },
+      { timestamp: 1621330800000, open: 120, high: 180, low: 100, close: 150 },
+      { timestamp: 1621417200000, open: 150, high: 200, low: 50, close: 100 },
+      { timestamp: 1621849200000, open: 260, high: 300, low: 200, close: 200 },
+      { timestamp: 1621935600000, open: 280, high: 320, low: 260, close: 300 },
+      { timestamp: 1621503600000, open: 180, high: 220, low: 150, close: 200 },
+      { timestamp: 1621676400000, open: 220, high: 260, low: 200, close: 240 },
+      { timestamp: 1621762800000, open: 240, high: 280, low: 50, close: 100 },
+      { timestamp: 1622022000000, open: 300, high: 340, low: 280, close: 320 },
+      { timestamp: 1621590000000, open: 200, high: 240, low: 180, close: 220 },
+    ];
+    const adjustLabelX: Point[] = [{ x: 10, y: 0 },
+    { x: 12, y: 0 },
+    { x: 0, y: 0 },
+    { x: 0, y: 0 },
+    { x: 0, y: 0 },
+    { x: 0, y: 0 },
+    { x: 0, y: 0 },
+    { x: 0, y: 0 },
+    { x: 0, y: 0 },
+    { x: 10, y: 0 },
+    ];
+
+    const adjustLabelY: Point[] = [{ x: 0, y: 0 },
+      { x: 0, y: -15 },
+      { x: 0, y: -15 },
+      { x: 0, y: -15 },
+      ]
+
+
+    this.gd.addCandleChart({ x: 50, y: 300 }, candleStick, 30, 600, "#ff0000", "#00ff00", 60);
+    this.gd.addAxisX(this.ctx, { x: 25, y: 300 }, 600, 10, ["January", "February", "March", "April", "May", "June", "July", "August", "Sept", "October"], 12, 0, 10,adjustLabelX);
+    this.gd.addAxisY(this.ctx, { x: 25, y: 300 }, 300, 3, ["0", "100", "200", "300" ], 12, 0, 10,adjustLabelY);
     /* for (let index = 0; index < 100; index++) {
       await this.wait();
     } */

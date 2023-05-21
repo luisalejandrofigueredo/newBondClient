@@ -1,11 +1,12 @@
 {
   "name": "ng-gd",
-  "version": "0.1.1-rc.10",
+  "version": "0.1.1-rc.12",
   "keywords": [
     "canvas",
     "Angular",
     "Front-end",
-    "Angular 15"
+    "Angular 15",
+    "Dashboard"
   ],
   "author": {
     "name": "Luis Alejandro Figueredo Casadei",

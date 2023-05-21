@@ -4,7 +4,7 @@ import { Point } from "../interfaces/point";
 import { NodeObject } from '../class/node-object';
 import { ConnectionObject } from '../class/connection-object';
 import { LabelObject } from '../class/label-object';
-import { convertArray, getTransformedPoint, move, toRadians } from '../trigonometrics';
+import { convertArray, getTransformedPoint, map, move, toRadians } from '../trigonometrics';
 import { DocumentObject, LineObject } from '../public-api';
 import { RectangleObject } from '../class/rectangleObject';
 import { CircleObject } from '../class/circleObject';
@@ -12,7 +12,8 @@ import { TriangleObject } from '../class/triangleObject';
 import { MultiplesSidesObject } from '../class/multiplesSides';
 import { ArcObject } from '../class/arcObject'
 import { LineChartObject } from '../class/lineChartObject'
-
+import { Candlestick } from "../interfaces/candle-stick ";
+import { CandlestickObject } from "../class/Candlestick";
 @Injectable({
   providedIn: 'root'
 })
@@ -215,8 +216,8 @@ export class NgGdService {
     this.canvasObjects = [];
   }
 
-  addLineChart(point: Point, values: number[], dist: number, color: string | CanvasGradient | CanvasPattern,marks?:boolean): LineChartObject {
-    const newLineChart = new LineChartObject(point, values, dist, color,marks);
+  addLineChart(point: Point, values: number[], dist: number, color: string | CanvasGradient | CanvasPattern, marks?: boolean): LineChartObject {
+    const newLineChart = new LineChartObject(point, values, dist, color, marks);
     this.canvasObjects.push(<ShapeObject>newLineChart)
     return newLineChart;
   }
@@ -254,9 +255,10 @@ export class NgGdService {
 
   }
 
-  addAxisY(ctx: CanvasRenderingContext2D, point: Point, dist: number, steps: number, labels: string[], fontSize: number, angleGrades?: number, distance?: number) {
+  addAxisY(ctx: CanvasRenderingContext2D, point: Point, dist: number, steps: number, labels: string[], fontSize: number, angleGrades?: number, distance?: number,adjustLabel?:Point[]) {
     let ang = 0;
     let distance2 = 0;
+    let adjust = { x: 0, y: 0 };
     if (angleGrades) {
       ang = angleGrades;
     }
@@ -266,17 +268,24 @@ export class NgGdService {
     this.addLine(point, { x: point.x, y: point.y - dist }, steps);
     const increment = dist / steps;
     labels.forEach((element, index) => {
-      let label = this.addLabel({ x: point.x, y: point.y + fontSize / 2 - increment * index + distance2 }, element, fontSize, ang);
+      if (adjustLabel && adjustLabel[index]) {
+        adjust = adjustLabel[index];
+      }
+      else {
+        adjust = { x: 0, y: 0 };
+      }
+      let label = this.addLabel({ x: point.x+adjust.x, y: point.y + fontSize / 2 - increment * index + distance2+adjust.y }, element, fontSize, ang);
       const size = label.getSizeText(ctx);
       label.x -= label.getSizeText(ctx) + fontSize;
     });
   }
 
-  addAxisX(ctx: CanvasRenderingContext2D, point: Point, dist: number, steps: number, labels: string[], fontSize: number, angleGrades?: number, distance?: number) {
+  addAxisX(ctx: CanvasRenderingContext2D, point: Point, dist: number, steps: number, labels: string[], fontSize: number, angleGrades?: number, distance?: number, adjustLabel?: Point[]) {
     let distance2 = 0;
     let ang = 0;
+    let adjust = { x: 0, y: 0 };
     if (distance) {
-      const distance2 = distance;
+       distance2 = distance;
     }
     if (angleGrades) {
       ang = angleGrades;
@@ -284,10 +293,31 @@ export class NgGdService {
     this.addLine(point, { x: point.x + dist, y: point.y }, steps);
     const increment = dist / steps;
     labels.forEach((element, index) => {
-      let label = this.addLabel({ x: point.x + increment * index, y: point.y + fontSize + distance2 }, element, fontSize, ang);
+      if (adjustLabel && adjustLabel[index]) {
+        adjust = adjustLabel[index];
+      }
+      else {
+        adjust = { x: 0, y: 0 };
+      }
+
+      let label = this.addLabel({ x: point.x + increment * index+adjust.x, y: point.y + fontSize + distance2+adjust.y }, element, fontSize, ang);
       const size = label.getSizeText(ctx);
       label.x += increment / 2 - size;
     });
+  }
+
+  addCandleChart(point: Point, candleStick: Candlestick[], width: number, height: number, bullColor: string | CanvasGradient | CanvasPattern, bearColor: string | CanvasGradient | CanvasPattern, distance: number) {
+    candleStick.forEach((element, index) => {
+      const cPoint: Point = { x: point.x + distance * index, y: point.y };
+      const newCandleStick = new CandlestickObject(cPoint, element, width, height, bullColor, bearColor);
+      this.canvasObjects.push(<ShapeObject>newCandleStick);
+    });
+  }
+
+  addCandleStick(point: Point, candleStick: Candlestick, width: number, height: number, bullColor: string | CanvasGradient | CanvasPattern, bearColor: string | CanvasGradient | CanvasPattern): CandlestickObject {
+    const newCandleStick = new CandlestickObject(point, candleStick, width, height, bullColor, bearColor);
+    this.canvasObjects.push(<ShapeObject>newCandleStick);
+    return newCandleStick;
   }
 
   addArc(x: number, y: number, size: number, beginGrades: number, endGrades: number, color?: string | CanvasGradient | CanvasPattern, borderColor?: string | CanvasGradient | CanvasPattern): ArcObject {
@@ -408,5 +438,9 @@ export class NgGdService {
       }
     }
     return <ShapeObject>{ id: 0, color: "", name: "error" };
+  }
+  
+  map(number:number,start1:number,stop1:number,start2:number,stop2:number):number{
+   return map(number,start1,stop1,start2,stop2);
   }
 }

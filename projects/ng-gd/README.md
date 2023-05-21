@@ -121,6 +121,8 @@ If you have problems with go another page and return use after view init for ref
 
 **clearObjects()** delete all objects in the library.
 
+**addCandleChart(point: Point, candleStick: Candlestick[], width: number, height: number, bullColor: string | CanvasGradient | CanvasPattern, bearColor: string | CanvasGradient | CanvasPattern, distance: number)** create a candle chart.
+
 **addPieChart(ctx: CanvasRenderingContext2D, point: Point, size: number, values: number[], color: string[], distance: number, start?: number, labels?: string[])** create a pie chart.
 
 **addGraphBars(ctx: CanvasRenderingContext2D, point: Point, width: number, values: number[], color: string[], distance: number)** create graph bars.
@@ -128,9 +130,11 @@ If you have problems with go another page and return use after view init for ref
 **addLineChart(point: Point, values: number[], dist: number, color: string,marks?:boolean): LineChartObject** create a line for chart;
 
 
-**addAxisY(ctx: CanvasRenderingContext2D, point: Point, dist: number, steps: number, labels: string[], fontSize: number, angleGrades?: number, distance?: number)** create a y axis.
+**addAxisY(ctx: CanvasRenderingContext2D, point: Point, dist: number, steps: number, labels: string[], fontSize: number, angleGrades?: number, distance?: number,adjustLabel?:Point[])** create a y axis.
 
-**addAxisX(ctx: CanvasRenderingContext2D, point: Point, dist: number, steps: number, labels: string[], fontSize: number, angleGrades?: number, distance?: number)** create a x axis.
+**addAxisX(ctx: CanvasRenderingContext2D, point: Point, dist: number, steps: number, labels: string[], fontSize: number, angleGrades?: number, distance?: number,adjustLabel?:Point[])** create a x axis.
+
+**addCandleStick(point: Point, candleStick: Candlestick, width: number, height: number, bullColor: string | CanvasGradient | CanvasPattern, bearColor: string | CanvasGradient | CanvasPattern): Candle_stick** create a candle stick.
 
 **addMultiplesSides(point: Point, sides: number, radius: number, color?: string, borderColor?: string)** create a figure with 5 sides minimum.
 
@@ -205,6 +209,9 @@ __line__
 __arc__
 
 __lineChart__
+
+__candleStick__
+
 
 ## Objects common functions
 
