@@ -169,7 +169,6 @@ export class NgGdService {
     for (let index = 0; index < this.canvasObjects.length; index++) {
       if (this.canvasObjects[index].id === id) {
         return this.canvasObjects[index];
-        break;
       }
     }
     return undefined;
@@ -201,7 +200,7 @@ export class NgGdService {
   }
 
   resetMouse() {
-    (this.canvasObjects[1] as ShapeObject).resetMouse();
+    (this.canvasObjects[0] as ShapeObject).resetMouse();
   }
 
   clear(ctx: CanvasRenderingContext2D) {
@@ -212,8 +211,16 @@ export class NgGdService {
     ctx.restore();
   }
 
+  findDocument(item:any){
+    return item.type==="Document"
+  }
+
   clearObjects() {
+    const document= this.canvasObjects.find(this.findDocument);
     this.canvasObjects = [];
+    if (document!==undefined){
+      this.canvasObjects.push(document);
+    }
   }
 
   addLineChart(point: Point, values: number[], dist: number, color: string | CanvasGradient | CanvasPattern, marks?: boolean): LineChartObject {
@@ -255,7 +262,7 @@ export class NgGdService {
 
   }
 
-  addAxisY(ctx: CanvasRenderingContext2D, point: Point, dist: number, steps: number, labels: string[], fontSize: number, angleGrades?: number, distance?: number,adjustLabel?:Point[]) {
+  addAxisY(ctx: CanvasRenderingContext2D, point: Point, dist: number, steps: number, labels: string[], fontSize: number, angleGrades?: number, distance?: number, adjustLabel?: Point[]) {
     let ang = 0;
     let distance2 = 0;
     let adjust = { x: 0, y: 0 };
@@ -274,7 +281,7 @@ export class NgGdService {
       else {
         adjust = { x: 0, y: 0 };
       }
-      let label = this.addLabel({ x: point.x+adjust.x, y: point.y + fontSize / 2 - increment * index + distance2+adjust.y }, element, fontSize, ang);
+      let label = this.addLabel({ x: point.x + adjust.x, y: point.y + fontSize / 2 - increment * index + distance2 + adjust.y }, element, fontSize, ang);
       const size = label.getSizeText(ctx);
       label.x -= label.getSizeText(ctx) + fontSize;
     });
@@ -285,7 +292,7 @@ export class NgGdService {
     let ang = 0;
     let adjust = { x: 0, y: 0 };
     if (distance) {
-       distance2 = distance;
+      distance2 = distance;
     }
     if (angleGrades) {
       ang = angleGrades;
@@ -300,7 +307,7 @@ export class NgGdService {
         adjust = { x: 0, y: 0 };
       }
 
-      let label = this.addLabel({ x: point.x + increment * index+adjust.x, y: point.y + fontSize + distance2+adjust.y }, element, fontSize, ang);
+      let label = this.addLabel({ x: point.x + increment * index + adjust.x, y: point.y + fontSize + distance2 + adjust.y }, element, fontSize, ang);
       const size = label.getSizeText(ctx);
       label.x += increment / 2 - size;
     });
@@ -439,8 +446,30 @@ export class NgGdService {
     }
     return <ShapeObject>{ id: 0, color: "", name: "error" };
   }
-  
-  map(number:number,start1:number,stop1:number,start2:number,stop2:number):number{
-   return map(number,start1,stop1,start2,stop2);
+
+  findLabelByText(text: string): LabelObject {
+    for (let index = 0; index < this.canvasObjects.length; index++) {
+      const element = this.canvasObjects[index];
+      if (element.type === 'label' && element.text === text) {
+        return element as LabelObject
+      }
+    }
+    console.log('Error no find label:',text);
+    return <LabelObject>{}
+  }
+
+  findByName(text: string): ArcObject | CandlestickObject | CircleObject | ConnectionObject | LabelObject | LineChartObject | ShapeObject {
+    for (let index = 0; index < this.canvasObjects.length; index++) {
+      const element = this.canvasObjects[index];
+      if (element.name === text) {
+        return element
+      }
+    }
+    console.log('Error no find element by name:', text);
+    return <ShapeObject>{}
+  }
+
+  map(number: number, startInput: number, stopInput: number, startOutput: number, stopOutput: number): number {
+    return map(number, startInput, stopInput, startOutput, stopOutput);
   }
 }

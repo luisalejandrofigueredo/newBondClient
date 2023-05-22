@@ -64,7 +64,8 @@ export class TestgdiComponent implements AfterViewInit, OnInit {
     const colors = ["#ff0000", "#ff00ff", "#0000ff", "#ffff00", "#f0000f"]
     this.ctx = this.canvas.nativeElement.getContext('2d')!;
     this.ctx.fillStyle = "black";
-    this.gd.canvasSetSize(this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+    this.gd.start(this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+    this.gd.clearObjects();
     /* for (let index = 0; index < 5; index++) {
       this.gd.addRectangle({ x: 50 + index * 10, y: 250 + index * 20 }, 100, 100, 0, colors[index]).toFront();
     }*/
@@ -99,15 +100,15 @@ export class TestgdiComponent implements AfterViewInit, OnInit {
     ];
 
     const adjustLabelY: Point[] = [{ x: 0, y: 0 },
-      { x: 0, y: -15 },
-      { x: 0, y: -15 },
-      { x: 0, y: -15 },
-      ]
-
+    { x: 0, y: -15 },
+    { x: 0, y: -15 },
+    { x: 0, y: -15 },
+    ];
 
     this.gd.addCandleChart({ x: 50, y: 300 }, candleStick, 30, 600, "#ff0000", "#00ff00", 60);
-    this.gd.addAxisX(this.ctx, { x: 25, y: 300 }, 600, 10, ["January", "February", "March", "April", "May", "June", "July", "August", "Sept", "October"], 12, 0, 10,adjustLabelX);
-    this.gd.addAxisY(this.ctx, { x: 25, y: 300 }, 300, 3, ["0", "100", "200", "300" ], 12, 0, 10,adjustLabelY);
+    this.gd.addAxisX(this.ctx, { x: 25, y: 300 }, 600, 10, ["January", "February", "March", "April", "May", "June", "July", "August", "Sept", "October"], 12, 0, 10, adjustLabelX);
+    this.gd.addAxisY(this.ctx, { x: 25, y: 300 }, 300, 3, ["0", "100", "200", "300"], 12, 0, 10, adjustLabelY);
+    this.gd.findLabelByText("300").color = "#ff0000";
     /* for (let index = 0; index < 100; index++) {
       await this.wait();
     } */

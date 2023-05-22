@@ -1,15 +1,15 @@
 import { ShapeObject } from "./shape-object";
 
 
-export class DocumentObject extends ShapeObject{
+export class DocumentObject extends ShapeObject {
 
-    constructor(width:number,height:number){
+    constructor(width: number, height: number) {
         super();
-        ShapeObject.width=width;
-        ShapeObject.height=height;
-        this.type="Document"
-        this.zOrder=0;
-    }    
+        ShapeObject.width = width;
+        ShapeObject.height = height;
+        this.type = "Document"
+        this.zOrder = 0;
+    }
     override drawShape(ctx: CanvasRenderingContext2D): void {
     }
     inverseShape(ctx: CanvasRenderingContext2D): void {
@@ -19,10 +19,10 @@ export class DocumentObject extends ShapeObject{
     }
     override move(x: number, y: number): void {
     }
-    moveMouse(ctx: CanvasRenderingContext2D, event: MouseEvent): void {   
+    moveMouse(ctx: CanvasRenderingContext2D, event: MouseEvent): void {
     }
-    setSize(width:number,height:number){
-        ShapeObject.width=width;
-        ShapeObject.height=height;
+    setSize(width: number, height: number) {
+        ShapeObject.width = width;
+        ShapeObject.height = height;
     }
 }

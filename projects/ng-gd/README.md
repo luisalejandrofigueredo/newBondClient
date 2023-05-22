@@ -76,6 +76,8 @@ If you have problems with go another page and return use after view init for ref
 
 [Demo charts in stackblitz](https://stackblitz.com/edit/angular-ng-demo-graphics?file=src%2Fmain.ts)
 
+[Demo chart with map function in stackblitz](https://stackblitz.com/edit/angular-ng-demo-graphics-tz8cjy?file=src%2Fmain.ts)
+
 [Demo ZOrder in GitHub](https://github.com/luisalejandrofigueredo/ZOrderDemo)
 
 [Demo ZOrder in stackblitz](https://stackblitz.com/edit/angular-demozorder?file=src%2Fmain.ts)
@@ -83,79 +85,83 @@ If you have problems with go another page and return use after view init for ref
 
 ## List gd service commands
 
-**start(width: number, height: number)** start gd lib required for start.
+**start(width: number, height: number)** Start gd lib required for start.
 
-**getLabels():** get all labels.
+**getLabels():** Get all labels.
 
-**getConnections()** get all connections.
+**findLabelByText(text: string):LabelObject** Get a label for your text.
 
-**getNodes()** get all nodes.
+**findByName(text: string): ArcObject | CandlestickObject | CircleObject | ConnectionObject | LabelObject | LineChartObject | ShapeObject** Find a object by name assign the name of the object first.
 
-**castingMultiplesSides(id: number)** get a multiples sides object with id number;
+**getConnections()** Get all connections.
 
-**castingLine(id:number)** get a line Object.
+**getNodes()** Get all nodes.
 
-**castingRectangle(id: number)** get a rectangle object.
+**castingMultiplesSides(id: number)** Get a multiples sides object with id number.
 
-**castingCircle(id: number)** get a circle object.
+**castingLine(id:number)** Get a line Object.
 
-**castingNode(id:number)** get a node object.
+**castingRectangle(id: number)** Get a rectangle object.
 
-**castingLabel(id: number)** get a label object.
+**castingCircle(id: number)** Get a circle object.
 
-**castingConnection(id: number)** get connection object.
+**castingNode(id:number)** Get a node object.
 
-**casting(id)** get a any object with casting.
+**castingLabel(id: number)** Get a label object.
 
-**getMousePoint(ctx: CanvasRenderingContext2D, x: number, y: number)** return a position the mouse.
+**castingConnection(id: number)** Get connection object.
 
-**setDarkMode()** change the background color to black and ink white;
+**casting(id)** Get a any object with casting.
 
-**setLightMode()** change the background color to white and ink black;
+**getMousePoint(ctx: CanvasRenderingContext2D, x: number, y: number)** Return a position the mouse.
 
-**canvasSetSize(width: number, height: number)** change canvas size for the library not the canvas.
+**setDarkMode()** Change the background color to black and ink white.
 
-**resetMouse()** reset last position.
+**setLightMode()** Change the background color to white and ink black.
 
-**clear(ctx: CanvasRenderingContext2D)** clear the canvas.
+**canvasSetSize(width: number, height: number)** Change canvas size for the library not the canvas.
 
-**clearObjects()** delete all objects in the library.
+**resetMouse()** Reset last position.
 
-**addCandleChart(point: Point, candleStick: Candlestick[], width: number, height: number, bullColor: string | CanvasGradient | CanvasPattern, bearColor: string | CanvasGradient | CanvasPattern, distance: number)** create a candle chart.
+**clear(ctx: CanvasRenderingContext2D)** Clear the canvas.
 
-**addPieChart(ctx: CanvasRenderingContext2D, point: Point, size: number, values: number[], color: string[], distance: number, start?: number, labels?: string[])** create a pie chart.
+**clearObjects()** Delete all objects in the library.
 
-**addGraphBars(ctx: CanvasRenderingContext2D, point: Point, width: number, values: number[], color: string[], distance: number)** create graph bars.
+**addCandleChart(point: Point, candleStick: Candlestick[], width: number, height: number, bullColor: string | CanvasGradient | CanvasPattern, bearColor: string | CanvasGradient | CanvasPattern, distance: number)** Create a candle chart.
 
-**addLineChart(point: Point, values: number[], dist: number, color: string,marks?:boolean): LineChartObject** create a line for chart;
+**addPieChart(ctx: CanvasRenderingContext2D, point: Point, size: number, values: number[], color: string[], distance: number, start?: number, labels?: string[])** Create a pie chart.
+
+**addGraphBars(ctx: CanvasRenderingContext2D, point: Point, width: number, values: number[], color: string[], distance: number)** Create graph bars.
+
+**addLineChart(point: Point, values: number[], dist: number, color: string,marks?:boolean): LineChartObject** Create a line for chart.
 
 
-**addAxisY(ctx: CanvasRenderingContext2D, point: Point, dist: number, steps: number, labels: string[], fontSize: number, angleGrades?: number, distance?: number,adjustLabel?:Point[])** create a y axis.
+**addAxisY(ctx: CanvasRenderingContext2D, point: Point, dist: number, steps: number, labels: string[], fontSize: number, angleGrades?: number, distance?: number,adjustLabel?:Point[])** Create a y axis.
 
-**addAxisX(ctx: CanvasRenderingContext2D, point: Point, dist: number, steps: number, labels: string[], fontSize: number, angleGrades?: number, distance?: number,adjustLabel?:Point[])** create a x axis.
+**addAxisX(ctx: CanvasRenderingContext2D, point: Point, dist: number, steps: number, labels: string[], fontSize: number, angleGrades?: number, distance?: number,adjustLabel?:Point[])** Create a x axis.
 
-**addCandleStick(point: Point, candleStick: Candlestick, width: number, height: number, bullColor: string | CanvasGradient | CanvasPattern, bearColor: string | CanvasGradient | CanvasPattern): Candle_stick** create a candle stick.
+**addCandleStick(point: Point, candleStick: Candlestick, width: number, height: number, bullColor: string | CanvasGradient | CanvasPattern, bearColor: string | CanvasGradient | CanvasPattern): Candle_stick** Create a candle stick.
 
-**addMultiplesSides(point: Point, sides: number, radius: number, color?: string, borderColor?: string)** create a figure with 5 sides minimum.
+**addMultiplesSides(point: Point, sides: number, radius: number, color?: string, borderColor?: string)** Create a figure with 5 sides minimum.
 
-**addTriangle(first: Point, second: Point, third: Point, color?: string, borderColor?: string)** create a triangle.
+**addTriangle(first: Point, second: Point, third: Point, color?: string, borderColor?: string)** Create a triangle.
 
-**addCircle(point: Point, radius: number, color?: string, borderColor?: string)** create a circle.
+**addCircle(point: Point, radius: number, color?: string, borderColor?: string)** Create a circle.
 
-**addRectangle(point: Point, width: number, height: number, angle:number,color?: string, borderColor?: string)** create a rectangle.
+**addRectangle(point: Point, width: number, height: number, angle:number,color?: string, borderColor?: string)** Create a rectangle.
 
-**addNode(point: Point, name: string, description?: string, net?: boolean, angleLabel?: number, distanceLabel?: number)** add node.
+**addNode(point: Point, name: string, description?: string, net?: boolean, angleLabel?: number, distanceLabel?: number)** Add node.
 
-**addConnection(point: Point, toPoint: Point, color?: string, label?: string)** create a connection.
+**addConnection(point: Point, toPoint: Point, color?: string, label?: string)** Create a connection.
 
-**addLine(point: Point, toPoint: Point, steps?: number, color?: string)** create a line steps mark the line like rule.
+**addLine(point: Point, toPoint: Point, steps?: number, color?: string)** Create a line steps mark the line like rule.
 
-**addLabel(point: Point, text: string, fontSize: number, angle: number)** create a label.
+**addLabel(point: Point, text: string, fontSize: number, angle: number)** Create a label.
 
- **addArc(x: number, y: number, size: number, beginGrades: number, endGrades: number, color?: string, borderColor?: string): ArcObject** create a arc object
+**addArc(x: number, y: number, size: number, beginGrades: number, endGrades: number, color?: string, borderColor?: string): ArcObject** Create a arc object
 
-**click(ctx: CanvasRenderingContext2D, event: MouseEvent):{ shape: ShapeObject, action: string }** return a array all objects are clicked with mouse order for ZOrder. 
-Possible events off object:
+**click(ctx: CanvasRenderingContext2D, event: MouseEvent):{ shape: ShapeObject, action: string }** Return a array all objects are clicked with mouse order for ZOrder. 
+Possible events off object.
 
 ## inPoint Object are clicked.
 
@@ -167,30 +173,28 @@ Possible events off object:
 
 **inRectangle Object clicked in the line.**
 
+**getClicks()** Return a list created for click function speed reasons.
 
-**getClicks()** return a list created for click function speed reasons.
-
-**draw(ctx: CanvasRenderingContext2D)** draw all objects.
+**draw(ctx: CanvasRenderingContext2D)** Draw all objects.
 
 **zoomInPoint(ctx: CanvasRenderingContext2D, x: number, y: number, zoom: number)** zoom in x,y position.
 
-**getItem(id:number)** return a object with casting to ShapeObject.
+**getItem(id:number)** Return a object with casting to ShapeObject.
 
 
 ## Object properties all object are derived the class ShapeObject.
 x:position x.
 y:position y.
 
-**color** object color gd support string,patterns or gradients;
+**color** Object color gd support string,patterns or gradients;
 
-**visible** toggle object to visible you turn false the object not draw.
+**visible** Toggle object to visible you turn false the object not draw.
 
-**type** var with string class of the object the easy way to obtain the type class the one object.
+**type** Variable with string class of the object the easy way to obtain the type class the one object.
 
 **possibles values are**
 
 __label__
-
 
 __node__
 
@@ -215,11 +219,11 @@ __candleStick__
 
 ## Objects common functions
 
-**drawShape(ctx: CanvasRenderingContext2D)** draw the object in the canvas.
+**drawShape(ctx: CanvasRenderingContext2D)** Draw the object in the canvas.
 
-**inverseShape(ctx: CanvasRenderingContext2D)** draw the object with background color.
+**inverseShape(ctx: CanvasRenderingContext2D)** Draw the object with background color.
 
-**inPoint(x: number, y: number)** return true if the object is in position x,y.
+**inPoint(x: number, y: number)** Return true if the object is in position x,y.
 
 **move(x:number,y:number)** Move the object to new position.
 
@@ -227,16 +231,15 @@ __candleStick__
 
 ## Additional functions for LineObject and ConnectionObject
 
-**inPointXY(x: number, y: number): boolean** if the mouse is over the first point the line or connection.
+**inPointXY(x: number, y: number): boolean** If the mouse is over the first point the line or connection.
 
-**inPointToXY(x: number, y: number): boolean** if the mouse is over the second point the line or connection.
+**inPointToXY(x: number, y: number): boolean** If the mouse is over the second point the line or connection.
 
-
-**inRectangle(x: number, y: number): boolean** if the mouse is over the line.
+**inRectangle(x: number, y: number): boolean** If the mouse is over the line.
 
 **moveMouseXY(ctx: CanvasRenderingContext2D, event: MouseEvent)** Mouse move the first point to new position. 
 
-**moveMouseToXY(ctx: CanvasRenderingContext2D, event: MouseEvent)** Mouse move the second point to new position. 
+**moveMouseToXY(ctx: CanvasRenderingContext2D, event: MouseEvent)** Mouse move the second point to new position.
 
 
 ## Objects level
@@ -252,7 +255,14 @@ __candleStick__
 
 Service renumber is for not let plane withouts objects.
 for sample .
-this.gd.renumberZOrder()
+
+**this.gd.renumberZOrder()**
+
+
+## Auxiliary functions.
+
+ **map(number: number, startInput: number, stopInput: number, startOutput: number, stopOutput: number): number** This function is for change range of values for example if you need translate 33 in percentage to grades use this.gd.map(33,0,100,0,360)
+
 
 For help send email to:**luisalejandrofigueredo@gmail.com**
 or:[Likedin](http://www.linkedin.com/in/luis-figueredo-casadei)
