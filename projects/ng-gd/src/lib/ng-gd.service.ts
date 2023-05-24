@@ -4,7 +4,7 @@ import { Point } from "../interfaces/point";
 import { NodeObject } from '../class/node-object';
 import { ConnectionObject } from '../class/connection-object';
 import { LabelObject } from '../class/label-object';
-import { convertArray, getTransformedPoint, map, move, toRadians } from '../trigonometrics';
+import { angle, convertArray, distance, getTransformedPoint, map, move, toDegrees, toRadians } from '../trigonometrics';
 import { DocumentObject, LineObject } from '../public-api';
 import { RectangleObject } from '../class/rectangleObject';
 import { CircleObject } from '../class/circleObject';
@@ -78,7 +78,7 @@ export class NgGdService {
       const element = this.canvasObjects[index];
       if (element.id === id) {
         if (!(element instanceof MultiplesSidesObject)) {
-          console.log('error type in casting rectangle id:%s as type:%s', id, element.type)
+          console.log('Error type in casting rectangle id:%s as type:%s', id, element.type)
         }
         return element as MultiplesSidesObject;
       }
@@ -91,7 +91,7 @@ export class NgGdService {
       const element = this.canvasObjects[index];
       if (element.id === id) {
         if (!(element instanceof LineObject)) {
-          console.log('error type in casting rectangle id:%d as type %s', id, element.type)
+          console.log('Error type in casting rectangle id:%d as type %s', id, element.type)
         }
         return element as LineObject;
       }
@@ -105,7 +105,7 @@ export class NgGdService {
       const element = this.canvasObjects[index];
       if (element.id === id) {
         if (!(element instanceof RectangleObject)) {
-          console.log('error type in casting rectangle id:%d as type %s', id, element.type)
+          console.log('Error type in casting rectangle id:%d as type %s', id, element.type)
         }
         return element as RectangleObject;
       }
@@ -118,7 +118,7 @@ export class NgGdService {
       const element = this.canvasObjects[index];
       if (element.id === id) {
         if (!(element instanceof CircleObject)) {
-          console.log('error type in casting circle id:&d as type %s', id, element.type)
+          console.log('Error type in casting circle id:&d as type %s', id, element.type)
         }
         return element as CircleObject;
       }
@@ -131,7 +131,7 @@ export class NgGdService {
       const element = this.canvasObjects[index];
       if (element.id === id) {
         if (!(element instanceof NodeObject)) {
-          console.log('error type in casting node id:%d as type:%s', id, element.type)
+          console.log('Error type in casting node id:%d as type:%s', id, element.type)
         }
         return element as NodeObject;
       }
@@ -144,7 +144,7 @@ export class NgGdService {
       const element = this.canvasObjects[index];
       if (element.id === id) {
         if (!(element instanceof LabelObject)) {
-          console.log('error type in casting label id:%d as type:%s', id, element.type);
+          console.log('Error type in casting label id:%d as type:%s', id, element.type);
         }
         return element as LabelObject;
       }
@@ -157,7 +157,7 @@ export class NgGdService {
       const element = this.canvasObjects[index];
       if (element.id === id) {
         if (!(element instanceof ConnectionObject)) {
-          console.log('error type in casting connection id:%d, as type:%s ', id, element.type);
+          console.log('Error type in casting connection id:%d, as type:%s ', id, element.type);
         }
         return element as ConnectionObject;
       }
@@ -192,8 +192,6 @@ export class NgGdService {
     this.getItem(0).FgColor = this.frColor;
   }
 
-
-
   canvasSetSize(width: number, height: number) {
     this.width = width;
     this.height = height;
@@ -211,14 +209,14 @@ export class NgGdService {
     ctx.restore();
   }
 
-  findDocument(item:any){
-    return item.type==="Document"
+  findDocument(item: any) {
+    return item.type === "Document"
   }
 
   clearObjects() {
-    const document= this.canvasObjects.find(this.findDocument);
+    const document = this.canvasObjects.find(this.findDocument);
     this.canvasObjects = [];
-    if (document!==undefined){
+    if (document !== undefined) {
       this.canvasObjects.push(document);
     }
   }
@@ -306,7 +304,6 @@ export class NgGdService {
       else {
         adjust = { x: 0, y: 0 };
       }
-
       let label = this.addLabel({ x: point.x + increment * index + adjust.x, y: point.y + fontSize + distance2 + adjust.y }, element, fontSize, ang);
       const size = label.getSizeText(ctx);
       label.x += increment / 2 - size;
@@ -444,6 +441,7 @@ export class NgGdService {
         return element;
       }
     }
+    console.log('Error item not found id', id);
     return <ShapeObject>{ id: 0, color: "", name: "error" };
   }
 
@@ -454,7 +452,7 @@ export class NgGdService {
         return element as LabelObject
       }
     }
-    console.log('Error no find label:',text);
+    console.log('Error no find label:', text);
     return <LabelObject>{}
   }
 
@@ -472,4 +470,25 @@ export class NgGdService {
   map(number: number, startInput: number, stopInput: number, startOutput: number, stopOutput: number): number {
     return map(number, startInput, stopInput, startOutput, stopOutput);
   }
+
+  move(point: Point, angle: number, distance: number): Point {
+    return move(point.x, point.y, angle, distance);
+  }
+
+  toRadians(grades: number): number {
+    return toRadians(grades);
+  }
+
+  toDegrees(radian: number): number {
+    return toDegrees(radian);
+  }
+
+  distance(from:Point,to:Point):number{
+    return distance(from.x,from.y,to.x,to.y);
+  }
+
+  angle(from:Point,to:Point):number {
+    return angle(from.x,from.y,to.x,to.y);
+  }
+
 }

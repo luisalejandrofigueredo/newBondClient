@@ -2,7 +2,8 @@
 
 The easy way to manage the canvas.
 Support object and clicks events to the objects
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.0.0. Testing in angular 15.0 and 15.2
+This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.0.0. Testing in angular 15.0 and 15.2.
+Last version for Angular 15.
 
 ## Build
 
@@ -129,11 +130,11 @@ If you have problems with go another page and return use after view init for ref
 
 **addCandleChart(point: Point, candleStick: Candlestick[], width: number, height: number, bullColor: string | CanvasGradient | CanvasPattern, bearColor: string | CanvasGradient | CanvasPattern, distance: number)** Create a candle chart.
 
-**addPieChart(ctx: CanvasRenderingContext2D, point: Point, size: number, values: number[], color: string[], distance: number, start?: number, labels?: string[])** Create a pie chart.
+**addPieChart(ctx: CanvasRenderingContext2D, point: Point, size: number, values: number[], color: (string | CanvasGradient | CanvasPattern)[], distance: number, start?: number, labels?: string[])** Create a pie chart.
 
-**addGraphBars(ctx: CanvasRenderingContext2D, point: Point, width: number, values: number[], color: string[], distance: number)** Create graph bars.
+**addGraphBars(ctx: CanvasRenderingContext2D, point: Point, width: number, values: number[], color: (string | CanvasGradient | CanvasPattern)[], distance: number)** Create graph bars.
 
-**addLineChart(point: Point, values: number[], dist: number, color: string,marks?:boolean): LineChartObject** Create a line for chart.
+**addLineChart(point: Point, values: number[], dist: number, color : string| CanvasGradient | CanvasPattern,marks?:boolean): LineChartObject** Create a line for chart.
 
 
 **addAxisY(ctx: CanvasRenderingContext2D, point: Point, dist: number, steps: number, labels: string[], fontSize: number, angleGrades?: number, distance?: number,adjustLabel?:Point[])** Create a y axis.
@@ -142,7 +143,7 @@ If you have problems with go another page and return use after view init for ref
 
 **addCandleStick(point: Point, candleStick: Candlestick, width: number, height: number, bullColor: string | CanvasGradient | CanvasPattern, bearColor: string | CanvasGradient | CanvasPattern): Candle_stick** Create a candle stick.
 
-**addMultiplesSides(point: Point, sides: number, radius: number, color?: string, borderColor?: string)** Create a figure with 5 sides minimum.
+**addMultiplesSides(point: Point, sides: number, radius: number, color?: string| CanvasGradient | CanvasPattern, borderColor?: string | CanvasGradient | CanvasPattern)** Create a figure with 5 sides minimum.
 
 **addTriangle(first: Point, second: Point, third: Point, color?: string, borderColor?: string)** Create a triangle.
 
@@ -152,13 +153,13 @@ If you have problems with go another page and return use after view init for ref
 
 **addNode(point: Point, name: string, description?: string, net?: boolean, angleLabel?: number, distanceLabel?: number)** Add node.
 
-**addConnection(point: Point, toPoint: Point, color?: string, label?: string)** Create a connection.
+**addConnection(point: Point, toPoint: Point, color?: string| CanvasGradient | CanvasPattern, label?: string)** Create a connection.
 
-**addLine(point: Point, toPoint: Point, steps?: number, color?: string)** Create a line steps mark the line like rule.
+**addLine(point: Point, toPoint: Point, steps?: number, color?:(string| CanvasGradient | CanvasPattern))** Create a line steps mark the line like rule.
 
 **addLabel(point: Point, text: string, fontSize: number, angle: number)** Create a label.
 
-**addArc(x: number, y: number, size: number, beginGrades: number, endGrades: number, color?: string, borderColor?: string): ArcObject** Create a arc object
+**addArc(x: number, y: number, size: number, beginGrades: number, endGrades: number, color?: string| CanvasGradient | CanvasPattern, borderColor?: string| CanvasGradient | CanvasPattern): ArcObject** Create a arc object
 
 **click(ctx: CanvasRenderingContext2D, event: MouseEvent):{ shape: ShapeObject, action: string }** Return a array all objects are clicked with mouse order for ZOrder. 
 Possible events off object.
@@ -177,7 +178,7 @@ Possible events off object.
 
 **draw(ctx: CanvasRenderingContext2D)** Draw all objects.
 
-**zoomInPoint(ctx: CanvasRenderingContext2D, x: number, y: number, zoom: number)** zoom in x,y position.
+**zoomInPoint(ctx: CanvasRenderingContext2D, x: number, y: number, zoom: number)** Zoom in x,y position.
 
 **getItem(id:number)** Return a object with casting to ShapeObject.
 
@@ -243,6 +244,7 @@ __candleStick__
 
 
 ## Objects level
+
 **toFront()** Move the object to fist plane over all objects.
 
 **toTop()** Move the object to first plane.
@@ -263,6 +265,15 @@ for sample .
 
  **map(number: number, startInput: number, stopInput: number, startOutput: number, stopOutput: number): number** This function is for change range of values for example if you need translate 33 in percentage to grades use this.gd.map(33,0,100,0,360)
 
+ **move(point: Point, angle: number, distance: number): Point** Move point angle and distance.
+
+ **toRadians(grades: number): number** Return degrees in radians.
+
+ **toDegrees(radian: number): number** Return radians in degrees.
+
+**distance(from:Point,to:Point):number** Distance between two points.
+
+**angle(from:Point,to:Point):number** Angle from point to point.
 
 For help send email to:**luisalejandrofigueredo@gmail.com**
 or:[Likedin](http://www.linkedin.com/in/luis-figueredo-casadei)
