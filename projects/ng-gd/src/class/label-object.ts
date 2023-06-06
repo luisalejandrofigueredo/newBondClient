@@ -4,13 +4,12 @@ import { Rectangle } from "../interfaces/rectangle";
 import { Point } from "../interfaces/point";
 
 export class LabelObject extends ShapeObject {
-    
     angle: number = 0;
     fontSize = 16;
     text: string = "select label text";
     sizeText = 0;
     public font="Arial";
-    constructor(x: number, y: number, text: string, fontSize?: number, angle?: number) {
+    constructor(x: number, y: number, text: string, fontSize?: number, angle?: number,shadow?:boolean) {
         super()
         this.color=this.FgColor;
         this.x = x;
@@ -22,6 +21,9 @@ export class LabelObject extends ShapeObject {
         }
         if (angle) {
             this.setAngleInGrades(angle);
+        }
+        if (shadow) {
+            this.shadow=shadow;
         }
     }
     override moveMouse(ctx: CanvasRenderingContext2D, event: MouseEvent) {
@@ -57,6 +59,17 @@ export class LabelObject extends ShapeObject {
 
     override drawShape(ctx: CanvasRenderingContext2D): void {
         if (this.visible===true){
+            if (this.shadow===true){
+                ctx.shadowColor = ShapeObject.shadowColor;
+                ctx.shadowBlur = 6;
+                ctx.shadowOffsetX = 6;
+                ctx.shadowOffsetY = 6;
+            } else {
+                ctx.shadowBlur = 0;
+                ctx.shadowColor = 'rgba(0, 0, 0, 0)';
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 0;
+            }
             ctx.save();
             ctx.translate(this.x, this.y);
             ctx.rotate(this.angle);

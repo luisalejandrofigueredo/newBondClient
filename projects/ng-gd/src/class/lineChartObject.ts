@@ -7,7 +7,7 @@ export class LineChartObject extends ShapeObject {
     pointValues: Point[] = [];
     dist: number = 0;
     marks=false;
-    constructor(point: Point, values: number[], dist: number, color: string | CanvasGradient | CanvasPattern,marks?:boolean) {
+    constructor(point: Point, values: number[], dist: number, color: string | CanvasGradient | CanvasPattern,marks?:boolean,shadow?:boolean) {
         super();
         this.x = point.x;
         this.y = point.y;
@@ -22,10 +22,24 @@ export class LineChartObject extends ShapeObject {
         if (marks){
             this.marks=marks;
         }
+        if (shadow) {
+            this.shadow=shadow;
+        }
     }
 
     override drawShape(ctx: CanvasRenderingContext2D): void {
         if (this.visible){
+            if (this.shadow===true){
+                ctx.shadowColor = ShapeObject.shadowColor;
+                ctx.shadowBlur = 6;
+                ctx.shadowOffsetX = 6;
+                ctx.shadowOffsetY = 6;
+            } else {
+                ctx.shadowBlur = 0;
+                ctx.shadowColor = 'rgba(0, 0, 0, 0)';
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 0;
+            }
             ctx.beginPath();
             ctx.strokeStyle = this.color;
             ctx.fillStyle=this.color;

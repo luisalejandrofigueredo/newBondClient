@@ -14,7 +14,6 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import {MatSelectModule} from '@angular/material/select';
 import { EditNodeComponent } from './edit-node/edit-node.component';
-import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } from '@angular-material-components/color-picker';
 import { WarperComponent } from "../warper/warper.component";
 import { ModulesNodeComponent } from './modules-node/modules-node.component';
 import { PersonalFileComponent } from './personal-file/personal-file.component';
@@ -40,11 +39,10 @@ import {ImagePipe} from '../image.pipe';
     MatTableModule,
     MatPaginatorModule,
     MatSelectModule,
-    NgxMatColorPickerModule,
     LayoutModule,
     ReactiveFormsModule,
     WarperComponent
   ],
-  providers: [{ provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS }]
+  providers: []
 })
 export class NodesModule { }

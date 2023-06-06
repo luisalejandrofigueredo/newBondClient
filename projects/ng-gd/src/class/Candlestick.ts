@@ -8,7 +8,7 @@ export class CandlestickObject extends ShapeObject {
     bearColor: string | CanvasGradient | CanvasPattern = "#0000ff";
     candleWidth: number = 0;
     candleHeight: number = 0;
-    constructor(position: Point, candleStick: Candlestick, width: number, height: number, bullColor: string | CanvasGradient | CanvasPattern, bearColor: string | CanvasGradient | CanvasPattern) {
+    constructor(position: Point, candleStick: Candlestick, width: number, height: number, bullColor: string | CanvasGradient | CanvasPattern, bearColor: string | CanvasGradient | CanvasPattern,shadow?:boolean) {
         super();
         this.stick = candleStick;
         this.x = position.x;
@@ -26,10 +26,24 @@ export class CandlestickObject extends ShapeObject {
         if (this.stick.open < this.stick.close) {
             [this.stick.open, this.stick.close] = this.swap(this.stick.open, this.stick.close);
         }
+        if (shadow) {
+            this.shadow=shadow;
+        }
     }
     
     override drawShape(ctx: CanvasRenderingContext2D): void {
         if (this.visible === true) {
+            if (this.shadow===true){
+                ctx.shadowColor = ShapeObject.shadowColor;
+                ctx.shadowBlur = 6;
+                ctx.shadowOffsetX = 6;
+                ctx.shadowOffsetY = 6;
+            } else {
+                ctx.shadowBlur = 0;
+                ctx.shadowColor = 'rgba(0, 0, 0, 0)';
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 0;
+            }
             ctx.beginPath();
             ctx.fillStyle = this.color;
             ctx.strokeStyle = this.color;

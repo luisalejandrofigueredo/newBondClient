@@ -6,7 +6,7 @@ export class NodeObject extends ShapeObject {
     angleLabel: number = 0;
     distanceLabel: number = 10;
     radius: number = 10;
-    constructor(x: number, y: number, name: string, radius: number, description?: string, net?: boolean, angleLabel?: number, distanceLabel?: number) {
+    constructor(x: number, y: number, name: string, radius: number, description?: string, net?: boolean, angleLabel?: number, distanceLabel?: number,shadow?:boolean) {
         super();
         this.x = x;
         this.y = y;
@@ -24,6 +24,9 @@ export class NodeObject extends ShapeObject {
         }
         if (distanceLabel) {
             this.distanceLabel = distanceLabel;
+        }
+        if (shadow) {
+            this.shadow=shadow;
         }
     }
     override moveMouse(ctx: CanvasRenderingContext2D, event: MouseEvent) {
@@ -60,6 +63,17 @@ export class NodeObject extends ShapeObject {
             ctx.font = "16px Arial"
             ctx.fillStyle = this.FgColor;
             ctx.strokeStyle = this.FgColor;
+            if (this.shadow===true){
+                ctx.shadowColor = ShapeObject.shadowColor;
+                ctx.shadowBlur = 6;
+                ctx.shadowOffsetX = 6;
+                ctx.shadowOffsetY = 6;
+            } else {
+                ctx.shadowBlur = 0;
+                ctx.shadowColor = 'rgba(0, 0, 0, 0)';
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 0;
+            }
             ctx.fillText(this.name, movePos.x, movePos.y);
             fillCircle(ctx, this.x, this.y, this.radius, this.color);
             ctx.lineWidth = 1

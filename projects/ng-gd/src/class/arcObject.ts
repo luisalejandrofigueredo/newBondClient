@@ -5,7 +5,7 @@ export class ArcObject extends ShapeObject {
     beginGrades: number = 0;
     endGrades: number = 0;
     borderColor:string| CanvasGradient | CanvasPattern = "";
-    constructor(x: number, y: number, size: number, beginGrades: number, endGrades: number, color?: string| CanvasGradient | CanvasPattern , borderColor?: string| CanvasGradient | CanvasPattern) {
+    constructor(x: number, y: number, size: number, beginGrades: number, endGrades: number, color?: string| CanvasGradient | CanvasPattern , borderColor?: string| CanvasGradient | CanvasPattern,shadow?:boolean) {
         super();
         this.x = x;
         this.y = y;
@@ -23,9 +23,23 @@ export class ArcObject extends ShapeObject {
         } else {
             this.borderColor = this.FgColor;
         }
+        if (shadow) {
+            this.shadow=shadow;
+        }
     }
     override drawShape(ctx: CanvasRenderingContext2D): void {
         if (this.visible === true) {
+            if (this.shadow===true){
+                ctx.shadowColor = ShapeObject.shadowColor;
+                ctx.shadowBlur = 6;
+                ctx.shadowOffsetX = 6;
+                ctx.shadowOffsetY = 6;
+            } else {
+                ctx.shadowBlur = 0;
+                ctx.shadowColor = 'rgba(0, 0, 0, 0)';
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 0;
+            }
             const beginRadians = toRadians(this.beginGrades);
             const endRadians = toRadians(this.endGrades);
             const line = move(this.x, this.y, beginRadians, this.size);

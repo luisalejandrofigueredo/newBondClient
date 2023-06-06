@@ -4,7 +4,7 @@ export class LineObject extends ShapeObject {
     toX: number;
     toY: number;
     steps:number=0;
-    constructor(x: number, y: number, toX: number, toY: number, steps?:number,color?: string | CanvasGradient | CanvasPattern) {
+    constructor(x: number, y: number, toX: number, toY: number, steps?:number,color?: string | CanvasGradient | CanvasPattern,shadow?:boolean) {
         super();
         this.x = x;
         this.y = y;
@@ -19,9 +19,23 @@ export class LineObject extends ShapeObject {
         } else {
             this.color = this.FgColor;
         }
+        if (shadow) {
+            this.shadow=shadow;
+        }
     }
     override drawShape(ctx: CanvasRenderingContext2D): void {
         if (this.visible === true) {
+            if (this.shadow===true){
+                ctx.shadowColor = ShapeObject.shadowColor;
+                ctx.shadowBlur = 6;
+                ctx.shadowOffsetX = 6;
+                ctx.shadowOffsetY = 6;
+            } else {
+                ctx.shadowBlur = 0;
+                ctx.shadowColor = 'rgba(0, 0, 0, 0)';
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 0;
+            }
             ctx.fillStyle = this.color;
             ctx.strokeStyle = this.color;
             const nodeAngle = angle(this.x, this.y, this.toX, this.toY);

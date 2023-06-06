@@ -19,8 +19,8 @@ export class TestgdiComponent implements AfterViewInit, OnInit {
   constructor() {
     this.gd.start(800, 600);
     this.gd.setDarkMode();
-    /* this.gd.addNode({ x: 150, y: 150 }, "one", "one", false, 10, 10);
-    this.gd.addNode({ x: 50, y: 50 }, "two", "two", false, 10, 10);
+     
+    /*this.gd.addNode({ x: 50, y: 50 }, "two", "two", false, 10, 10);
     this.gd.addConnection({ x: 150, y: 150 }, { x: 50, y: 50 }, "#ff0000")
     this.gd.addLabel({ x: 200, y: 200 } as Point, "Hola Mundo", 20, 270);
     this.gd.addRectangle({ x: 100, y: 100 }, 50, 50, 10, "#0000ff", "#ff0000");
@@ -71,15 +71,11 @@ export class TestgdiComponent implements AfterViewInit, OnInit {
     this.ctx.fillStyle = "black";
     this.gd.start(this.canvas.nativeElement.width, this.canvas.nativeElement.height);
     this.gd.clearObjects();
-    for (let index = 0; index < 5; index++) {
-      this.gd.addRectangle({ x: 50 + index * 10, y: 250 + index * 20 }, 100, 100, 0, colors[index]).toFront();
-    }
-    let gradientFillStyle = this.ctx.createRadialGradient(200, 200, 0, 200, 200, 40);
-    gradientFillStyle.addColorStop(0, 'red');
-    gradientFillStyle.addColorStop(0.5, 'yellow');
-    gradientFillStyle.addColorStop(1, 'blue');
+    const node=this.gd.addNode({ x: 150, y: 150 }, "one", "one", false, 10, 10);
+     node.shadowColor="white";
+     node.shadow=true;
     /*this.gd.addPieChart(this.ctx,{x:200,y:200},40,[180,160,20],[gradientFillStyle,"#0000ff","#00ff00"],0,0,["one","two","three"]);*/
-    this.gd.addLineChart({ x: 200, y: 200 }, [50, 80, 30], 50, "#ff0000", true);
+    this.gd.addLineChart({ x: 200, y: 200 }, [50, 80, 30], 50, "#ff0000", true,true);
     const candleStick: Candlestick[] = [
       { timestamp: 1621244400000, open: 100, high: 150, low: 80, close: 120 },
       { timestamp: 1621330800000, open: 120, high: 180, low: 100, close: 150 },
@@ -110,10 +106,10 @@ export class TestgdiComponent implements AfterViewInit, OnInit {
     { x: 0, y: -15 },
     ];
 
-    /*  this.gd.addCandleChart({ x: 50, y: 300 }, candleStick, 30, 600, "#ff0000", "#00ff00", 60);
-     this.gd.addAxisX(this.ctx, { x: 25, y: 300 }, 600, 10, ["January", "February", "March", "April", "May", "June", "July", "August", "Sept", "October"], 12, 0, 10, adjustLabelX);
-     this.gd.addAxisY(this.ctx, { x: 25, y: 300 }, 300, 3, ["0", "100", "200", "300"], 12, 0, 10, adjustLabelY);
-     this.gd.findLabelByText("300").color = "#ff0000"; */
+     this.gd.addCandleChart({ x: 50, y: 300 }, candleStick, 30, 600, "#ff0000", "#00ff00", 60,true);
+     this.gd.addAxisX(this.ctx, { x: 25, y: 300 }, 600, 10, ["January", "February", "March", "April", "May", "June", "July", "August", "Sept", "October"], 12, 0, 10, adjustLabelX,"white",true);
+     this.gd.addAxisY(this.ctx, { x: 25, y: 300 }, 300, 3, ["0", "100", "200", "300"], 12, 0, 10, adjustLabelY,"white",true);
+     this.gd.findLabelByText("300").color = "#ff0000"; 
     /* for (let index = 0; index < 100; index++) {
       await this.wait();
     } */

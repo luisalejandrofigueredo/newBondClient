@@ -9,9 +9,7 @@
             </mat-form-field>
             <div class="column">
                 <mat-form-field>
-                    <input matInput [ngxMatColorPicker]="picker" formControlName="colorCtr" >
-                    <ngx-mat-color-toggle matSuffix [for]="picker"></ngx-mat-color-toggle>
-                    <ngx-mat-color-picker #picker ></ngx-mat-color-picker>
+                    <input matInput  formControlName="colorCtr" >
                 </mat-form-field>
                 <div class="color"  [style.backgroundColor]="this.nodeForm.controls.colorCtr.value"></div>
             </div>

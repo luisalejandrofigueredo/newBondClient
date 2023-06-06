@@ -3,7 +3,7 @@ import { distance, getTransformedPoint } from "../trigonometrics";
 export class CircleObject extends ShapeObject {
     radius = 0;
     borderColor: string | CanvasGradient | CanvasPattern= "";
-    constructor(x: number, y: number, radius: number, color?: string | CanvasGradient | CanvasPattern, borderColor?: string | CanvasGradient | CanvasPattern) {
+    constructor(x: number, y: number, radius: number, color?: string | CanvasGradient | CanvasPattern, borderColor?: string | CanvasGradient | CanvasPattern,shadow?:boolean) {
         super();
         this.x = x;
         this.y = y;
@@ -19,9 +19,23 @@ export class CircleObject extends ShapeObject {
         } else {
             this.borderColor = this.FgColor;
         }
+        if (shadow) {
+            this.shadow=shadow;
+        }
     }
     override drawShape(ctx: CanvasRenderingContext2D): void {
         if (this.visible===true){
+            if (this.shadow===true){
+                ctx.shadowColor = ShapeObject.shadowColor;
+                ctx.shadowBlur = 6;
+                ctx.shadowOffsetX = 6;
+                ctx.shadowOffsetY = 6;
+            } else {
+                ctx.shadowBlur = 0;
+                ctx.shadowColor = 'rgba(0, 0, 0, 0)';
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 0;
+            }
             ctx.fillStyle = this.color;
             ctx.strokeStyle = this.borderColor;
             ctx.beginPath();

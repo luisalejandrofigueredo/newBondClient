@@ -12,7 +12,7 @@ export class MultiplesSidesObject extends ShapeObject {
     borderColor: string | CanvasGradient | CanvasPattern = ""
     triangles: Triangle[] = [];
     angle = 0;
-    constructor(x: number, y: number, sides: number, radius: number, color?: string | CanvasGradient | CanvasPattern, borderColor?: string | CanvasGradient | CanvasPattern, angle?: number) {
+    constructor(x: number, y: number, sides: number, radius: number, color?: string | CanvasGradient | CanvasPattern, borderColor?: string | CanvasGradient | CanvasPattern, angle?: number,shadow?:boolean) {
         super();
         this.x = x;
         this.y = y;
@@ -33,6 +33,9 @@ export class MultiplesSidesObject extends ShapeObject {
             this.angle = toRadians(angle);
 
         }
+        if (shadow) {
+            this.shadow=shadow;
+        }
         const radian = 2 * Math.PI / this.sides;
         for (let i = 0; i < this.sides; i++) {
             const secondPoint = move(x, y, i * radian + this.angle, this.radius);
@@ -43,6 +46,17 @@ export class MultiplesSidesObject extends ShapeObject {
 
     override drawShape(ctx: CanvasRenderingContext2D): void {
         if (this.visible === true) {
+            if (this.shadow===true){
+                ctx.shadowColor = ShapeObject.shadowColor;
+                ctx.shadowBlur = 6;
+                ctx.shadowOffsetX = 6;
+                ctx.shadowOffsetY = 6;
+            } else {
+                ctx.shadowBlur = 0;
+                ctx.shadowColor = 'rgba(0, 0, 0, 0)';
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 0;
+            }
             ctx.beginPath();
             ctx.fillStyle = this.color;
             ctx.strokeStyle = this.borderColor;
@@ -108,7 +122,6 @@ export class MultiplesSidesObject extends ShapeObject {
 
     override moveMouse(ctx: CanvasRenderingContext2D, event: MouseEvent): void {
         const point = getTransformedPoint(ctx, event.offsetX, event.offsetY);
-        console.log('Entre ')
         if (ShapeObject.lastMove.x !== 0 && ShapeObject.lastMove.y !== 0) {
             const deltaX = point.x - ShapeObject.lastMove.x;
             const deltaY = point.y - ShapeObject.lastMove.y;

@@ -6,7 +6,7 @@ export class RectangleObject extends ShapeObject {
     borderColor:string | CanvasGradient | CanvasPattern = "#ffffff";
     height = 10;
     width = 10;
-    constructor(x: number, y: number, width: number, height: number, angle?: number, color?: string | CanvasGradient | CanvasPattern, borderColor?: string | CanvasGradient | CanvasPattern) {
+    constructor(x: number, y: number, width: number, height: number, angle?: number, color?: string | CanvasGradient | CanvasPattern, borderColor?: string | CanvasGradient | CanvasPattern,shadow?:boolean) {
         super();
         this.x = x;
         this.y = y;
@@ -26,8 +26,22 @@ export class RectangleObject extends ShapeObject {
         } else {
             this.borderColor = this.FgColor;
         }
+        if (shadow) {
+            this.shadow=shadow;
+        }
     }
     override drawShape(ctx: CanvasRenderingContext2D): void {
+        if (this.shadow===true){
+            ctx.shadowColor = ShapeObject.shadowColor;
+            ctx.shadowBlur = 6;
+            ctx.shadowOffsetX = 6;
+            ctx.shadowOffsetY = 6;
+        } else {
+            ctx.shadowBlur = 0;
+            ctx.shadowColor = 'rgba(0, 0, 0, 0)';
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+        }
         const rect = rectangle(this.x, this.y, this.height, this.width, this.angle);
         ctx.fillStyle = this.color;
         ctx.strokeStyle = this.borderColor;

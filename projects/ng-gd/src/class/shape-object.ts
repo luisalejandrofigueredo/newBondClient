@@ -8,6 +8,7 @@ export abstract class ShapeObject implements CommonProperties {
   public static width = 0;
   public static height = 0;
   public static lastMove:Point={x:0,y:0};
+  public static shadowColor:string="#ffffff";
   id: number = 0;
   x = 0;
   y = 0;
@@ -15,6 +16,10 @@ export abstract class ShapeObject implements CommonProperties {
   zOrder = 0;
   visible = true;
   type = '';
+  shadowBlur=20;
+  shadowOffsetX=20;
+  shadowOffsetY=20;
+  shadow:boolean=false;
   color: string| CanvasGradient | CanvasPattern="#ff0000";
   constructor() {
     ShapeObject.maxId++;
@@ -94,6 +99,14 @@ export abstract class ShapeObject implements CommonProperties {
 
   set FgColor(color: string| CanvasGradient | CanvasPattern) {
     ShapeObject.fgColor = color;
+  }
+
+  get shadowColor() {
+    return ShapeObject.shadowColor;
+  }
+
+  set shadowColor(color: string) {
+    ShapeObject.shadowColor = color;
   }
 
   resetMouse(){

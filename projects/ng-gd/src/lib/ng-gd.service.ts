@@ -183,6 +183,7 @@ export class NgGdService {
     this.frColor = "#ffffff";
     this.getItem(0).BgColor = this.bkColor;
     this.getItem(0).FgColor = this.frColor;
+    this.getItem(0).shadowColor= this.frColor;
   }
 
   setLightMode() {
@@ -190,6 +191,7 @@ export class NgGdService {
     this.frColor = "#000000";
     this.getItem(0).BgColor = this.bkColor;
     this.getItem(0).FgColor = this.frColor;
+    this.getItem(0).shadowColor= this.frColor;
   }
 
   canvasSetSize(width: number, height: number) {
@@ -221,8 +223,8 @@ export class NgGdService {
     }
   }
 
-  addLineChart(point: Point, values: number[], dist: number, color: string | CanvasGradient | CanvasPattern, marks?: boolean): LineChartObject {
-    const newLineChart = new LineChartObject(point, values, dist, color, marks);
+  addLineChart(point: Point, values: number[], dist: number, color: string | CanvasGradient | CanvasPattern, marks?: boolean,shadow?:boolean): LineChartObject {
+    const newLineChart = new LineChartObject(point, values, dist, color, marks,shadow);
     this.canvasObjects.push(<ShapeObject>newLineChart)
     return newLineChart;
   }
@@ -260,7 +262,7 @@ export class NgGdService {
 
   }
 
-  addAxisY(ctx: CanvasRenderingContext2D, point: Point, dist: number, steps: number, labels: string[], fontSize: number, angleGrades?: number, distance?: number, adjustLabel?: Point[]) {
+  addAxisY(ctx: CanvasRenderingContext2D, point: Point, dist: number, steps: number, labels: string[], fontSize: number, angleGrades?: number, distance?: number, adjustLabel?: Point[],color?:string | CanvasGradient | CanvasPattern,shadow?:boolean) {
     let ang = 0;
     let distance2 = 0;
     let adjust = { x: 0, y: 0 };
@@ -270,7 +272,7 @@ export class NgGdService {
     if (distance) {
       distance2 = distance;
     }
-    this.addLine(point, { x: point.x, y: point.y - dist }, steps);
+    this.addLine(point, { x: point.x, y: point.y - dist }, steps,color,shadow);
     const increment = dist / steps;
     labels.forEach((element, index) => {
       if (adjustLabel && adjustLabel[index]) {
@@ -279,13 +281,13 @@ export class NgGdService {
       else {
         adjust = { x: 0, y: 0 };
       }
-      let label = this.addLabel({ x: point.x + adjust.x, y: point.y + fontSize / 2 - increment * index + distance2 + adjust.y }, element, fontSize, ang);
+      let label = this.addLabel({ x: point.x + adjust.x, y: point.y + fontSize / 2 - increment * index + distance2 + adjust.y }, element, fontSize, ang,shadow);
       const size = label.getSizeText(ctx);
       label.x -= label.getSizeText(ctx) + fontSize;
     });
   }
 
-  addAxisX(ctx: CanvasRenderingContext2D, point: Point, dist: number, steps: number, labels: string[], fontSize: number, angleGrades?: number, distance?: number, adjustLabel?: Point[]) {
+  addAxisX(ctx: CanvasRenderingContext2D, point: Point, dist: number, steps: number, labels: string[], fontSize: number, angleGrades?: number, distance?: number, adjustLabel?: Point[],color?:string | CanvasGradient | CanvasPattern,shadow?:boolean) {
     let distance2 = 0;
     let ang = 0;
     let adjust = { x: 0, y: 0 };
@@ -295,7 +297,7 @@ export class NgGdService {
     if (angleGrades) {
       ang = angleGrades;
     }
-    this.addLine(point, { x: point.x + dist, y: point.y }, steps);
+    this.addLine(point, { x: point.x + dist, y: point.y }, steps,color,shadow);
     const increment = dist / steps;
     labels.forEach((element, index) => {
       if (adjustLabel && adjustLabel[index]) {
@@ -304,76 +306,76 @@ export class NgGdService {
       else {
         adjust = { x: 0, y: 0 };
       }
-      let label = this.addLabel({ x: point.x + increment * index + adjust.x, y: point.y + fontSize + distance2 + adjust.y }, element, fontSize, ang);
+      let label = this.addLabel({ x: point.x + increment * index + adjust.x, y: point.y + fontSize + distance2 + adjust.y }, element, fontSize, ang,shadow);
       const size = label.getSizeText(ctx);
       label.x += increment / 2 - size;
     });
   }
 
-  addCandleChart(point: Point, candleStick: Candlestick[], width: number, height: number, bullColor: string | CanvasGradient | CanvasPattern, bearColor: string | CanvasGradient | CanvasPattern, distance: number) {
+  addCandleChart(point: Point, candleStick: Candlestick[], width: number, height: number, bullColor: string | CanvasGradient | CanvasPattern, bearColor: string | CanvasGradient | CanvasPattern, distance: number,shadow?:boolean) {
     candleStick.forEach((element, index) => {
       const cPoint: Point = { x: point.x + distance * index, y: point.y };
-      const newCandleStick = new CandlestickObject(cPoint, element, width, height, bullColor, bearColor);
+      const newCandleStick = new CandlestickObject(cPoint, element, width, height, bullColor, bearColor,shadow);
       this.canvasObjects.push(<ShapeObject>newCandleStick);
     });
   }
 
-  addCandleStick(point: Point, candleStick: Candlestick, width: number, height: number, bullColor: string | CanvasGradient | CanvasPattern, bearColor: string | CanvasGradient | CanvasPattern): CandlestickObject {
-    const newCandleStick = new CandlestickObject(point, candleStick, width, height, bullColor, bearColor);
+  addCandleStick(point: Point, candleStick: Candlestick, width: number, height: number, bullColor: string | CanvasGradient | CanvasPattern, bearColor: string | CanvasGradient | CanvasPattern,shadow?:boolean): CandlestickObject {
+    const newCandleStick = new CandlestickObject(point, candleStick, width, height, bullColor, bearColor,shadow);
     this.canvasObjects.push(<ShapeObject>newCandleStick);
     return newCandleStick;
   }
 
-  addArc(x: number, y: number, size: number, beginGrades: number, endGrades: number, color?: string | CanvasGradient | CanvasPattern, borderColor?: string | CanvasGradient | CanvasPattern): ArcObject {
-    const newArc = new ArcObject(x, y, size, beginGrades, endGrades, color, borderColor);
+  addArc(x: number, y: number, size: number, beginGrades: number, endGrades: number, color?: string | CanvasGradient | CanvasPattern, borderColor?: string | CanvasGradient | CanvasPattern,shadow?:boolean): ArcObject {
+    const newArc = new ArcObject(x, y, size, beginGrades, endGrades, color, borderColor,shadow);
     this.canvasObjects.push(<ShapeObject>newArc);
     return newArc;
   }
 
-  addMultiplesSides(point: Point, sides: number, radius: number, color?: string | CanvasGradient | CanvasPattern, borderColor?: string | CanvasGradient | CanvasPattern, angle?: number): MultiplesSidesObject {
-    const newMultiplesSides = new MultiplesSidesObject(point.x, point.y, sides, radius, color, borderColor, angle);
+  addMultiplesSides(point: Point, sides: number, radius: number, color?: string | CanvasGradient | CanvasPattern, borderColor?: string | CanvasGradient | CanvasPattern, angle?: number,shadow?:boolean): MultiplesSidesObject {
+    const newMultiplesSides = new MultiplesSidesObject(point.x, point.y, sides, radius, color, borderColor, angle,shadow);
     this.canvasObjects.push(<ShapeObject>newMultiplesSides);
     return newMultiplesSides;
   }
 
-  addTriangle(first: Point, second: Point, third: Point, color?: string | CanvasGradient | CanvasPattern, borderColor?: string | CanvasGradient | CanvasPattern): TriangleObject {
-    const newTriangle = new TriangleObject(first, second, third, color, borderColor);
+  addTriangle(first: Point, second: Point, third: Point, color?: string | CanvasGradient | CanvasPattern, borderColor?: string | CanvasGradient | CanvasPattern,shadow?:boolean): TriangleObject {
+    const newTriangle = new TriangleObject(first, second, third, color, borderColor,shadow);
     this.canvasObjects.push(<ShapeObject>newTriangle);
     return newTriangle;
   }
 
-  addCircle(point: Point, radius: number, color?: string | CanvasGradient | CanvasPattern, borderColor?: string | CanvasGradient | CanvasPattern): CircleObject {
-    const newCircle = new CircleObject(point.x, point.y, radius, color, borderColor);
+  addCircle(point: Point, radius: number, color?: string | CanvasGradient | CanvasPattern, borderColor?: string | CanvasGradient | CanvasPattern,shadow?:boolean): CircleObject {
+    const newCircle = new CircleObject(point.x, point.y, radius, color, borderColor,shadow);
     this.canvasObjects.push((<ShapeObject>newCircle));
     return newCircle;
   }
 
-  addRectangle(point: Point, width: number, height: number, angle: number, color?: string | CanvasGradient | CanvasPattern, borderColor?: string | CanvasGradient | CanvasPattern): RectangleObject {
-    const newRectangle = new RectangleObject(point.x, point.y, width, height, angle, color, borderColor);
+  addRectangle(point: Point, width: number, height: number, angle: number, color?: string | CanvasGradient | CanvasPattern, borderColor?: string | CanvasGradient | CanvasPattern,shadow?:boolean): RectangleObject {
+    const newRectangle = new RectangleObject(point.x, point.y, width, height, angle, color, borderColor,shadow);
     this.canvasObjects.push((<ShapeObject>newRectangle));
     return newRectangle
   }
 
-  addNode(point: Point, name: string, description?: string, net?: boolean, angleLabel?: number, distanceLabel?: number): NodeObject {
-    const newNode = new NodeObject(point.x, point.y, name, 4, description, net, angleLabel, distanceLabel);
+  addNode(point: Point, name: string, description?: string, net?: boolean, angleLabel?: number, distanceLabel?: number,shadow?:boolean): NodeObject {
+    const newNode = new NodeObject(point.x, point.y, name, 4, description, net, angleLabel, distanceLabel,shadow);
     this.canvasObjects.push((<ShapeObject>newNode));
     return newNode;
   }
 
-  addConnection(point: Point, toPoint: Point, color?: string | CanvasGradient | CanvasPattern, label?: string): ConnectionObject {
-    const newConnection = new ConnectionObject(point.x, point.y, toPoint.x, toPoint.y, color, label);
+  addConnection(point: Point, toPoint: Point, color?: string | CanvasGradient | CanvasPattern, label?: string,shadow?:boolean): ConnectionObject {
+    const newConnection = new ConnectionObject(point.x, point.y, toPoint.x, toPoint.y, color, label,shadow);
     this.canvasObjects.push((<ShapeObject>newConnection));
     return newConnection;
   }
 
-  addLine(point: Point, toPoint: Point, steps?: number, color?: string | CanvasGradient | CanvasPattern): LineObject {
-    const newLine = new LineObject(point.x, point.y, toPoint.x, toPoint.y, steps, color);
+  addLine(point: Point, toPoint: Point, steps?: number, color?: string | CanvasGradient | CanvasPattern,shadow?:boolean): LineObject {
+    const newLine = new LineObject(point.x, point.y, toPoint.x, toPoint.y, steps, color,shadow);
     this.canvasObjects.push((<ShapeObject>newLine));
     return newLine;
   }
 
-  addLabel(point: Point, text: string, fontSize: number, angle: number): LabelObject {
-    const newLabel = new LabelObject(point.x, point.y, text, fontSize, angle);
+  addLabel(point: Point, text: string, fontSize: number, angle: number,shadow?:boolean): LabelObject {
+    const newLabel = new LabelObject(point.x, point.y, text, fontSize, angle,shadow);
     this.canvasObjects.push(newLabel)
     return newLabel;
   }

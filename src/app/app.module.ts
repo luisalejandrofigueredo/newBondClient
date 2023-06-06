@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorInterceptor } from './interceptor.interceptor';
 import { AppRoutingModule } from './app-routing.module';
@@ -21,6 +20,7 @@ import { HomeComponent } from './home/home.component';
 import { PathNotFoundComponent } from './path-not-found/path-not-found.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { NgGdModule,NgGdService } from 'ng-gd';
+import { BrowserModule } from '@angular/platform-browser';
 
 @NgModule({
   declarations: [

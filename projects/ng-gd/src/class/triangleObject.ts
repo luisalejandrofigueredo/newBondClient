@@ -9,7 +9,7 @@ export class TriangleObject extends ShapeObject{
     second:Point={x:0,y:0};
     third:Point={x:0,y:0};
     borderColor: string | CanvasGradient | CanvasPattern="";
-    constructor(first:Point,second:Point,third:Point,color?:string | CanvasGradient | CanvasPattern,borderColor?:string | CanvasGradient | CanvasPattern){
+    constructor(first:Point,second:Point,third:Point,color?:string | CanvasGradient | CanvasPattern,borderColor?:string | CanvasGradient | CanvasPattern,shadow?:boolean){
         super();
         this.x=first.x;
         this.y=first.y;
@@ -26,9 +26,23 @@ export class TriangleObject extends ShapeObject{
         } else {
             this.borderColor=this.BgColor;
         }
+        if (shadow) {
+            this.shadow=shadow;
+        }
     }
     override drawShape(ctx: CanvasRenderingContext2D): void {
         if (this.visible===true){
+            if (this.shadow===true){
+                ctx.shadowColor = ShapeObject.shadowColor;
+                ctx.shadowBlur = 6;
+                ctx.shadowOffsetX = 6;
+                ctx.shadowOffsetY = 6;
+            } else {
+                ctx.shadowBlur = 0;
+                ctx.shadowColor = 'rgba(0, 0, 0, 0)';
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 0;
+            }
             ctx.fillStyle=this.color;
             ctx.strokeStyle=this.borderColor;
             ctx.beginPath();
