@@ -21,6 +21,7 @@ import { PathNotFoundComponent } from './path-not-found/path-not-found.component
 import { LayoutModule } from '@angular/cdk/layout';
 import { NgGdModule,NgGdService } from 'ng-gd';
 import { BrowserModule } from '@angular/platform-browser';
+import { DemoObjectsComponent } from './demo-objects/demo-objects.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { BrowserModule } from '@angular/platform-browser';
     NavigationComponent,
     HomeComponent,
     PathNotFoundComponent,
+    DemoObjectsComponent,
     /*ImagePipe*/
   ],
   imports: [
